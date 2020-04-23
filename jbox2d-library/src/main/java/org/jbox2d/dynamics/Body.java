@@ -50,6 +50,7 @@ public class Body {
   public static final int e_toiFlag = 0x0040;
 
   public BodyType m_type;
+  public boolean actionBody = false;
 
   public int m_flags;
 
@@ -123,6 +124,7 @@ public class Body {
     if (bd.active) {
       m_flags |= e_activeFlag;
     }
+    actionBody=bd.actionBody;
 
     m_world = world;
 
