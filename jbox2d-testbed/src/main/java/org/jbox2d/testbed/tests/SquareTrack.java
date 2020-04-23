@@ -111,14 +111,21 @@ public class SquareTrack extends TestbedTest {
             Body ground = getWorld().createBody(bd);
 
             EdgeShape shape = new EdgeShape();
-            shape.set(new Vec2(-40.0f, 0.0f), new Vec2(40.0f, 0.0f));
+            shape.set(new Vec2(-50.0f, -20.0f), new Vec2(50.0f, -20.0f));
             ground.createFixture(shape, 0.0f);
 
-            shape.set(new Vec2(20.0f, 0.0f), new Vec2(20.0f, 20.0f));
+            shape.set(new Vec2(-50.0f, 30.0f), new Vec2(50.0f, 30.0f));
             ground.createFixture(shape, 0.0f);
+
+            shape.set(new Vec2(50.0f, 30.0f), new Vec2(50.0f, -20.0f));
+            ground.createFixture(shape, 0.0f);
+
+            shape.set(new Vec2(-50.0f, 30.0f), new Vec2(-50.0f, -20.0f));
+            ground.createFixture(shape, 0.0f);
+
         }
 
-        float xs[] = new float[]{0.0f, -10.0f, -5.0f, 5.0f, 10.0f};
+        float xs[] = new float[]{-10.0f, -10.0f, -5.0f, 5.0f, 10.0f};
 
         for (int j = 0; j < e_columnCount; ++j) {
             PolygonShape shape = new PolygonShape();
@@ -139,7 +146,7 @@ public class SquareTrack extends TestbedTest {
                 float x = 0.0f;
                 // float x = RandomFloat(-0.02f, 0.02f);
                 // float x = i % 2 == 0 ? -0.025f : 0.025f;
-                bd.position.set(xs[j] + x, 0.752f + 1.54f * i);
+                bd.position.set(xs[j] + x, -20+0.752f + 1.54f * i);
                 Body body = getWorld().createBody(bd);
 
                 body.createFixture(fd);
@@ -173,32 +180,6 @@ public class SquareTrack extends TestbedTest {
 
     public void keyPressed() {
         boolean hasContact = action_body.m_contactList != null;
-        if (getModel().getKeys()[',']) {
-            if (m_bullet != null) {
-                getWorld().destroyBody(m_bullet);
-                m_bullet = null;
-            }
-
-            {
-                CircleShape shape = new CircleShape();
-                shape.m_radius = 0.25f;
-
-                FixtureDef fd = new FixtureDef();
-                fd.shape = shape;
-                fd.density = 20.0f;
-                fd.restitution = 0.05f;
-
-                BodyDef bd = new BodyDef();
-                bd.type = BodyType.DYNAMIC;
-                bd.bullet = true;
-                bd.position.set(-31.0f, 5.0f);
-
-                m_bullet = getWorld().createBody(bd);
-                m_bullet.createFixture(fd);
-
-                m_bullet.setLinearVelocity(new Vec2(400.0f, 0.0f));
-            }
-        }
         if (getModel().getKeys()['a']) {
             if (action_body != null && action_body.getLinearVelocity().x > minSpeedX && hasContact) {
                 Vec2 newVel = new Vec2(action_body.getLinearVelocity().x - 1, action_body.getLinearVelocity().y);
@@ -208,11 +189,6 @@ public class SquareTrack extends TestbedTest {
                 Vec2 newVel = new Vec2(action_body.getLinearVelocity().x - 1, action_body.getLinearVelocity().y);
                 action_body.setLinearVelocity(newVel);
             }
-        }
-        if (getModel().getKeys()['w']) {
-            Vec2 f = action_body.getWorldVector(new Vec2(0.0f, -30.0f));
-            Vec2 p = action_body.getWorldPoint(action_body.getLocalCenter().add(new Vec2(0.0f, 2.0f)));
-            action_body.applyForce(f, p);
         }
         if (getModel().getKeys()['d']) {
             if (action_body != null && action_body.getLinearVelocity().x < maxSpeedX && hasContact) {
