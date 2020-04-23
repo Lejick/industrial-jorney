@@ -133,7 +133,7 @@ public class AWTPanelHelper {
             controller.reset();
             break;
           case ' ':
-            controller.queueLaunchBomb();
+          //  controller.queueLaunchBomb();
             break;
           case 'p':
             controller.queuePause();

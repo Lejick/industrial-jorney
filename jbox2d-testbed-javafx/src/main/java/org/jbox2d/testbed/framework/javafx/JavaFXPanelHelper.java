@@ -128,7 +128,7 @@ public class JavaFXPanelHelper {
           controller.reset();
           break;
         case ' ':
-          controller.queueLaunchBomb();
+       //   controller.queueLaunchBomb();
           break;
         case 'p':
           controller.queuePause();
