@@ -10,5 +10,6 @@
     <orderEntry type="library" name="lib" level="project" />
     <orderEntry type="module" module-name="jbox2d-library" />
     <orderEntry type="module" module-name="jbox2d-testbed" />
+    <orderEntry type="module" module-name="jbox2d-serialization" />
   </component>
 </module>

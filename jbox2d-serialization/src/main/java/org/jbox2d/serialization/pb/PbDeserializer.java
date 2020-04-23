@@ -62,6 +62,7 @@ import org.jbox2d.dynamics.joints.RopeJointDef;
 import org.jbox2d.dynamics.joints.WeldJointDef;
 import org.jbox2d.dynamics.joints.WheelJointDef;
 import org.jbox2d.serialization.JbDeserializer;
+import org.jbox2d.serialization.ObjectListener;
 import org.jbox2d.serialization.UnsupportedListener;
 import org.jbox2d.serialization.UnsupportedObjectException;
 import org.jbox2d.serialization.UnsupportedObjectException.Type;

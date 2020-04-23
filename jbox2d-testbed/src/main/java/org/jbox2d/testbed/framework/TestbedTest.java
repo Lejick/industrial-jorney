@@ -58,7 +58,6 @@ import org.jbox2d.dynamics.joints.MouseJoint;
 import org.jbox2d.dynamics.joints.MouseJointDef;
 import org.jbox2d.particle.ParticleGroup;
 import org.jbox2d.serialization.*;
-import org.jbox2d.serialization.JbDeserializer.ObjectListener;
 import org.jbox2d.serialization.JbSerializer.ObjectSigner;
 import org.jbox2d.serialization.pb.PbDeserializer;
 import org.jbox2d.serialization.pb.PbSerializer;
@@ -66,11 +65,7 @@ import org.jbox2d.serialization.pb.PbSerializer;
 /**
  * @author Daniel Murphy
  */
-public abstract class TestbedTest
-    implements
-      ContactListener,
-      ObjectListener,
-      ObjectSigner,
+public abstract class TestbedTest implements ContactListener, ObjectListener, ObjectSigner,
       UnsupportedListener {
   public static final int MAX_CONTACT_POINTS = 4048;
   public static final float ZOOM_SCALE_DIFF = .05f;

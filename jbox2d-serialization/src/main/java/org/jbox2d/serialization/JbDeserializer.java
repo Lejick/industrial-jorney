@@ -112,16 +112,5 @@ public interface JbDeserializer {
 	 * @author dmurph
 	 *
 	 */
-	 interface ObjectListener{
-
-		public void processWorld(World world, Long tag);
-
-		public void processBody(Body body, Long tag);
-
-		public void processFixture(Fixture fixture, Long tag);
-
-		public void processShape(Shape shape, Long tag);
-
-		public void processJoint(Joint joint, Long tag);
-	}
 }
+
