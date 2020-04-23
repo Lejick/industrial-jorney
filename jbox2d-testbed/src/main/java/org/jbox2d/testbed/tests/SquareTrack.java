@@ -24,7 +24,7 @@
 /**
  * Created at 4:56:29 AM Jan 14, 2011
  */
-package sample;
+package org.jbox2d.testbed.tests;
 
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.EdgeShape;
@@ -37,17 +37,22 @@ import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.testbed.framework.TestbedSettings;
 import org.jbox2d.testbed.framework.TestbedTest;
 
+import java.awt.geom.AffineTransform;
+import java.awt.geom.PathIterator;
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.RectangularShape;
+
 /**
  * @author Daniel Murphy
  */
-public class VerticalStack extends TestbedTest {
+public class SquareTrack extends TestbedTest {
   private static final long BULLET_TAG = 1;
 
   public static final int e_columnCount = 5;
   public static final int e_rowCount = 15;
 
   Body m_bullet;
-
+  Body action_body;
   @Override
   public Long getTag(Body argBody) {
     if (argBody == m_bullet) {
@@ -81,7 +86,6 @@ public class VerticalStack extends TestbedTest {
       Body ground = getWorld().createBody(bd);
 
       EdgeShape shape = new EdgeShape();
-      // shape.setAsBox(40, 10, new Vec2(0,-10), 0);
       shape.set(new Vec2(-40.0f, 0.0f), new Vec2(40.0f, 0.0f));
       ground.createFixture(shape, 0.0f);
 
@@ -116,10 +120,31 @@ public class VerticalStack extends TestbedTest {
         body.createFixture(fd);
       }
     }
-
+    createActionBody();
     m_bullet = null;
   }
 
+  private void createActionBody(){
+    PolygonShape shape = new PolygonShape();
+    shape.setAsBox(0.5f, 0.5f);
+
+    FixtureDef fd = new FixtureDef();
+    fd.shape = shape;
+    fd.density = 1.0f;
+    fd.friction = 0.3f;
+
+    BodyDef bd = new BodyDef();
+    bd.type = BodyType.DYNAMIC;
+
+
+    float x = 0.0f;
+    // float x = RandomFloat(-0.02f, 0.02f);
+    // float x = i % 2 == 0 ? -0.025f : 0.025f;
+    bd.position.set(-20, 5);
+    action_body = getWorld().createBody(bd);
+    action_body.createFixture(fd);
+
+  }
   @Override
   public void keyPressed(char argKeyChar, int argKeyCode) {
     switch (argKeyChar) {
@@ -149,6 +174,18 @@ public class VerticalStack extends TestbedTest {
           m_bullet.setLinearVelocity(new Vec2(400.0f, 0.0f));
         }
         break;
+      case 'a':
+        if(action_body!=null)
+        action_body.setLinearVelocity(new Vec2(-10.0f,0.0f));
+        break;
+      case 'd':
+        if(action_body!=null)
+        action_body.setLinearVelocity(new Vec2(10.0f,0.0f));
+        break;
+      case ' ':
+        if(action_body!=null)
+          action_body.setLinearVelocity(new Vec2(0,10.0f));
+        break;
     }
   }
 
@@ -160,6 +197,6 @@ public class VerticalStack extends TestbedTest {
 
   @Override
   public String getTestName() {
-    return "Vertical Stack";
+    return "Square Track";
   }
 }

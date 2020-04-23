@@ -23,56 +23,7 @@
  ******************************************************************************/
 package org.jbox2d.testbed.framework;
 
-import org.jbox2d.testbed.tests.ApplyForce;
-import org.jbox2d.testbed.tests.BlobTest4;
-import org.jbox2d.testbed.tests.BodyTypes;
-import org.jbox2d.testbed.tests.Breakable;
-import org.jbox2d.testbed.tests.BulletTest;
-import org.jbox2d.testbed.tests.Cantilever;
-import org.jbox2d.testbed.tests.Car;
-import org.jbox2d.testbed.tests.Chain;
-import org.jbox2d.testbed.tests.CharacterCollision;
-import org.jbox2d.testbed.tests.CircleStress;
-import org.jbox2d.testbed.tests.CollisionFiltering;
-import org.jbox2d.testbed.tests.CollisionProcessing;
-import org.jbox2d.testbed.tests.CompoundShapes;
-import org.jbox2d.testbed.tests.ConfinedTest;
-import org.jbox2d.testbed.tests.ContinuousTest;
-import org.jbox2d.testbed.tests.ConvexHull;
-import org.jbox2d.testbed.tests.ConveyorBelt;
-import org.jbox2d.testbed.tests.DamBreak;
-import org.jbox2d.testbed.tests.DistanceTest;
-import org.jbox2d.testbed.tests.DominoTest;
-import org.jbox2d.testbed.tests.DominoTower;
-import org.jbox2d.testbed.tests.DrawingParticles;
-import org.jbox2d.testbed.tests.DynamicTreeTest;
-import org.jbox2d.testbed.tests.EdgeShapes;
-import org.jbox2d.testbed.tests.FixedPendulumTest;
-import org.jbox2d.testbed.tests.FreePendulumTest;
-import org.jbox2d.testbed.tests.Gears;
-import org.jbox2d.testbed.tests.LiquidTimer;
-import org.jbox2d.testbed.tests.MotorTest;
-import org.jbox2d.testbed.tests.OneSidedTest;
-import org.jbox2d.testbed.tests.Particles;
-import org.jbox2d.testbed.tests.PistonTest;
-import org.jbox2d.testbed.tests.PolyShapes;
-import org.jbox2d.testbed.tests.PrismaticTest;
-import org.jbox2d.testbed.tests.Pulleys;
-import org.jbox2d.testbed.tests.PyramidTest;
-import org.jbox2d.testbed.tests.RayCastTest;
-import org.jbox2d.testbed.tests.RevoluteTest;
-import org.jbox2d.testbed.tests.RopeTest;
-import org.jbox2d.testbed.tests.SensorTest;
-import org.jbox2d.testbed.tests.ShapeEditing;
-import org.jbox2d.testbed.tests.SliderCrankTest;
-import org.jbox2d.testbed.tests.SphereStack;
-import org.jbox2d.testbed.tests.TheoJansen;
-import org.jbox2d.testbed.tests.Tumbler;
-import org.jbox2d.testbed.tests.VaryingFrictionTest;
-import org.jbox2d.testbed.tests.VaryingRestitution;
-import org.jbox2d.testbed.tests.VerticalStack;
-import org.jbox2d.testbed.tests.WaveMachine;
-import org.jbox2d.testbed.tests.Web;
+import org.jbox2d.testbed.tests.*;
 
 /**
  * @author Daniel Murphy
@@ -155,5 +106,9 @@ public class TestList {
     model.addTest(new ConvexHull());
     model.addTest(new DynamicTreeTest());
     model.addTest(new DistanceTest());
+
+    // play4fun
+    model.addCategory("- Play Level -");
+    model.addTest(new SquareTrack());
   }
 }

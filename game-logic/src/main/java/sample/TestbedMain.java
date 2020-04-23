@@ -34,24 +34,12 @@ import java.awt.*;
  * @author Daniel Murphy
  */
 public class TestbedMain {
-  // private static final Logger log = LoggerFactory.getLogger(TestbedMain.class);
-
   public static void main(String[] args) {
-    // try {
-    // UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
-    // } catch (Exception e) {
-    // log.warn("Could not set the look and feel to nimbus. "
-    // + "Hopefully you're on a mac so the window isn't ugly as crap.");
-    // }
     TestbedModel model = new TestbedModel();
     final AbstractTestbedController controller = new TestbedController(model,
-        UpdateBehavior.UPDATE_CALLED, MouseBehavior.NORMAL, new TestbedErrorHandler() {
-          @Override
-          public void serializationError(Exception e, String message) {
-            JOptionPane.showMessageDialog(null, message, "Serialization Error",
-                JOptionPane.ERROR_MESSAGE);
-          }
-        });
+        UpdateBehavior.UPDATE_CALLED, MouseBehavior.NORMAL,
+            (e, message) -> JOptionPane.showMessageDialog(null, message, "Serialization Error",
+            JOptionPane.ERROR_MESSAGE));
     TestPanelJ2D panel = new TestPanelJ2D(model, controller);
     model.setPanel(panel);
     model.setDebugDraw(new DebugDrawJ2D(panel, true));
@@ -71,7 +59,7 @@ public class TestbedMain {
     SwingUtilities.invokeLater(new Runnable() {
       @Override
       public void run() {
-        controller.playTest(0);
+        controller.playTest(60);
         controller.start();
       }
     });
