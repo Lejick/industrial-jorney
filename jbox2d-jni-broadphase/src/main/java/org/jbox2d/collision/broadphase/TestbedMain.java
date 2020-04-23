@@ -35,13 +35,8 @@ import javax.swing.UIManager;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.World;
 import org.jbox2d.pooling.normal.DefaultWorldPool;
-import org.jbox2d.testbed.framework.TestList;
-import org.jbox2d.testbed.framework.TestbedController;
-import org.jbox2d.testbed.framework.TestbedController.MouseBehavior;
-import org.jbox2d.testbed.framework.TestbedController.UpdateBehavior;
-import org.jbox2d.testbed.framework.TestbedErrorHandler;
-import org.jbox2d.testbed.framework.TestbedModel;
-import org.jbox2d.testbed.framework.WorldCreator;
+import org.jbox2d.testbed.framework.*;
+
 import org.jbox2d.testbed.framework.j2d.DebugDrawJ2D;
 import org.jbox2d.testbed.framework.j2d.TestPanelJ2D;
 import org.jbox2d.testbed.framework.j2d.TestbedSidePanel;
@@ -73,7 +68,7 @@ public class TestbedMain {
       }
     });
     final TestbedController controller =
-        new TestbedController(model, UpdateBehavior.UPDATE_CALLED, MouseBehavior.NORMAL,
+        new TestbedController(model, AbstractTestbedController.UpdateBehavior.UPDATE_CALLED, AbstractTestbedController.MouseBehavior.NORMAL,
             new TestbedErrorHandler() {
               @Override
               public void serializationError(Exception e, String message) {

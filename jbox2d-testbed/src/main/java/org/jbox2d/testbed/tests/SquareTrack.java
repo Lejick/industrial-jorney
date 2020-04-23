@@ -34,6 +34,12 @@
  * Created at 4:56:29 AM Jan 14, 2011
  * <p>
  * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
  */
 /**
  * Created at 4:56:29 AM Jan 14, 2011
@@ -43,22 +49,17 @@ package org.jbox2d.testbed.tests;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.collision.shapes.PolygonShape;
-import org.jbox2d.common.Color3f;
 import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.Body;
-import org.jbox2d.dynamics.BodyDef;
-import org.jbox2d.dynamics.BodyType;
-import org.jbox2d.dynamics.FixtureDef;
-import org.jbox2d.testbed.framework.TestbedController;
+import org.jbox2d.dynamics.*;
+import org.jbox2d.dynamics.contacts.Contact;
+import org.jbox2d.particle.ParticleContact;
 import org.jbox2d.testbed.framework.TestbedSettings;
 import org.jbox2d.testbed.framework.TestbedTest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.awt.geom.AffineTransform;
-import java.awt.geom.PathIterator;
-import java.awt.geom.Rectangle2D;
-import java.awt.geom.RectangularShape;
+import java.util.Calendar;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author Daniel Murphy
@@ -75,6 +76,8 @@ public class SquareTrack extends TestbedTest {
     private final float maxSpeedXAir = 3f;
     private final float minSpeedXAir = -3f;
     private final float maxSpeedY = 5f;
+    AtomicBoolean isExplose = new AtomicBoolean(false);
+    private long lastFire = 0;
     Body m_bullet;
     Body action_body;
 
@@ -117,6 +120,14 @@ public class SquareTrack extends TestbedTest {
             shape.set(new Vec2(-50.0f, 30.0f), new Vec2(50.0f, 30.0f));
             ground.createFixture(shape, 0.0f);
 
+            shape.set(new Vec2(-50.0f, 10.0f), new Vec2(20.0f, 10.0f));
+            ground.createFixture(shape, 0.0f);
+
+
+            shape.set(new Vec2(0.0f, 3.0f), new Vec2(50.0f, 3.0f));
+            ground.createFixture(shape, 0.0f);
+
+
             shape.set(new Vec2(50.0f, 30.0f), new Vec2(50.0f, -20.0f));
             ground.createFixture(shape, 0.0f);
 
@@ -144,9 +155,7 @@ public class SquareTrack extends TestbedTest {
                 assert (n < e_rowCount * e_columnCount);
 
                 float x = 0.0f;
-                // float x = RandomFloat(-0.02f, 0.02f);
-                // float x = i % 2 == 0 ? -0.025f : 0.025f;
-                bd.position.set(xs[j] + x, -20+0.752f + 1.54f * i);
+                bd.position.set(xs[j] + x, -20 + 0.752f + 1.54f * i);
                 Body body = getWorld().createBody(bd);
 
                 body.createFixture(fd);
@@ -154,6 +163,37 @@ public class SquareTrack extends TestbedTest {
         }
         createActionBody();
         m_bullet = null;
+    }
+
+    private void fireBullet() {
+        long currentTime = Calendar.getInstance().getTimeInMillis();
+        if (currentTime - lastFire > 5000) {
+            if (m_bullet != null) {
+                getWorld().destroyBody(m_bullet);
+                m_bullet = null;
+            }
+            {
+                CircleShape shape = new CircleShape();
+                shape.m_radius = 0.25f;
+
+                FixtureDef fd = new FixtureDef();
+                fd.shape = shape;
+                fd.density = 20.0f;
+                fd.restitution = 0.05f;
+
+                BodyDef bd = new BodyDef();
+                bd.type = BodyType.DYNAMIC;
+                bd.bullet = true;
+                bd.position.set(-50.0f, 5.0f);
+
+                m_bullet = getWorld().createBody(bd);
+                m_bullet.createFixture(fd);
+
+                m_bullet.setLinearVelocity(new Vec2(400.0f, 0.0f));
+                lastFire = currentTime;
+            }
+
+        }
     }
 
     private void createActionBody() {
@@ -208,11 +248,55 @@ public class SquareTrack extends TestbedTest {
         }
     }
 
+    public void beginContact(Contact contact) {
+        Fixture fixtureA = contact.getFixtureA();
+        Fixture fixtureB = contact.getFixtureB();
+        if (fixtureA.m_body == m_bullet && fixtureB.m_body == action_body) {
+            log.info("bullet speed=" + m_bullet.m_linearVelocity.x);
+            isExplose.set(true);
+        }
+
+        if (fixtureB.m_body == m_bullet && fixtureA.m_body == action_body) {
+            log.info("bullet speed=" + m_bullet.m_linearVelocity.x);
+            isExplose.set(true);
+        }
+    }
+
+    public void endContact(Contact contact) {
+
+    }
+
     @Override
     public void step(TestbedSettings settings) {
         super.step(settings);
-        addTextLine("Press ',' to launch bullet.");
         keyPressed();
+        fireBullet();
+        explose();
+    }
+
+    private void explose() {
+        if (isExplose.get()) {
+            Vec2 oldPosition = action_body.getPosition();
+            m_world.destroyBody(action_body);
+            for (int i = 0; i < 20; i++) {
+                PolygonShape shape = new PolygonShape();
+                shape.setAsBox(0.1f, 0.1f);
+
+                FixtureDef fd = new FixtureDef();
+                fd.shape = shape;
+                fd.density = 1.0f;
+                fd.friction = 0.3f;
+                BodyDef bd = new BodyDef();
+                bd.actionBody = true;
+                bd.type = BodyType.DYNAMIC;
+                bd.position.set(oldPosition.x, oldPosition.y);
+                Body body = getWorld().createBody(bd);
+                if (body != null) {
+                    body.createFixture(fd);
+                }
+            }
+        }
+        isExplose.set(false);
     }
 
     @Override
