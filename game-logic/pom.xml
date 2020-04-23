@@ -6,43 +6,22 @@
 		<groupId>org.jbox2d</groupId>
 		<version>2.3.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>jbox2d-testbed</artifactId>
-	<name>jbox2d-testbed</name>
+	<artifactId>game-logic</artifactId>
+	<name>game-logic</name>
 	<packaging>jar</packaging>
 	<url>https://github.com/jbox2d/jbox2d</url>
 	<description>The testbed for JBox2D, a 2d java physics engine, ported from the C++ Box2d engine.</description>
 	<dependencies>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-math3</artifactId>
-			<version>3.2</version>
-			<scope>compile</scope>
-		</dependency>
+	  	<dependency>
+	  		<groupId>org.apache.commons</groupId>
+	  		<artifactId>commons-math3</artifactId>
+	  		<version>3.2</version>
+	  		<scope>compile</scope>
+	  	</dependency>
 		<dependency>
 			<groupId>org.jbox2d</groupId>
 			<artifactId>jbox2d-library</artifactId>
 			<version>2.3.1-SNAPSHOT</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>1.6.1</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.6.1</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.17</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
@@ -54,9 +33,16 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>14.0.1</version>
+			<groupId>org.jbox2d</groupId>
+			<artifactId>jbox2d-testbed</artifactId>
+			<version>2.3.1-SNAPSHOT</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-fxml</artifactId>
+			<version>11.0.2</version>
 		</dependency>
 	</dependencies>
 	<build>
@@ -69,11 +55,20 @@
 					</descriptorRefs>
 					<archive>
 						<manifest>
-							<mainClass>org.jbox2d.testbed.framework.j2d.TestbedMain</mainClass>
+							<mainClass>org.jbox2d.testbed.framework.javafx.TestbedMain</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
 			</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.1</version>
+					<configuration>
+						<source>11</source>
+						<target>11</target>
+					</configuration>
+				</plugin>
 		</plugins>
 	</build>
 </project>
