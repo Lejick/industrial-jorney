@@ -42,12 +42,19 @@
  * Created at 4:56:29 AM Jan 14, 2011
  * <p>
  * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
  */
 /**
  * Created at 4:56:29 AM Jan 14, 2011
  */
 package org.jbox2d.testbed.tests;
 
+import org.jbox2d.collision.Collision;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.collision.shapes.PolygonShape;
@@ -62,8 +69,10 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * @author Daniel Murphy
@@ -75,18 +84,25 @@ public class Level1 extends TestbedTest {
 
     public static final int e_columnCount = 1;
     public static final int e_rowCount = 10;
-    private final float maxSpeedX = 6f;
-    private final float minSpeedX = -6f;
-    private final float maxSpeedXAir = 3f;
-    private final float minSpeedXAir = -3f;
-    private final float maxSpeedY = 5f;
+    private final static float maxSpeedX = 6f;
+    private final static float minSpeedX = -6f;
+    private final static float maxSpeedXAir = 3f;
+    private final static float minSpeedXAir = -3f;
+    private final static float maxSpeedY = 5f;
+
+    private static float width = 60;
+    private static float height = 40;
+    private static final float commonPersonEdge = 1f;
     AtomicBoolean isExplose = new AtomicBoolean(false);
-    private long lastFire = 0;
+    long lastFire_step = 0;
+    long lastDestroy_step = 0;
+    long last_step = 0;
     Body m_bullet;
     Body action_body;
-    List<Body> destroyableList = new ArrayList<>();
-    List<Body> objectToExplode = new ArrayList<>();
-
+    List<Body> destroyableList = Collections.synchronizedList(new ArrayList<>());
+    List<Body> objectToExplode = Collections.synchronizedList(new ArrayList<>());
+    List<Body> currentToErase = Collections.synchronizedList(new ArrayList<>());
+    List<Body> nextToErase = Collections.synchronizedList(new ArrayList<>());
     @Override
     public Long getTag(Body argBody) {
         if (argBody == m_bullet) {
@@ -120,60 +136,34 @@ public class Level1 extends TestbedTest {
             Body ground = getWorld().createBody(bd);
 
             EdgeShape shape = new EdgeShape();
-            shape.set(new Vec2(-50.0f, -20.0f), new Vec2(50.0f, -20.0f));
+            shape.set(new Vec2(-width / 2, -height / 2), new Vec2(width / 2, -height / 2));
             ground.createFixture(shape, 0.0f);
 
-            shape.set(new Vec2(-50.0f, 30.0f), new Vec2(50.0f, 30.0f));
+            shape.set(new Vec2(-width / 2, height / 2), new Vec2(width / 2, height / 2));
             ground.createFixture(shape, 0.0f);
 
-            shape.set(new Vec2(50.0f, 30.0f), new Vec2(50.0f, -20.0f));
+            shape.set(new Vec2(width / 2, height / 2), new Vec2(width / 2, -height / 2));
             ground.createFixture(shape, 0.0f);
 
-            shape.set(new Vec2(-50.0f, 30.0f), new Vec2(-50.0f, -20.0f));
+            shape.set(new Vec2(-width / 2, height / 2), new Vec2(-width / 2, -height / 2));
             ground.createFixture(shape, 0.0f);
 
 
-
-            shape.set(new Vec2(-50.0f, 6.0f), new Vec2(20.0f, 6.0f));
+            shape.set(new Vec2(-width / 2, height / 2 - commonPersonEdge * 6), new Vec2(width / 3, height / 2 - commonPersonEdge * 6));
             ground.createFixture(shape, 0.0f);
 
-            shape.set(new Vec2(-15.0f, 3.0f), new Vec2(50.0f, 3.0f));
+            shape.set(new Vec2(-width / 3, height / 2 - commonPersonEdge * 12), new Vec2(width / 2, height / 2 - commonPersonEdge * 12));
             ground.createFixture(shape, 0.0f);
 
         }
-
-        float xs[] = new float[]{-10.0f, -10.0f, -5.0f, 5.0f, 10.0f};
-
-        for (int j = 0; j < e_columnCount; ++j) {
-            PolygonShape shape = new PolygonShape();
-            shape.setAsBox(0.5f, 0.5f);
-
-            FixtureDef fd = new FixtureDef();
-            fd.shape = shape;
-            fd.density = 1.0f;
-            fd.friction = 0.3f;
-
-            for (int i = 0; i < e_rowCount; ++i) {
-                BodyDef bd = new BodyDef();
-                bd.type = BodyType.DYNAMIC;
-
-                int n = j * e_rowCount + i;
-                assert (n < e_rowCount * e_columnCount);
-
-                float x = 0.0f;
-                bd.position.set(xs[j] + x, 10 + 0.752f + 1.54f * i);
-                Body body = getWorld().createBody(bd);
-                body.createFixture(fd);
-                destroyableList.add(body);
-            }
-        }
-        createActionBody();
+        createRectangle(-25, 15, commonPersonEdge, commonPersonEdge, true);
+        Body simpleBox = createRectangle(-20, 15, commonPersonEdge, commonPersonEdge, false);
+        destroyableList.add(simpleBox);
         m_bullet = null;
     }
 
     private void fireBullet() {
-        long currentTime = Calendar.getInstance().getTimeInMillis();
-        if (currentTime - lastFire > 3000) {
+        if (last_step - lastFire_step > 500) {
             if (m_bullet != null) {
                 getWorld().destroyBody(m_bullet);
                 m_bullet = null;
@@ -190,38 +180,36 @@ public class Level1 extends TestbedTest {
                 BodyDef bd = new BodyDef();
                 bd.type = BodyType.DYNAMIC;
                 bd.bullet = true;
-                bd.position.set(-50.0f, 5.0f);
+                bd.position.set(-width / 2, commonPersonEdge * 12 - 2);
 
                 m_bullet = getWorld().createBody(bd);
                 m_bullet.createFixture(fd);
 
-                m_bullet.setLinearVelocity(new Vec2(400.0f, 0.0f));
-                lastFire = currentTime;
+                m_bullet.setLinearVelocity(new Vec2(60.0f, 0.0f));
+                lastFire_step = last_step;
             }
 
         }
     }
 
-    private void createActionBody() {
+    private Body createRectangle(float x, float y, float hx, float hy, boolean isHero) {
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(0.5f, 0.5f);
-
+        shape.setAsBox(hx, hy);
         FixtureDef fd = new FixtureDef();
         fd.shape = shape;
         fd.density = 1.0f;
         fd.friction = 0.3f;
-
         BodyDef bd = new BodyDef();
-        bd.actionBody = true;
+        bd.actionBody = isHero;
         bd.type = BodyType.DYNAMIC;
+        bd.position.set(x, y);
 
-
-        float x = 0.0f;
-        // float x = RandomFloat(-0.02f, 0.02f);
-        // float x = i % 2 == 0 ? -0.025f : 0.025f;
-        bd.position.set(-15, 15);
-        action_body = getWorld().createBody(bd);
-        action_body.createFixture(fd);
+        Body body = getWorld().createBody(bd);
+        body.createFixture(fd);
+        if (isHero) {
+            action_body = body;
+        }
+        return body;
     }
 
     public void keyPressed() {
@@ -258,22 +246,22 @@ public class Level1 extends TestbedTest {
         Body bodyToDestroy;
         Fixture fixtureA = contact.getFixtureA();
         Fixture fixtureB = contact.getFixtureB();
-        if(fixtureA.m_body == m_bullet){
-            bodyToDestroy=fixtureB.m_body;
-        } else if(fixtureB.m_body == m_bullet){
-            bodyToDestroy=fixtureA.m_body;
+        if (fixtureA.m_body == m_bullet) {
+            bodyToDestroy = fixtureB.m_body;
+        } else if (fixtureB.m_body == m_bullet) {
+            bodyToDestroy = fixtureA.m_body;
         } else {
             return;
         }
         if (bodyToDestroy == action_body) {
             log.info("bullet speed=" + m_bullet.m_linearVelocity.x);
-            if (m_bullet.m_linearVelocity.x > 50 || m_bullet.m_linearVelocity.y > 50) {
+            if (m_bullet.m_linearVelocity.x > 70 || m_bullet.m_linearVelocity.y > 70) {
                 isExplose.set(true);
                 return;
             }
         }
-        if (destroyableList.contains(bodyToDestroy) ) {
-            if (m_bullet.m_linearVelocity.x > 50 || m_bullet.m_linearVelocity.y > 50) {
+        if (destroyableList.contains(bodyToDestroy)) {
+            if (m_bullet.m_linearVelocity.x > 70 || m_bullet.m_linearVelocity.y > 70) {
                 objectToExplode.add(bodyToDestroy);
                 Vec2 bulletVel = m_bullet.getLinearVelocity();
                 bulletVel.x = bulletVel.x - 30;
@@ -293,6 +281,18 @@ public class Level1 extends TestbedTest {
         keyPressed();
         fireBullet();
         explose();
+      //  checkToErase();
+        last_step++;
+    }
+
+    private void checkToErase() {
+        if (last_step - lastDestroy_step > 1000) {
+            for (Body body : currentToErase) {
+                m_world.destroyBody(body);
+                nextToErase.clear();
+            }
+            currentToErase = nextToErase;
+        }
     }
 
     private void explose() {
@@ -315,16 +315,17 @@ public class Level1 extends TestbedTest {
                 if (body != null) {
                     body.createFixture(fd);
                 }
+                nextToErase.add(body);
             }
+            lastDestroy_step=last_step;
         }
         isExplose.set(false);
-        for(Body body:objectToExplode) {
+        for (Body body : objectToExplode) {
             Vec2 oldPosition = body.getPosition();
             m_world.destroyBody(body);
             for (int i = 0; i < 10; i++) {
                 PolygonShape shape = new PolygonShape();
                 shape.setAsBox(0.1f, 0.1f);
-
                 FixtureDef fd = new FixtureDef();
                 fd.shape = shape;
                 fd.density = 1.0f;
@@ -336,7 +337,9 @@ public class Level1 extends TestbedTest {
                 if (newBody != null) {
                     newBody.createFixture(fd);
                 }
+                nextToErase.add(body);
             }
+            lastDestroy_step=last_step;
         }
         objectToExplode.clear();
     }
