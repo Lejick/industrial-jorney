@@ -23,7 +23,7 @@
  ******************************************************************************/
 package org.jbox2d.testbed.framework.jogl;
 
-import java.awt.Dimension;
+import java.awt.*;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;

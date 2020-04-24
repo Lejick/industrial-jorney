@@ -42,13 +42,8 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.jbox2d.testbed.framework.AbstractTestbedController;
-import org.jbox2d.testbed.framework.TestbedModel;
-import org.jbox2d.testbed.framework.TestbedModel.ListItem;
-import org.jbox2d.testbed.framework.TestbedSetting;
+import org.jbox2d.testbed.framework.*;
 import org.jbox2d.testbed.framework.TestbedSetting.SettingType;
-import org.jbox2d.testbed.framework.TestbedSettings;
-import org.jbox2d.testbed.framework.TestbedTest;
 
 
 /**
@@ -62,7 +57,7 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
   private static final String SETTING_TAG = "settings";
   private static final String LABEL_TAG = "label";
 
-  final TestbedModel model;
+  final GamingModelIF model;
   final AbstractTestbedController controller;
 
   public JComboBox tests;
@@ -75,19 +70,16 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
   public JButton saveButton = new JButton("Save");
   public JButton loadButton = new JButton("Load");
 
-  public TestbedSidePanel(TestbedModel argModel, AbstractTestbedController argController) {
+  public TestbedSidePanel(GamingModelIF argModel, AbstractTestbedController argController) {
     model = argModel;
     controller = argController;
     initComponents();
     addListeners();
 
-    model.addTestChangeListener(new TestbedModel.TestChangedListener() {
-      @Override
-      public void testChanged(TestbedTest argTest, int argIndex) {
-        tests.setSelectedIndex(argIndex);
-        saveButton.setEnabled(argTest.isSaveLoadEnabled());
-        loadButton.setEnabled(argTest.isSaveLoadEnabled());
-      }
+    model.addTestChangeListener((argTest, argIndex) -> {
+      tests.setSelectedIndex(argIndex);
+      saveButton.setEnabled(argTest.isSaveLoadEnabled());
+      loadButton.setEnabled(argTest.isSaveLoadEnabled());
     });
   }
 

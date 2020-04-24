@@ -22,6 +22,7 @@ import org.jbox2d.testbed.framework.*;
 import org.jbox2d.testbed.framework.AbstractTestbedController.MouseBehavior;
 import org.jbox2d.testbed.framework.AbstractTestbedController.UpdateBehavior;
 import org.jbox2d.testbed.framework.j2d.DebugDrawJ2D;
+import org.jbox2d.testbed.framework.j2d.PlayPanelJ2D;
 import org.jbox2d.testbed.framework.j2d.TestPanelJ2D;
 import org.jbox2d.testbed.framework.j2d.TestbedSidePanel;
 
@@ -33,17 +34,17 @@ import java.awt.*;
  * 
  * @author Daniel Murphy
  */
-public class TestbedMain {
+public class PlayableMain {
   public static void main(String[] args) {
-    TestbedModel model = new TestbedModel();
+    PlayModel model = new PlayModel();
     final AbstractTestbedController controller = new TestbedController(model,
         UpdateBehavior.UPDATE_CALLED, MouseBehavior.NORMAL,
             (e, message) -> JOptionPane.showMessageDialog(null, message, "Serialization Error",
             JOptionPane.ERROR_MESSAGE));
-    TestPanelJ2D panel = new TestPanelJ2D(model, controller);
+    PlayPanelJ2D panel = new PlayPanelJ2D(model, controller);
     model.setPanel(panel);
     model.setDebugDraw(new DebugDrawJ2D(panel, true));
-    TestList.populateModel(model);
+    LevelsList.populateModel(model);
 
     JFrame testbed = new JFrame();
     testbed.setTitle("JBox2D Testbed");
@@ -59,7 +60,7 @@ public class TestbedMain {
     SwingUtilities.invokeLater(new Runnable() {
       @Override
       public void run() {
-        controller.playTest(60);
+        controller.playTest(0);
         controller.start();
       }
     });

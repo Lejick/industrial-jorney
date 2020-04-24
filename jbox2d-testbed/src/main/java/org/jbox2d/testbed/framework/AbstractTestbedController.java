@@ -62,7 +62,7 @@ public abstract class AbstractTestbedController {
   private float frameRate = 0;
   private boolean animating = false;
 
-  private final TestbedModel model;
+  private final GamingModelIF model;
 
   private boolean savePending, loadPending, resetPending = false;
 
@@ -75,7 +75,7 @@ public abstract class AbstractTestbedController {
   private float viewportHalfHeight;
   private float viewportHalfWidth;
 
-  public AbstractTestbedController(TestbedModel argModel, UpdateBehavior behavior,
+  public AbstractTestbedController(GamingModelIF argModel, UpdateBehavior behavior,
       MouseBehavior mouseBehavior, TestbedErrorHandler errorHandler) {
     model = argModel;
     inputQueue = Lists.newLinkedList();
@@ -88,7 +88,7 @@ public abstract class AbstractTestbedController {
 
   private void addListeners() {
     // time for our controlling
-    model.addTestChangeListener(new TestbedModel.TestChangedListener() {
+    model.addTestChangeListener(new TestChangedListener() {
       @Override
       public void testChanged(TestbedTest test, int index) {
         model.getPanel().grabFocus();

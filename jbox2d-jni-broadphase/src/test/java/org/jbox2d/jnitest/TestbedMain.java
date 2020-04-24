@@ -38,10 +38,7 @@ import org.jbox2d.collision.broadphase.BroadPhaseJNI;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.World;
 import org.jbox2d.pooling.normal.DefaultWorldPool;
-import org.jbox2d.testbed.framework.TestList;
 import org.jbox2d.testbed.framework.TestbedController;
-import org.jbox2d.testbed.framework.TestbedController.MouseBehavior;
-import org.jbox2d.testbed.framework.TestbedController.UpdateBehavior;
 import org.jbox2d.testbed.framework.TestbedErrorHandler;
 import org.jbox2d.testbed.framework.TestbedModel;
 import org.jbox2d.testbed.framework.WorldCreator;
@@ -89,7 +86,7 @@ public class TestbedMain {
     TestPanelJ2D panel = new TestPanelJ2D(model, controller);
     model.setPanel(panel);
     model.setDebugDraw(new DebugDrawJ2D(panel, true));
-    TestList.populateModel(model);
+  //  TestList.populateModel(model);
 
     JFrame testbed = new JFrame();
     testbed.setTitle("JBox2D Testbed");

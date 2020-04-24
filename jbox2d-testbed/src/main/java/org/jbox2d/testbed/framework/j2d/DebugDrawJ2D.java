@@ -37,6 +37,7 @@ import org.jbox2d.common.Vec2;
 import org.jbox2d.particle.ParticleColor;
 import org.jbox2d.pooling.arrays.IntArray;
 import org.jbox2d.pooling.arrays.Vec2Array;
+import org.jbox2d.testbed.framework.GraphicPanel;
 import org.jbox2d.testbed.pooling.ColorPool;
 
 // pooling local, not thread-safe
@@ -49,7 +50,7 @@ public class DebugDrawJ2D extends DebugDraw {
   public static int circlePoints = 13;
   public static final float edgeWidth = 0.02f;
 
-  private final TestPanelJ2D panel;
+  private final GraphicPanel panel;
   private final ColorPool<Color> cpool = new ColorPool<Color>() {
     protected Color newColor(float r, float g, float b, float alpha) {
       return new Color(r, g, b, alpha);
@@ -59,7 +60,7 @@ public class DebugDrawJ2D extends DebugDraw {
   private final BasicStroke stroke;
   private final Shape circle;
 
-  public DebugDrawJ2D(TestPanelJ2D argTestPanel, boolean yFlip) {
+  public DebugDrawJ2D(GraphicPanel argTestPanel, boolean yFlip) {
     panel = argTestPanel;
     this.yFlip = yFlip;
     stroke = new BasicStroke(0);

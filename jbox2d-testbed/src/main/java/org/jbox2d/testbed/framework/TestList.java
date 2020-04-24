@@ -109,6 +109,6 @@ public class TestList {
 
     // play4fun
     model.addCategory("- Play Level -");
-    model.addTest(new SquareTrack());
+    model.addTest(new Level1());
   }
 }

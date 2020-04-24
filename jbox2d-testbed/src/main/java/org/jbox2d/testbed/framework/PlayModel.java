@@ -23,20 +23,19 @@
  ******************************************************************************/
 package org.jbox2d.testbed.framework;
 
-import java.util.List;
-import java.util.Vector;
-
-import javax.swing.DefaultComboBoxModel;
-
 import org.jbox2d.callbacks.DebugDraw;
 import org.jbox2d.common.IViewportTransform;
+
+import javax.swing.*;
+import java.util.List;
+import java.util.Vector;
 
 /**
  * Model for the testbed
  * 
  * @author Daniel
  */
-public class TestbedModel implements GamingModelIF{
+public class PlayModel implements GamingModelIF{
   private final DefaultComboBoxModel tests = new DefaultComboBoxModel();
   private final TestbedSettings settings = new TestbedSettings();
   private DebugDraw draw;
@@ -51,7 +50,7 @@ public class TestbedModel implements GamingModelIF{
   private TestbedPanel panel;
   private WorldCreator worldCreator = new DefaultWorldCreator();
 
-  public TestbedModel() {}
+  public PlayModel() {}
 
   public WorldCreator getWorldCreator() {
     return worldCreator;
@@ -150,6 +149,7 @@ public class TestbedModel implements GamingModelIF{
     return runningTest;
   }
 
+
   public void addTestChangeListener(TestChangedListener argListener) {
     listeners.add(argListener);
   }
@@ -194,8 +194,5 @@ public class TestbedModel implements GamingModelIF{
   public TestbedSettings getSettings() {
     return settings;
   }
-
-
-
 
 }

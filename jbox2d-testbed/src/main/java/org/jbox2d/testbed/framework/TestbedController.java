@@ -32,7 +32,7 @@ public class TestbedController extends AbstractTestbedController implements Runn
 
   private Thread animator;
 
-  public TestbedController(TestbedModel argModel, UpdateBehavior behavior,
+  public TestbedController(GamingModelIF argModel, UpdateBehavior behavior,
       MouseBehavior mouseBehavior, TestbedErrorHandler errorHandler) {
     super(argModel, behavior, mouseBehavior, errorHandler);
     animator = new Thread(this, "Testbed");

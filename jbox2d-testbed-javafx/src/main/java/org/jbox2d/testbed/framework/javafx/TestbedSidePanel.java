@@ -26,13 +26,8 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
-import org.jbox2d.testbed.framework.AbstractTestbedController;
-import org.jbox2d.testbed.framework.TestbedModel;
-import org.jbox2d.testbed.framework.TestbedModel.ListItem;
-import org.jbox2d.testbed.framework.TestbedSetting;
+import org.jbox2d.testbed.framework.*;
 import org.jbox2d.testbed.framework.TestbedSetting.SettingType;
-import org.jbox2d.testbed.framework.TestbedSettings;
-import org.jbox2d.testbed.framework.TestbedTest;
 
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -80,13 +75,10 @@ public class TestbedSidePanel extends BorderPane {
     initComponents();
     addListeners();
 
-    model.addTestChangeListener(new TestbedModel.TestChangedListener() {
-      @Override
-      public void testChanged(TestbedTest argTest, int argIndex) {
-        tests.getSelectionModel().select(argIndex);
-        saveButton.setDisable(!argTest.isSaveLoadEnabled());
-        loadButton.setDisable(!argTest.isSaveLoadEnabled());
-      }
+    model.addTestChangeListener((argTest, argIndex) -> {
+      tests.getSelectionModel().select(argIndex);
+      saveButton.setDisable(!argTest.isSaveLoadEnabled());
+      loadButton.setDisable(!argTest.isSaveLoadEnabled());
     });
   }
 
@@ -126,7 +118,7 @@ public class TestbedSidePanel extends BorderPane {
     });
 
     tests = new ComboBox<>();
-    updateTests((ComboBoxModel<TestbedModel.ListItem>) testList);
+    updateTests((ComboBoxModel<ListItem>) testList);
     tests.setOnAction((actionEvent) -> {
       testSelected();
     });

@@ -67,10 +67,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * @author Daniel Murphy
  */
-public class SquareTrack extends TestbedTest {
+public class Level2 extends TestbedTest {
     private static final long BULLET_TAG = 1;
 
-    private static final Logger log = LoggerFactory.getLogger(SquareTrack.class);
+    private static final Logger log = LoggerFactory.getLogger(Level2.class);
 
     public static final int e_columnCount = 1;
     public static final int e_rowCount = 10;
@@ -172,7 +172,7 @@ public class SquareTrack extends TestbedTest {
 
     private void fireBullet() {
         long currentTime = Calendar.getInstance().getTimeInMillis();
-        if (currentTime - lastFire > 5000) {
+        if (currentTime - lastFire > 3000) {
             if (m_bullet != null) {
                 getWorld().destroyBody(m_bullet);
                 m_bullet = null;
@@ -342,6 +342,6 @@ public class SquareTrack extends TestbedTest {
 
     @Override
     public String getTestName() {
-        return "Square Track";
+        return "Level 2";
     }
 }

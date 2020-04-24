@@ -18,32 +18,21 @@
  ******************************************************************************/
 package org.jbox2d.testbed.framework.j2d;
 
-import java.awt.AWTError;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Toolkit;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-
-import javax.swing.JPanel;
-
-import org.jbox2d.testbed.framework.AbstractTestbedController;
-import org.jbox2d.testbed.framework.GraphicPanel;
-import org.jbox2d.testbed.framework.TestbedModel;
-import org.jbox2d.testbed.framework.TestbedPanel;
+import org.jbox2d.testbed.framework.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 /**
  * @author Daniel Murphy
  */
 @SuppressWarnings("serial")
-public class TestPanelJ2D extends JPanel implements TestbedPanel, GraphicPanel {
-  private static final Logger log = LoggerFactory.getLogger(TestPanelJ2D.class);
+public class PlayPanelJ2D extends JPanel implements TestbedPanel, GraphicPanel {
+  private static final Logger log = LoggerFactory.getLogger(PlayPanelJ2D.class);
 
   public static final int SCREEN_DRAG_BUTTON = 3;
 
@@ -58,7 +47,7 @@ public class TestPanelJ2D extends JPanel implements TestbedPanel, GraphicPanel {
 
   private final AbstractTestbedController controller;
 
-  public TestPanelJ2D(final TestbedModel model, final AbstractTestbedController controller) {
+  public PlayPanelJ2D(final PlayModel model, final AbstractTestbedController controller) {
     this.controller = controller;
     setBackground(Color.black);
     setPreferredSize(new Dimension(INIT_WIDTH, INIT_HEIGHT));

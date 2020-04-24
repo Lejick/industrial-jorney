@@ -100,7 +100,7 @@ public abstract class TestbedTest implements ContactListener, ObjectListener, Ob
   private int pointCount;
   private int stepCount;
 
-  private TestbedModel model;
+  private GamingModelIF model;
   protected DestructionListener destructionListener;
   protected ParticleDestructionListener particleDestructionListener;
 
@@ -198,7 +198,7 @@ public abstract class TestbedTest implements ContactListener, ObjectListener, Ob
     camera = new TestbedCamera(getDefaultCameraPos(), getDefaultCameraScale(), ZOOM_SCALE_DIFF);
   }
 
-  public void init(TestbedModel model) {
+  public void init(GamingModelIF model) {
     this.model = model;
 
     Vec2 gravity = new Vec2(0, -10f);
@@ -251,7 +251,7 @@ public abstract class TestbedTest implements ContactListener, ObjectListener, Ob
   /**
    * Gets the testbed model
    */
-  public TestbedModel getModel() {
+  public GamingModelIF getModel() {
     return model;
   }
 
