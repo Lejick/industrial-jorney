@@ -40,6 +40,8 @@
  * Created at 4:56:29 AM Jan 14, 2011
  * <p>
  * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
  */
 /**
  * Created at 4:56:29 AM Jan 14, 2011
@@ -52,13 +54,14 @@ import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
 import org.jbox2d.dynamics.contacts.Contact;
-import org.jbox2d.particle.ParticleContact;
 import org.jbox2d.testbed.framework.TestbedSettings;
 import org.jbox2d.testbed.framework.TestbedTest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -70,7 +73,7 @@ public class SquareTrack extends TestbedTest {
     private static final Logger log = LoggerFactory.getLogger(SquareTrack.class);
 
     public static final int e_columnCount = 1;
-    public static final int e_rowCount = 15;
+    public static final int e_rowCount = 10;
     private final float maxSpeedX = 6f;
     private final float minSpeedX = -6f;
     private final float maxSpeedXAir = 3f;
@@ -80,6 +83,8 @@ public class SquareTrack extends TestbedTest {
     private long lastFire = 0;
     Body m_bullet;
     Body action_body;
+    List<Body> destroyableList = new ArrayList<>();
+    List<Body> objectToExplode = new ArrayList<>();
 
     @Override
     public Long getTag(Body argBody) {
@@ -120,18 +125,18 @@ public class SquareTrack extends TestbedTest {
             shape.set(new Vec2(-50.0f, 30.0f), new Vec2(50.0f, 30.0f));
             ground.createFixture(shape, 0.0f);
 
-            shape.set(new Vec2(-50.0f, 10.0f), new Vec2(20.0f, 10.0f));
-            ground.createFixture(shape, 0.0f);
-
-
-            shape.set(new Vec2(0.0f, 3.0f), new Vec2(50.0f, 3.0f));
-            ground.createFixture(shape, 0.0f);
-
-
             shape.set(new Vec2(50.0f, 30.0f), new Vec2(50.0f, -20.0f));
             ground.createFixture(shape, 0.0f);
 
             shape.set(new Vec2(-50.0f, 30.0f), new Vec2(-50.0f, -20.0f));
+            ground.createFixture(shape, 0.0f);
+
+
+
+            shape.set(new Vec2(-50.0f, 6.0f), new Vec2(20.0f, 6.0f));
+            ground.createFixture(shape, 0.0f);
+
+            shape.set(new Vec2(-15.0f, 3.0f), new Vec2(50.0f, 3.0f));
             ground.createFixture(shape, 0.0f);
 
         }
@@ -155,10 +160,10 @@ public class SquareTrack extends TestbedTest {
                 assert (n < e_rowCount * e_columnCount);
 
                 float x = 0.0f;
-                bd.position.set(xs[j] + x, -20 + 0.752f + 1.54f * i);
+                bd.position.set(xs[j] + x, 10 + 0.752f + 1.54f * i);
                 Body body = getWorld().createBody(bd);
-
                 body.createFixture(fd);
+                destroyableList.add(body);
             }
         }
         createActionBody();
@@ -213,7 +218,7 @@ public class SquareTrack extends TestbedTest {
         float x = 0.0f;
         // float x = RandomFloat(-0.02f, 0.02f);
         // float x = i % 2 == 0 ? -0.025f : 0.025f;
-        bd.position.set(-20, 5);
+        bd.position.set(-15, 15);
         action_body = getWorld().createBody(bd);
         action_body.createFixture(fd);
     }
@@ -249,16 +254,31 @@ public class SquareTrack extends TestbedTest {
     }
 
     public void beginContact(Contact contact) {
+        Body bodyToDestroy;
         Fixture fixtureA = contact.getFixtureA();
         Fixture fixtureB = contact.getFixtureB();
-        if (fixtureA.m_body == m_bullet && fixtureB.m_body == action_body) {
-            log.info("bullet speed=" + m_bullet.m_linearVelocity.x);
-            isExplose.set(true);
+        if(fixtureA.m_body == m_bullet){
+            bodyToDestroy=fixtureB.m_body;
+        } else if(fixtureB.m_body == m_bullet){
+            bodyToDestroy=fixtureA.m_body;
+        } else {
+            return;
         }
-
-        if (fixtureB.m_body == m_bullet && fixtureA.m_body == action_body) {
+        if (bodyToDestroy == action_body) {
             log.info("bullet speed=" + m_bullet.m_linearVelocity.x);
-            isExplose.set(true);
+            if (m_bullet.m_linearVelocity.x > 50 || m_bullet.m_linearVelocity.y > 50) {
+                isExplose.set(true);
+                return;
+            }
+        }
+        if (destroyableList.contains(bodyToDestroy) ) {
+            if (m_bullet.m_linearVelocity.x > 50 || m_bullet.m_linearVelocity.y > 50) {
+                objectToExplode.add(bodyToDestroy);
+                Vec2 bulletVel = m_bullet.getLinearVelocity();
+                bulletVel.x = bulletVel.x - 30;
+                m_bullet.setLinearVelocity(bulletVel);
+                return;
+            }
         }
     }
 
@@ -297,6 +317,27 @@ public class SquareTrack extends TestbedTest {
             }
         }
         isExplose.set(false);
+        for(Body body:objectToExplode) {
+            Vec2 oldPosition = body.getPosition();
+            m_world.destroyBody(body);
+            for (int i = 0; i < 10; i++) {
+                PolygonShape shape = new PolygonShape();
+                shape.setAsBox(0.1f, 0.1f);
+
+                FixtureDef fd = new FixtureDef();
+                fd.shape = shape;
+                fd.density = 1.0f;
+                fd.friction = 0.3f;
+                BodyDef bd = new BodyDef();
+                bd.type = BodyType.DYNAMIC;
+                bd.position.set(oldPosition.x, oldPosition.y);
+                Body newBody = getWorld().createBody(bd);
+                if (newBody != null) {
+                    newBody.createFixture(fd);
+                }
+            }
+        }
+        objectToExplode.clear();
     }
 
     @Override
