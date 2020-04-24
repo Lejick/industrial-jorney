@@ -50,6 +50,8 @@
  * Created at 4:56:29 AM Jan 14, 2011
  * <p>
  * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
  */
 /**
  * Created at 4:56:29 AM Jan 14, 2011
@@ -92,11 +94,8 @@ public class Level1 extends TestbedTest {
     private static float width = 60;
     private static float height = 40;
     private static final float commonPersonEdge = 1f;
-    AtomicBoolean isExplose = new AtomicBoolean(false);
-    long lastFire_step = 0;
     long lastDestroy_step = 0;
     long last_step = 0;
-    Body m_bullet;
     Body action_body;
     Gun gun1;
     List<Body> destroyableList = Collections.synchronizedList(new ArrayList<>());
@@ -106,16 +105,12 @@ public class Level1 extends TestbedTest {
 
     @Override
     public Long getTag(Body argBody) {
-        if (argBody == m_bullet) {
-            return BULLET_TAG;
-        }
         return super.getTag(argBody);
     }
 
     @Override
     public void processBody(Body argBody, Long argTag) {
         if (argTag == BULLET_TAG) {
-            m_bullet = argBody;
             return;
         }
         super.processBody(argBody, argTag);
@@ -134,10 +129,10 @@ public class Level1 extends TestbedTest {
         createGameBox();
         createPlatforms();
         createGuns();
-        createRectangle(-25, 15, commonPersonEdge, commonPersonEdge, true);
+        Body hero = createRectangle(-25, 15, commonPersonEdge, commonPersonEdge, true);
         Body simpleBox = createRectangle(-20, 15, commonPersonEdge, commonPersonEdge, false);
         destroyableList.add(simpleBox);
-        m_bullet = null;
+        destroyableList.add(hero);
     }
 
 
@@ -155,7 +150,7 @@ public class Level1 extends TestbedTest {
     }
 
     private void createGuns() {
-        gun1 = new Gun(m_world, -width / 2, commonPersonEdge * 12 - 2, 500, 60);
+        gun1 = new Gun(m_world, -width / 2, commonPersonEdge * 12 - 2, 500, 200);
     }
 
     private void createGameBox() {
@@ -174,36 +169,6 @@ public class Level1 extends TestbedTest {
 
         shape.set(new Vec2(-width / 2, height / 2), new Vec2(-width / 2, -height / 2));
         ground.createFixture(shape, 0.0f);
-    }
-
-    private void fireBullet() {
-        if (last_step - lastFire_step > 500) {
-            if (m_bullet != null) {
-                getWorld().destroyBody(m_bullet);
-                m_bullet = null;
-            }
-            {
-                CircleShape shape = new CircleShape();
-                shape.m_radius = 0.25f;
-
-                FixtureDef fd = new FixtureDef();
-                fd.shape = shape;
-                fd.density = 20.0f;
-                fd.restitution = 0.05f;
-
-                BodyDef bd = new BodyDef();
-                bd.type = BodyType.DYNAMIC;
-                bd.bullet = true;
-                bd.position.set(-width / 2, commonPersonEdge * 12 - 2);
-
-                m_bullet = getWorld().createBody(bd);
-                m_bullet.createFixture(fd);
-
-                m_bullet.setLinearVelocity(new Vec2(60.0f, 0.0f));
-                lastFire_step = last_step;
-            }
-
-        }
     }
 
     private Body createRectangle(float x, float y, float hx, float hy, boolean isHero) {
@@ -260,40 +225,28 @@ public class Level1 extends TestbedTest {
         Body bodyToDestroy;
         Fixture fixtureA = contact.getFixtureA();
         Fixture fixtureB = contact.getFixtureB();
-        if (fixtureA.m_body == m_bullet) {
+        if (fixtureA.m_body == gun1.getBullet()) {
             bodyToDestroy = fixtureB.m_body;
-        } else if (fixtureB.m_body == m_bullet) {
+        } else if (fixtureB.m_body ==  gun1.getBullet()) {
             bodyToDestroy = fixtureA.m_body;
         } else {
             return;
         }
-        if (bodyToDestroy == action_body) {
-            log.info("bullet speed=" + m_bullet.m_linearVelocity.x);
-            if (m_bullet.m_linearVelocity.x > 70 || m_bullet.m_linearVelocity.y > 70) {
-                isExplose.set(true);
-                return;
-            }
-        }
         if (destroyableList.contains(bodyToDestroy)) {
-            if (m_bullet.m_linearVelocity.x > 70 || m_bullet.m_linearVelocity.y > 70) {
+            if ( gun1.getBullet().m_linearVelocity.x > 70 ||  gun1.getBullet().m_linearVelocity.y > 70) {
                 objectToExplode.add(bodyToDestroy);
-                Vec2 bulletVel = m_bullet.getLinearVelocity();
+                Vec2 bulletVel =  gun1.getBullet().getLinearVelocity();
                 bulletVel.x = bulletVel.x - 30;
-                m_bullet.setLinearVelocity(bulletVel);
+                gun1.getBullet().setLinearVelocity(bulletVel);
                 return;
             }
         }
-    }
-
-    public void endContact(Contact contact) {
-
     }
 
     @Override
     public void step(SettingsIF settings) {
         super.step(settings);
         keyPressed();
-      //  fireBullet();
         explose();
         gun1.fire();
         gun1.setLastStep(last_step);
@@ -313,30 +266,6 @@ public class Level1 extends TestbedTest {
     }
 
     private void explose() {
-        if (isExplose.get()) {
-            Vec2 oldPosition = action_body.getPosition();
-            m_world.destroyBody(action_body);
-            for (int i = 0; i < 20; i++) {
-                PolygonShape shape = new PolygonShape();
-                shape.setAsBox(0.1f, 0.1f);
-
-                FixtureDef fd = new FixtureDef();
-                fd.shape = shape;
-                fd.density = 1.0f;
-                fd.friction = 0.3f;
-                BodyDef bd = new BodyDef();
-                bd.actionBody = true;
-                bd.type = BodyType.DYNAMIC;
-                bd.position.set(oldPosition.x, oldPosition.y);
-                Body body = getWorld().createBody(bd);
-                if (body != null) {
-                    body.createFixture(fd);
-                }
-                nextToErase.add(body);
-            }
-            lastDestroy_step = last_step;
-        }
-        isExplose.set(false);
         for (Body body : objectToExplode) {
             Vec2 oldPosition = body.getPosition();
             m_world.destroyBody(body);
@@ -348,6 +277,9 @@ public class Level1 extends TestbedTest {
                 fd.density = 1.0f;
                 fd.friction = 0.3f;
                 BodyDef bd = new BodyDef();
+                if (body == action_body) {
+                    bd.actionBody = true;
+                }
                 bd.type = BodyType.DYNAMIC;
                 bd.position.set(oldPosition.x, oldPosition.y);
                 Body newBody = getWorld().createBody(bd);
