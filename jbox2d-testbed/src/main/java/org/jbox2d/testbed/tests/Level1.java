@@ -48,13 +48,14 @@
  * Created at 4:56:29 AM Jan 14, 2011
  * <p>
  * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
  */
 /**
  * Created at 4:56:29 AM Jan 14, 2011
  */
 package org.jbox2d.testbed.tests;
 
-import org.jbox2d.collision.Collision;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.collision.shapes.PolygonShape;
@@ -62,17 +63,15 @@ import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.jbox2d.testbed.framework.SettingsIF;
-import org.jbox2d.testbed.framework.TestbedSettings;
 import org.jbox2d.testbed.framework.TestbedTest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.jbox2d.testbed.framework.Gun;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * @author Daniel Murphy
@@ -99,10 +98,12 @@ public class Level1 extends TestbedTest {
     long last_step = 0;
     Body m_bullet;
     Body action_body;
+    Gun gun1;
     List<Body> destroyableList = Collections.synchronizedList(new ArrayList<>());
     List<Body> objectToExplode = Collections.synchronizedList(new ArrayList<>());
     List<Body> currentToErase = Collections.synchronizedList(new ArrayList<>());
     List<Body> nextToErase = Collections.synchronizedList(new ArrayList<>());
+
     @Override
     public Long getTag(Body argBody) {
         if (argBody == m_bullet) {
@@ -130,36 +131,49 @@ public class Level1 extends TestbedTest {
         if (deserialized) {
             return;
         }
-
-        {
-            BodyDef bd = new BodyDef();
-            Body ground = getWorld().createBody(bd);
-
-            EdgeShape shape = new EdgeShape();
-            shape.set(new Vec2(-width / 2, -height / 2), new Vec2(width / 2, -height / 2));
-            ground.createFixture(shape, 0.0f);
-
-            shape.set(new Vec2(-width / 2, height / 2), new Vec2(width / 2, height / 2));
-            ground.createFixture(shape, 0.0f);
-
-            shape.set(new Vec2(width / 2, height / 2), new Vec2(width / 2, -height / 2));
-            ground.createFixture(shape, 0.0f);
-
-            shape.set(new Vec2(-width / 2, height / 2), new Vec2(-width / 2, -height / 2));
-            ground.createFixture(shape, 0.0f);
-
-
-            shape.set(new Vec2(-width / 2, height / 2 - commonPersonEdge * 6), new Vec2(width / 3, height / 2 - commonPersonEdge * 6));
-            ground.createFixture(shape, 0.0f);
-
-            shape.set(new Vec2(-width / 3, height / 2 - commonPersonEdge * 12), new Vec2(width / 2, height / 2 - commonPersonEdge * 12));
-            ground.createFixture(shape, 0.0f);
-
-        }
+        createGameBox();
+        createPlatforms();
+        createGuns();
         createRectangle(-25, 15, commonPersonEdge, commonPersonEdge, true);
         Body simpleBox = createRectangle(-20, 15, commonPersonEdge, commonPersonEdge, false);
         destroyableList.add(simpleBox);
         m_bullet = null;
+    }
+
+
+    private void createPlatforms() {
+        BodyDef bd = new BodyDef();
+        Body ground = getWorld().createBody(bd);
+        EdgeShape shape = new EdgeShape();
+
+        shape.set(new Vec2(-width / 2, height / 2 - commonPersonEdge * 6), new Vec2(width / 3, height / 2 - commonPersonEdge * 6));
+        ground.createFixture(shape, 0.0f);
+
+        shape.set(new Vec2(-width / 3, height / 2 - commonPersonEdge * 12), new Vec2(width / 2, height / 2 - commonPersonEdge * 12));
+        ground.createFixture(shape, 0.0f);
+
+    }
+
+    private void createGuns() {
+        gun1 = new Gun(m_world, -width / 2, commonPersonEdge * 12 - 2, 500, 60);
+    }
+
+    private void createGameBox() {
+        BodyDef bd = new BodyDef();
+        Body ground = getWorld().createBody(bd);
+
+        EdgeShape shape = new EdgeShape();
+        shape.set(new Vec2(-width / 2, -height / 2), new Vec2(width / 2, -height / 2));
+        ground.createFixture(shape, 0.0f);
+
+        shape.set(new Vec2(-width / 2, height / 2), new Vec2(width / 2, height / 2));
+        ground.createFixture(shape, 0.0f);
+
+        shape.set(new Vec2(width / 2, height / 2), new Vec2(width / 2, -height / 2));
+        ground.createFixture(shape, 0.0f);
+
+        shape.set(new Vec2(-width / 2, height / 2), new Vec2(-width / 2, -height / 2));
+        ground.createFixture(shape, 0.0f);
     }
 
     private void fireBullet() {
@@ -279,10 +293,13 @@ public class Level1 extends TestbedTest {
     public void step(SettingsIF settings) {
         super.step(settings);
         keyPressed();
-        fireBullet();
+      //  fireBullet();
         explose();
-      //  checkToErase();
+        gun1.fire();
+        gun1.setLastStep(last_step);
+        //  checkToErase();
         last_step++;
+
     }
 
     private void checkToErase() {
@@ -317,7 +334,7 @@ public class Level1 extends TestbedTest {
                 }
                 nextToErase.add(body);
             }
-            lastDestroy_step=last_step;
+            lastDestroy_step = last_step;
         }
         isExplose.set(false);
         for (Body body : objectToExplode) {
@@ -339,7 +356,7 @@ public class Level1 extends TestbedTest {
                 }
                 nextToErase.add(body);
             }
-            lastDestroy_step=last_step;
+            lastDestroy_step = last_step;
         }
         objectToExplode.clear();
     }
