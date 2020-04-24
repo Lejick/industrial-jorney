@@ -33,6 +33,7 @@ import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.FixtureDef;
+import org.jbox2d.testbed.framework.SettingsIF;
 import org.jbox2d.testbed.framework.TestbedSettings;
 import org.jbox2d.testbed.framework.TestbedTest;
 import org.jbox2d.callbacks.RayCastCallback;
@@ -145,8 +146,8 @@ public class RayCastTest extends TestbedTest {
   Vec2 point2 = new Vec2();
 
   @Override
-  public void step(TestbedSettings settings) {
-    boolean advanceRay = settings.pause == false || settings.singleStep;
+  public void step(SettingsIF settings) {
+    boolean advanceRay = settings.isPause() == false || settings.isSingleStep();
 
     super.step(settings);
 

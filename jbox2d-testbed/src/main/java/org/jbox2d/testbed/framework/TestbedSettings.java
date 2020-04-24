@@ -40,7 +40,7 @@ import com.google.common.collect.Maps;
  * 
  * @author Daniel Murphy
  */
-public class TestbedSettings {
+public class TestbedSettings implements SettingsIF{
   public static final String Hz = "Hz";
   public static final String PositionIterations = "Pos Iters";
   public static final String VelocityIterations = "Vel Iters";
@@ -123,5 +123,22 @@ public class TestbedSettings {
    */
   public TestbedSetting getSetting(String argName) {
     return settingsMap.get(argName);
+  }
+
+  @Override
+  public boolean isSingleStep() {
+    return singleStep;
+  }
+  @Override
+  public void setSingleStep(boolean singleStep) {
+    this.singleStep = singleStep;
+  }
+  @Override
+  public boolean isPause() {
+    return pause;
+  }
+  @Override
+  public void setPause(boolean pause) {
+    this.pause = pause;
   }
 }

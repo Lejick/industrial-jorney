@@ -40,6 +40,7 @@ import org.jbox2d.common.MathUtils;
 import org.jbox2d.common.Settings;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.pooling.arrays.Vec2Array;
+import org.jbox2d.testbed.framework.SettingsIF;
 import org.jbox2d.testbed.framework.TestbedSettings;
 import org.jbox2d.testbed.framework.TestbedTest;
 
@@ -119,7 +120,7 @@ public class DynamicTreeTest extends TestbedTest implements TreeCallback,
 	private Vec2Array vecPool = new Vec2Array();
 
 	@Override
-	public void step(TestbedSettings settings) {
+	public void step(SettingsIF settings) {
 		m_rayActor = null;
 		for (int i = 0; i < e_actorCount; ++i) {
 			m_actors[i].fraction = 1.0f;

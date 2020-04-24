@@ -34,6 +34,7 @@ import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.joints.DistanceJointDef;
 import org.jbox2d.dynamics.joints.Joint;
+import org.jbox2d.testbed.framework.SettingsIF;
 import org.jbox2d.testbed.framework.TestbedSettings;
 import org.jbox2d.testbed.framework.TestbedTest;
 
@@ -196,7 +197,7 @@ public class Web extends TestbedTest {
   }
 
   @Override
-  public void step(TestbedSettings settings) {
+  public void step(SettingsIF settings) {
     super.step(settings);
     addTextLine("This demonstrates a soft distance joint.");
     addTextLine("Press: (b) to delete a body, (j) to delete a joint");

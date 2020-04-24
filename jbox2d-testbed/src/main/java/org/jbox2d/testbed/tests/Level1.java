@@ -54,6 +54,7 @@ import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
 import org.jbox2d.dynamics.contacts.Contact;
+import org.jbox2d.testbed.framework.SettingsIF;
 import org.jbox2d.testbed.framework.TestbedSettings;
 import org.jbox2d.testbed.framework.TestbedTest;
 import org.slf4j.Logger;
@@ -287,7 +288,7 @@ public class Level1 extends TestbedTest {
     }
 
     @Override
-    public void step(TestbedSettings settings) {
+    public void step(SettingsIF settings) {
         super.step(settings);
         keyPressed();
         fireBullet();

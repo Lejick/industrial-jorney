@@ -9,6 +9,7 @@ import org.jbox2d.particle.ParticleGroup;
 import org.jbox2d.particle.ParticleGroupDef;
 import org.jbox2d.particle.ParticleGroupType;
 import org.jbox2d.particle.ParticleType;
+import org.jbox2d.testbed.framework.SettingsIF;
 import org.jbox2d.testbed.framework.TestbedSettings;
 import org.jbox2d.testbed.framework.TestbedTest;
 
@@ -65,7 +66,7 @@ public class DrawingParticles extends TestbedTest {
   }
 
   @Override
-  public void step(TestbedSettings settings) {
+  public void step(SettingsIF settings) {
     super.step(settings);
 
     addTextLine("Keys: (L) liquid, (E) elastic, (S) spring");

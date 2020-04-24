@@ -37,7 +37,7 @@ import java.util.Vector;
  */
 public class PlayModel implements GamingModelIF{
   private final DefaultComboBoxModel tests = new DefaultComboBoxModel();
-  private final TestbedSettings settings = new TestbedSettings();
+  private final PlayedSettings settings = new PlayedSettings();
   private DebugDraw draw;
   private TestbedTest test;
   private final Vector<TestChangedListener> listeners = new Vector<TestChangedListener>();
@@ -191,7 +191,7 @@ public class PlayModel implements GamingModelIF{
     return tests;
   }
 
-  public TestbedSettings getSettings() {
+  public SettingsIF getSettings() {
     return settings;
   }
 

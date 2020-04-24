@@ -39,6 +39,7 @@ import org.jbox2d.dynamics.joints.PrismaticJoint;
 import org.jbox2d.dynamics.joints.PrismaticJointDef;
 import org.jbox2d.dynamics.joints.RevoluteJoint;
 import org.jbox2d.dynamics.joints.RevoluteJointDef;
+import org.jbox2d.testbed.framework.SettingsIF;
 import org.jbox2d.testbed.framework.TestbedSettings;
 import org.jbox2d.testbed.framework.TestbedTest;
 
@@ -145,7 +146,7 @@ public class SliderCrankTest extends TestbedTest {
   }
 
   @Override
-  public void step(TestbedSettings settings) {
+  public void step(SettingsIF settings) {
     super.step(settings);
 
     addTextLine("Keys: (f) toggle friction, (m) toggle motor");

@@ -36,6 +36,7 @@ import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.contacts.Contact;
+import org.jbox2d.testbed.framework.SettingsIF;
 import org.jbox2d.testbed.framework.TestbedSettings;
 import org.jbox2d.testbed.framework.TestbedTest;
 
@@ -141,7 +142,7 @@ public class SensorTest extends TestbedTest {
   }
 
   @Override
-  public void step(TestbedSettings settings) {
+  public void step(SettingsIF settings) {
     // TODO Auto-generated method stub
     super.step(settings);
 

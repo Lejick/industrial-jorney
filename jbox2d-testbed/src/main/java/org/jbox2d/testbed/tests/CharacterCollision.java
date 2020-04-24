@@ -36,6 +36,7 @@ import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
+import org.jbox2d.testbed.framework.SettingsIF;
 import org.jbox2d.testbed.framework.TestbedSettings;
 import org.jbox2d.testbed.framework.TestbedTest;
 
@@ -275,7 +276,7 @@ public class CharacterCollision extends TestbedTest {
   }
 
   @Override
-  public void step(TestbedSettings settings) {
+  public void step(SettingsIF settings) {
     Vec2 v = m_character.getLinearVelocity();
     v.x = -5f;
 

@@ -8,6 +8,7 @@ import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.joints.RevoluteJoint;
 import org.jbox2d.dynamics.joints.RevoluteJointDef;
+import org.jbox2d.testbed.framework.SettingsIF;
 import org.jbox2d.testbed.framework.TestbedSettings;
 import org.jbox2d.testbed.framework.TestbedTest;
 
@@ -50,7 +51,7 @@ public class Tumbler extends TestbedTest {
   }
 
   @Override
-  public synchronized void step(TestbedSettings settings) {
+  public synchronized void step(SettingsIF settings) {
     super.step(settings);
 
     if (m_count < MAX_NUM) {

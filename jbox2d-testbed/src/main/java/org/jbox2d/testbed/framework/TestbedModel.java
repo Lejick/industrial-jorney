@@ -38,7 +38,7 @@ import org.jbox2d.common.IViewportTransform;
  */
 public class TestbedModel implements GamingModelIF{
   private final DefaultComboBoxModel tests = new DefaultComboBoxModel();
-  private final TestbedSettings settings = new TestbedSettings();
+  private final SettingsIF settings = new TestbedSettings();
   private DebugDraw draw;
   private TestbedTest test;
   private final Vector<TestChangedListener> listeners = new Vector<TestChangedListener>();
@@ -191,7 +191,7 @@ public class TestbedModel implements GamingModelIF{
     return tests;
   }
 
-  public TestbedSettings getSettings() {
+  public SettingsIF getSettings() {
     return settings;
   }
 

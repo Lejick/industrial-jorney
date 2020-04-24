@@ -9,6 +9,7 @@ import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.joints.RevoluteJoint;
 import org.jbox2d.dynamics.joints.RevoluteJointDef;
 import org.jbox2d.particle.ParticleGroupDef;
+import org.jbox2d.testbed.framework.SettingsIF;
 import org.jbox2d.testbed.framework.TestbedSettings;
 import org.jbox2d.testbed.framework.TestbedTest;
 
@@ -18,7 +19,7 @@ public class WaveMachine extends TestbedTest {
   float m_time;
 
   @Override
-  public void step(TestbedSettings settings) {
+  public void step(SettingsIF settings) {
     super.step(settings);
     float hz = settings.getSetting(TestbedSettings.Hz).value;
     if (hz > 0) {

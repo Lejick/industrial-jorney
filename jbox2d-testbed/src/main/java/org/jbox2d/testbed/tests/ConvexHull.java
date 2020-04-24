@@ -28,6 +28,7 @@ import org.jbox2d.common.Color3f;
 import org.jbox2d.common.MathUtils;
 import org.jbox2d.common.Settings;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.testbed.framework.SettingsIF;
 import org.jbox2d.testbed.framework.TestbedSettings;
 import org.jbox2d.testbed.framework.TestbedTest;
 
@@ -75,7 +76,7 @@ public class ConvexHull extends TestbedTest {
   Color3f color2 = new Color3f(.9f, .5f, .5f);
 
   @Override
-  public synchronized void step(TestbedSettings settings) {
+  public synchronized void step(SettingsIF settings) {
     super.step(settings);
 
     shape.set(m_points, m_count);

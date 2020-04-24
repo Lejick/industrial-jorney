@@ -32,6 +32,7 @@ import org.jbox2d.common.MathUtils;
 import org.jbox2d.common.Settings;
 import org.jbox2d.common.Transform;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.testbed.framework.SettingsIF;
 import org.jbox2d.testbed.framework.TestbedSettings;
 import org.jbox2d.testbed.framework.TestbedTest;
 
@@ -88,7 +89,7 @@ public class DistanceTest extends TestbedTest {
 	Color3f c2 = new Color3f(1.0f, 1.0f, 0.0f);
 	
 	@Override
-	public void step(TestbedSettings settings) {
+	public void step(SettingsIF settings) {
 		super.step(settings);
 		
 		input.proxyA.set(m_polygonA,0);

@@ -38,6 +38,7 @@ import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.FixtureDef;
+import org.jbox2d.testbed.framework.SettingsIF;
 import org.jbox2d.testbed.framework.TestbedSettings;
 import org.jbox2d.testbed.framework.TestbedTest;
 
@@ -197,9 +198,9 @@ public class EdgeShapes extends TestbedTest {
   EdgeShapesCallback callback = new EdgeShapesCallback();
 
   @Override
-  public void step(TestbedSettings settings) {
+  public void step(SettingsIF settings) {
 
-    boolean advanceRay = settings.pause == false || settings.singleStep;
+    boolean advanceRay = settings.isPause() == false || settings.isSingleStep();
 
     super.step(settings);
     addTextLine("Press 1-5 to drop stuff");

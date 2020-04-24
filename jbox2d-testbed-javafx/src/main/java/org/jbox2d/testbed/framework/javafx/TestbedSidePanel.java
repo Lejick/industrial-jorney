@@ -93,7 +93,7 @@ public class TestbedSidePanel extends BorderPane {
   public void initComponents() {
     // setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-    TestbedSettings settings = model.getSettings();
+    SettingsIF settings = model.getSettings();
 
     VBox top = new VBox();
     // top.setLayout(new GridLayout(0, 1));
@@ -183,20 +183,20 @@ public class TestbedSidePanel extends BorderPane {
 
   public void addListeners() {
     pauseButton.setOnAction((e) -> {
-      if (model.getSettings().pause) {
-        model.getSettings().pause = false;
+      if (model.getSettings().isPause()) {
+        model.getSettings().setPause(false);
         pauseButton.setText("Pause");
       } else {
-        model.getSettings().pause = true;
+        model.getSettings().setPause( true);
         pauseButton.setText("Resume");
       }
       model.getPanel().grabFocus();
     });
 
     stepButton.setOnAction((e) -> {
-      model.getSettings().singleStep = true;
-      if (!model.getSettings().pause) {
-        model.getSettings().pause = true;
+      model.getSettings().setSingleStep(true);
+      if (!model.getSettings().isPause()) {
+        model.getSettings().setPause(true);
         pauseButton.setText("Resume");
       }
       model.getPanel().grabFocus();
@@ -219,7 +219,7 @@ public class TestbedSidePanel extends BorderPane {
     });
   }
 
-  private void addSettings(Pane argPanel, TestbedSettings argSettings, SettingType argIgnore) {
+  private void addSettings(Pane argPanel, SettingsIF argSettings, SettingType argIgnore) {
     for (TestbedSetting setting : argSettings.getSettings()) {
       if (setting.settingsType == argIgnore) {
         continue;

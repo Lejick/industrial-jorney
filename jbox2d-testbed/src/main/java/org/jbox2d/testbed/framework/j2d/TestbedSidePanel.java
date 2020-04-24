@@ -87,7 +87,7 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
     setLayout(new BorderLayout());
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-    TestbedSettings settings = model.getSettings();
+    SettingsIF settings = model.getSettings();
 
     JPanel top = new JPanel();
     top.setLayout(new GridLayout(0, 1));
@@ -185,11 +185,11 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
   public void addListeners() {
     pauseButton.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        if (model.getSettings().pause) {
-          model.getSettings().pause = false;
+        if (model.getSettings().isPause()) {
+          model.getSettings().setPause(false);
           pauseButton.setText("Pause");
         } else {
-          model.getSettings().pause = true;
+          model.getSettings().setPause( true);
           pauseButton.setText("Resume");
         }
         model.getPanel().grabFocus();
@@ -198,9 +198,9 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
 
     stepButton.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        model.getSettings().singleStep = true;
-        if (!model.getSettings().pause) {
-          model.getSettings().pause = true;
+        model.getSettings().setSingleStep(true);
+        if (!model.getSettings().isPause()) {
+          model.getSettings().setPause(true);
           pauseButton.setText("Resume");
         }
         model.getPanel().grabFocus();
@@ -236,7 +236,7 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
     });
   }
 
-  private void addSettings(JPanel argPanel, TestbedSettings argSettings, SettingType argIgnore) {
+  private void addSettings(JPanel argPanel, SettingsIF argSettings, SettingType argIgnore) {
     for (TestbedSetting setting : argSettings.getSettings()) {
       if (setting.settingsType == argIgnore) {
         continue;

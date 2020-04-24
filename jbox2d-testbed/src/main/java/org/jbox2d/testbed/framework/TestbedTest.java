@@ -390,11 +390,11 @@ public abstract class TestbedTest implements ContactListener, ObjectListener, Ob
   private final ParticleVelocityQueryCallback pcallback = new ParticleVelocityQueryCallback();
   private final AABB paabb = new AABB();
 
-  public void step(TestbedSettings settings) {
+  public void step(SettingsIF settings) {
     float hz = settings.getSetting(TestbedSettings.Hz).value;
     float timeStep = hz > 0f ? 1f / hz : 0;
-    if (settings.singleStep && !settings.pause) {
-      settings.pause = true;
+    if (settings.isSingleStep() && !settings.isPause()) {
+      settings.setPause(true);
     }
 
     final DebugDraw debugDraw = model.getDebugDraw();
@@ -405,9 +405,9 @@ public abstract class TestbedTest implements ContactListener, ObjectListener, Ob
       m_textLine += TEXT_LINE_SPACE;
     }
 
-    if (settings.pause) {
-      if (settings.singleStep) {
-        settings.singleStep = false;
+    if (settings.isPause()) {
+      if (settings.isSingleStep()) {
+        settings.setSingleStep(false);
       } else {
         timeStep = 0;
       }

@@ -36,6 +36,7 @@ import org.jbox2d.dynamics.joints.Joint;
 import org.jbox2d.dynamics.joints.RevoluteJointDef;
 import org.jbox2d.dynamics.joints.WheelJoint;
 import org.jbox2d.dynamics.joints.WheelJointDef;
+import org.jbox2d.testbed.framework.SettingsIF;
 import org.jbox2d.testbed.framework.TestbedSettings;
 import org.jbox2d.testbed.framework.TestbedTest;
 
@@ -368,7 +369,7 @@ public class Car extends TestbedTest {
   }
 
   @Override
-  public synchronized void step(TestbedSettings settings) {
+  public synchronized void step(SettingsIF settings) {
     super.step(settings);
     addTextLine("Keys: left = a, brake = s, right = d, hz down = q, hz up = e");
     addTextLine("frequency = " + m_hz + " hz, damping ratio = " + m_zeta);

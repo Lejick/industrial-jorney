@@ -11,6 +11,7 @@ import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.joints.MotorJoint;
 import org.jbox2d.dynamics.joints.MotorJointDef;
+import org.jbox2d.testbed.framework.SettingsIF;
 import org.jbox2d.testbed.framework.TestbedSettings;
 import org.jbox2d.testbed.framework.TestbedTest;
 
@@ -71,7 +72,7 @@ public class MotorTest extends TestbedTest {
   Color3f color = new Color3f(0.9f, 0.9f, 0.9f);
 
   @Override
-  public void step(TestbedSettings settings) {
+  public void step(SettingsIF settings) {
     float hz = settings.getSetting(TestbedSettings.Hz).value;
     if (m_go && hz > 0.0f) {
       m_time += 1.0f / hz;

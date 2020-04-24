@@ -24,7 +24,7 @@ public interface GamingModelIF {
 
     boolean[] getKeys();
 
-    TestbedSettings getSettings();
+    SettingsIF getSettings();
 
      void addTestChangeListener(TestChangedListener argListener);
 

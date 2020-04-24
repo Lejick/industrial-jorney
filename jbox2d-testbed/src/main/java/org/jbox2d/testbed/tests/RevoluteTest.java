@@ -38,6 +38,7 @@ import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.joints.Joint;
 import org.jbox2d.dynamics.joints.RevoluteJoint;
 import org.jbox2d.dynamics.joints.RevoluteJointDef;
+import org.jbox2d.testbed.framework.SettingsIF;
 import org.jbox2d.testbed.framework.TestbedSettings;
 import org.jbox2d.testbed.framework.TestbedTest;
 
@@ -171,7 +172,7 @@ public class RevoluteTest extends TestbedTest {
   }
 
   @Override
-  public void step(TestbedSettings settings) {
+  public void step(SettingsIF settings) {
     super.step(settings);
     addTextLine("Limits " + (m_joint.isLimitEnabled() ? "on" : "off") + ", Motor "
         + (m_joint.isMotorEnabled() ? "on " : "off ") + (isLeft ? "left" : "right"));

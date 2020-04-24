@@ -265,7 +265,7 @@ public abstract class AbstractTestbedController {
           currTest.lanchBomb();
           break;
         case Pause:
-          model.getSettings().pause = !model.getSettings().pause;
+          model.getSettings().setPause(!model.getSettings().isPause());
           break;
       }
     }
