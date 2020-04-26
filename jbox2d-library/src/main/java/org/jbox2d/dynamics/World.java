@@ -695,17 +695,8 @@ public class World {
                 for (Fixture f = b.getFixtureList(); f != null; f = f.getNext()) {
                     if (b.shapeColor != null) {
                         color.set(b.shapeColor);
-                    } else if (b.isActive() == false) {
-                        color.set(0.5f, 0.5f, 0.3f);
-                    } else if (b.getType() == BodyType.STATIC) {
-                        color.set(0.5f, 0.9f, 0.3f);
-                    } else if (b.getType() == BodyType.KINEMATIC) {
-                        color.set(0.5f, 0.5f, 0.9f);
-                    } else if (b.isAwake() == false) {
-                        color.set(0.5f, 0.5f, 0.5f);
                     } else {
                         color.set(0.9f, 0.7f, 0.7f);
-
                     }
                     drawShape(f, xf, color, wireframe);
                 }
