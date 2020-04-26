@@ -23,6 +23,7 @@
  ******************************************************************************/
 package org.jbox2d.dynamics;
 
+import org.jbox2d.common.Color3f;
 import org.jbox2d.common.Vec2;
 
 /**
@@ -54,6 +55,8 @@ public class BodyDef {
      * The world angle of the body in radians.
      */
     public float angle;
+
+    public Color3f shapeColor;
 
     /**
      * The linear velocity of the body in world co-ordinates.
@@ -109,7 +112,6 @@ public class BodyDef {
      */
     public boolean active;
 
-    public boolean actionBody;
     /**
      * Experimental: scales the inertia tensor.
      */

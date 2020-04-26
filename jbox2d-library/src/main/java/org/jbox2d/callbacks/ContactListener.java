@@ -46,13 +46,13 @@ public interface ContactListener {
 	 * Called when two fixtures begin to touch.
 	 * @param contact
 	 */
-	public void beginContact(Contact contact);
+	 void beginContact(Contact contact);
 	
 	/**
 	 * Called when two fixtures cease to touch.
 	 * @param contact
 	 */
-	public void endContact(Contact contact);
+	 void endContact(Contact contact);
 	
 	/**
 	 * This is called after a contact is updated. This allows you to inspect a

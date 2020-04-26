@@ -693,8 +693,8 @@ public class World {
             for (Body b = m_bodyList; b != null; b = b.getNext()) {
                 xf.set(b.getTransform());
                 for (Fixture f = b.getFixtureList(); f != null; f = f.getNext()) {
-                    if (b.actionBody) {
-                        color.set(Color3f.BLUE);
+                    if (b.shapeColor != null) {
+                        color.set(b.shapeColor);
                     } else if (b.isActive() == false) {
                         color.set(0.5f, 0.5f, 0.3f);
                     } else if (b.getType() == BodyType.STATIC) {

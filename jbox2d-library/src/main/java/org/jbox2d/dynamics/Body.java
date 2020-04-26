@@ -26,11 +26,7 @@ package org.jbox2d.dynamics;
 import org.jbox2d.collision.broadphase.BroadPhase;
 import org.jbox2d.collision.shapes.MassData;
 import org.jbox2d.collision.shapes.Shape;
-import org.jbox2d.common.MathUtils;
-import org.jbox2d.common.Rot;
-import org.jbox2d.common.Sweep;
-import org.jbox2d.common.Transform;
-import org.jbox2d.common.Vec2;
+import org.jbox2d.common.*;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.jbox2d.dynamics.contacts.ContactEdge;
 import org.jbox2d.dynamics.joints.JointEdge;
@@ -50,7 +46,8 @@ public class Body {
   public static final int e_toiFlag = 0x0040;
 
   public BodyType m_type;
-  public boolean actionBody = false;
+
+  public Color3f shapeColor;
 
   public int m_flags;
 
@@ -124,7 +121,7 @@ public class Body {
     if (bd.active) {
       m_flags |= e_activeFlag;
     }
-    actionBody=bd.actionBody;
+    shapeColor=bd.shapeColor;
 
     m_world = world;
 

@@ -1,6 +1,8 @@
 package org.jbox2d.testbed.framework;
 
 import org.jbox2d.collision.shapes.CircleShape;
+import org.jbox2d.collision.shapes.PolygonShape;
+import org.jbox2d.common.Color3f;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
 
@@ -21,9 +23,29 @@ public class Gun {
         this.y = y;
         this.world = world;
         this.bulletVel=bulletVel;
+
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(1,1);
+        FixtureDef fd = new FixtureDef();
+        fd.shape = shape;
+        fd.density = 1.0f;
+        fd.friction = 0.3f;
+        BodyDef bd = new BodyDef();
+        bd.shapeColor=Color3f.GREEN;
+        bd.type = BodyType.STATIC;
+        bd.position.set(x+1, y);
+        gunBody = getWorld().createBody(bd);
+        gunBody.createFixture(fd);
     }
 
     public void fire() {
+
+        float shift = ((float) lastStep - (float) lastFireStep) / cooldown;
+        if (shift > 1) {
+            shift = 1;
+        }
+        Color3f actualColor = new Color3f(shift, 1 - shift, 0);
+        gunBody.shapeColor = actualColor;
         if (lastStep - lastFireStep > cooldown) {
             if (bullet != null) {
                 world.destroyBody(bullet);
@@ -41,11 +63,11 @@ public class Gun {
                 BodyDef bd = new BodyDef();
                 bd.type = BodyType.DYNAMIC;
                 bd.bullet = true;
-                bd.position.set(x+1, y);
+                bd.position.set(x + 2, y);
 
                 bullet = world.createBody(bd);
                 bullet.createFixture(fd);
-
+                bullet.shapeColor = Color3f.RED;
                 bullet.setLinearVelocity(new Vec2(bulletVel, 0.0f));
                 lastFireStep = lastStep;
             }

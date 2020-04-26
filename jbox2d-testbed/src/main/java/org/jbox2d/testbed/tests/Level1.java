@@ -52,6 +52,8 @@
  * Created at 4:56:29 AM Jan 14, 2011
  * <p>
  * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
  */
 /**
  * Created at 4:56:29 AM Jan 14, 2011
@@ -61,6 +63,7 @@ package org.jbox2d.testbed.tests;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.collision.shapes.PolygonShape;
+import org.jbox2d.common.Color3f;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
 import org.jbox2d.dynamics.contacts.Contact;
@@ -82,9 +85,6 @@ public class Level1 extends TestbedTest {
     private static final long BULLET_TAG = 1;
 
     private static final Logger log = LoggerFactory.getLogger(Level1.class);
-
-    public static final int e_columnCount = 1;
-    public static final int e_rowCount = 10;
     private final static float maxSpeedX = 6f;
     private final static float minSpeedX = -6f;
     private final static float maxSpeedXAir = 3f;
@@ -94,8 +94,10 @@ public class Level1 extends TestbedTest {
     private static float width = 60;
     private static float height = 40;
     private static final float commonPersonEdge = 1f;
+    private static Integer CAN_JUMP = 7;
     long lastDestroy_step = 0;
     long last_step = 0;
+    boolean IS_CAN_JUMP = true;
     Body action_body;
     Gun gun1;
     List<Body> destroyableList = Collections.synchronizedList(new ArrayList<>());
@@ -142,10 +144,12 @@ public class Level1 extends TestbedTest {
         EdgeShape shape = new EdgeShape();
 
         shape.set(new Vec2(-width / 2, height / 2 - commonPersonEdge * 6), new Vec2(width / 3, height / 2 - commonPersonEdge * 6));
-        ground.createFixture(shape, 0.0f);
+        Fixture f = ground.createFixture(shape, 0.0f);
+        f.setUserData(CAN_JUMP);
 
         shape.set(new Vec2(-width / 3, height / 2 - commonPersonEdge * 12), new Vec2(width / 2, height / 2 - commonPersonEdge * 12));
-        ground.createFixture(shape, 0.0f);
+        f = ground.createFixture(shape, 0.0f);
+        f.setUserData(CAN_JUMP);
 
     }
 
@@ -164,11 +168,13 @@ public class Level1 extends TestbedTest {
         shape.set(new Vec2(-width / 2, height / 2), new Vec2(width / 2, height / 2));
         ground.createFixture(shape, 0.0f);
 
+
         shape.set(new Vec2(width / 2, height / 2), new Vec2(width / 2, -height / 2));
         ground.createFixture(shape, 0.0f);
 
         shape.set(new Vec2(-width / 2, height / 2), new Vec2(-width / 2, -height / 2));
-        ground.createFixture(shape, 0.0f);
+       Fixture f= ground.createFixture(shape, 0.0f);
+       f.setUserData(CAN_JUMP);
     }
 
     private Body createRectangle(float x, float y, float hx, float hy, boolean isHero) {
@@ -179,12 +185,15 @@ public class Level1 extends TestbedTest {
         fd.density = 1.0f;
         fd.friction = 0.3f;
         BodyDef bd = new BodyDef();
-        bd.actionBody = isHero;
+        if (isHero) {
+            bd.shapeColor = Color3f.BLUE;
+        }
         bd.type = BodyType.DYNAMIC;
         bd.position.set(x, y);
 
         Body body = getWorld().createBody(bd);
-        body.createFixture(fd);
+        Fixture f = body.createFixture(fd);
+        f.setUserData(CAN_JUMP);
         if (isHero) {
             action_body = body;
         }
@@ -214,7 +223,7 @@ public class Level1 extends TestbedTest {
             }
         }
         if (getModel().getKeys()[' ']) {
-            if (action_body != null && action_body.getLinearVelocity().y < maxSpeedY && hasContact) {
+            if (action_body != null && action_body.getLinearVelocity().y < maxSpeedY && IS_CAN_JUMP) {
                 Vec2 newVel = new Vec2(action_body.getLinearVelocity().x, action_body.getLinearVelocity().y + 3);
                 action_body.setLinearVelocity(newVel);
             }
@@ -222,23 +231,48 @@ public class Level1 extends TestbedTest {
     }
 
     public void beginContact(Contact contact) {
-        Body bodyToDestroy;
+        Body bodyToDestroy=null;
         Fixture fixtureA = contact.getFixtureA();
         Fixture fixtureB = contact.getFixtureB();
         if (fixtureA.m_body == gun1.getBullet()) {
             bodyToDestroy = fixtureB.m_body;
-        } else if (fixtureB.m_body ==  gun1.getBullet()) {
+        } else if (fixtureB.m_body == gun1.getBullet()) {
             bodyToDestroy = fixtureA.m_body;
-        } else {
-            return;
         }
-        if (destroyableList.contains(bodyToDestroy)) {
-            if ( gun1.getBullet().m_linearVelocity.x > 70 ||  gun1.getBullet().m_linearVelocity.y > 70) {
+        if (fixtureA.getBody() == action_body) {
+            if (fixtureB.getUserData() != null && fixtureB.getUserData().equals(CAN_JUMP)) {
+                IS_CAN_JUMP = true;
+            }
+        }
+        if (fixtureB.getBody() == action_body) {
+            if (fixtureA.getUserData() != null && fixtureA.getUserData().equals(CAN_JUMP)) {
+                IS_CAN_JUMP = true;
+            }
+        }
+
+        if (bodyToDestroy!=null && destroyableList.contains(bodyToDestroy)) {
+            if (gun1.getBullet().m_linearVelocity.x > 70 || gun1.getBullet().m_linearVelocity.y > 70) {
                 objectToExplode.add(bodyToDestroy);
-                Vec2 bulletVel =  gun1.getBullet().getLinearVelocity();
+                Vec2 bulletVel = gun1.getBullet().getLinearVelocity();
                 bulletVel.x = bulletVel.x - 30;
                 gun1.getBullet().setLinearVelocity(bulletVel);
                 return;
+            }
+        }
+    }
+
+    @Override
+    public void endContact(Contact contact) {
+        Fixture fixtureA = contact.getFixtureA();
+        Fixture fixtureB = contact.getFixtureB();
+        if (fixtureA.getBody() == action_body) {
+            if (fixtureB.getUserData() != null && fixtureB.getUserData().equals(CAN_JUMP)) {
+                IS_CAN_JUMP = false;
+            }
+        }
+        if (fixtureB.getBody() == action_body) {
+            if (fixtureA.getUserData() != null && fixtureA.getUserData().equals(CAN_JUMP)) {
+                IS_CAN_JUMP = false;
             }
         }
     }
@@ -278,7 +312,7 @@ public class Level1 extends TestbedTest {
                 fd.friction = 0.3f;
                 BodyDef bd = new BodyDef();
                 if (body == action_body) {
-                    bd.actionBody = true;
+                    bd.shapeColor = Color3f.BLUE;
                 }
                 bd.type = BodyType.DYNAMIC;
                 bd.position.set(oldPosition.x, oldPosition.y);

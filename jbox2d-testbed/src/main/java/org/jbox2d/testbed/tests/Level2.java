@@ -212,7 +212,6 @@ public class Level2 extends TestbedTest {
         fd.friction = 0.3f;
 
         BodyDef bd = new BodyDef();
-        bd.actionBody = true;
         bd.type = BodyType.DYNAMIC;
 
 
@@ -308,7 +307,6 @@ public class Level2 extends TestbedTest {
                 fd.density = 1.0f;
                 fd.friction = 0.3f;
                 BodyDef bd = new BodyDef();
-                bd.actionBody = true;
                 bd.type = BodyType.DYNAMIC;
                 bd.position.set(oldPosition.x, oldPosition.y);
                 Body body = getWorld().createBody(bd);
