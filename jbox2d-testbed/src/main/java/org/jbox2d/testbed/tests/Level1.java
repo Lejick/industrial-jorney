@@ -103,7 +103,6 @@ public class Level1 extends TestbedTest {
     private static final float commonPersonEdge = 1f;
     long lastDestroy_step = 0;
     long last_step = 0;
-    boolean CAN_JUMP = true;
     List<Fixture> objectForJump = new ArrayList<>();
     List<Fixture> contactObjForJump = new ArrayList<>();
     Body action_body;
@@ -120,9 +119,6 @@ public class Level1 extends TestbedTest {
 
     @Override
     public void processBody(Body argBody, Long argTag) {
-        if (argTag == BULLET_TAG) {
-            return;
-        }
         super.processBody(argBody, argTag);
     }
 
@@ -136,6 +132,9 @@ public class Level1 extends TestbedTest {
         if (deserialized) {
             return;
         }
+        contactObjForJump.clear();
+        last_step=0;
+        lastDestroy_step=0;
         createGameBox();
         createPlatforms();
         createGuns();
@@ -155,14 +154,15 @@ public class Level1 extends TestbedTest {
         Fixture f = ground.createFixture(shape, 0.0f);
         objectForJump.add(f);
 
-        shape.set(new Vec2(-width / 7, height / 2 - commonPersonEdge * 12), new Vec2(width / 2, height / 2 - commonPersonEdge * 12));
+        shape.set(new Vec2(-width / 3 , height / 2 - commonPersonEdge * 12), new Vec2(width / 2, height / 2 - commonPersonEdge * 12));
         f = ground.createFixture(shape, 0.0f);
         objectForJump.add(f);
 
     }
 
     private void createGuns() {
-        gun1 = new Gun(m_world, -width / 2, commonPersonEdge * 12 - 2, 500, 200);
+        gun1 = new Gun(m_world, -width / 2, commonPersonEdge * 12 - 2, 200, 100, 0.5f);
+        objectForJump.add(gun1.getGunBodyFixture());
     }
 
     private void createGameBox() {
@@ -201,7 +201,7 @@ public class Level1 extends TestbedTest {
 
         Body body = getWorld().createBody(bd);
         Fixture f = body.createFixture(fd);
-        f.setUserData(CAN_JUMP);
+        objectForJump.add(f);
         if (isHero) {
             action_body = body;
         }
@@ -210,8 +210,13 @@ public class Level1 extends TestbedTest {
 
     public void keyPressed() {
         boolean hasContact = action_body.m_contactList != null;
-        if (getModel().getKeys()['a']) {
-            if (action_body != null && action_body.getLinearVelocity().x > minSpeedX && hasContact) {
+        for (int i = 0; i < 2048; i++) {
+            if (getModel().getKeys()[i]) {
+                System.out.println(i);
+            }
+        }
+        if (getModel().getKeys()['a'] || getModel().getKeys()[1092]) {
+            if (action_body != null && action_body.getLinearVelocity().x > minSpeedX && contactObjForJump.size() > 0) {
                 Vec2 newVel = new Vec2(action_body.getLinearVelocity().x - 1, action_body.getLinearVelocity().y);
                 action_body.setLinearVelocity(newVel);
             }
@@ -220,8 +225,8 @@ public class Level1 extends TestbedTest {
                 action_body.setLinearVelocity(newVel);
             }
         }
-        if (getModel().getKeys()['d']) {
-            if (action_body != null && action_body.getLinearVelocity().x < maxSpeedX && hasContact) {
+        if (getModel().getKeys()['d'] || getModel().getKeys()[1074]) {
+            if (action_body != null && action_body.getLinearVelocity().x < maxSpeedX && contactObjForJump.size() > 0) {
                 Vec2 newVel = new Vec2(action_body.getLinearVelocity().x + 1, action_body.getLinearVelocity().y);
                 action_body.setLinearVelocity(newVel);
             }
@@ -232,7 +237,19 @@ public class Level1 extends TestbedTest {
         }
         if (getModel().getKeys()[' ']) {
             if (action_body != null && action_body.getLinearVelocity().y < maxSpeedY && contactObjForJump.size() > 0) {
-                Vec2 newVel = new Vec2(action_body.getLinearVelocity().x, action_body.getLinearVelocity().y + 3);
+                Vec2 newVel = new Vec2(action_body.getLinearVelocity().x, action_body.getLinearVelocity().y + 7);
+                action_body.setLinearVelocity(newVel);
+            }
+        }
+        if (getModel().getKeys()['f']) {
+            if (action_body != null && action_body.getLinearVelocity().y < maxSpeedY && contactObjForJump.size() > 0) {
+                Vec2 newVel = new Vec2(action_body.getLinearVelocity().x, action_body.getLinearVelocity().y + 7);
+                action_body.setLinearVelocity(newVel);
+            }
+        }
+        if (getModel().getKeys()[16]) {
+            if (action_body != null && action_body.getLinearVelocity().y < maxSpeedY && contactObjForJump.size() > 0) {
+                Vec2 newVel = new Vec2(action_body.getLinearVelocity().x, action_body.getLinearVelocity().y + 7);
                 action_body.setLinearVelocity(newVel);
             }
         }
@@ -259,7 +276,8 @@ public class Level1 extends TestbedTest {
         }
 
         if (bodyToDestroy != null && destroyableList.contains(bodyToDestroy)) {
-            if (gun1.getBullet().m_linearVelocity.x > 70 || gun1.getBullet().m_linearVelocity.y > 70) {
+            float bulletImpulse= gun1.getBullet().m_mass * gun1.getBullet().getLinearVelocity().length();
+            if (bulletImpulse>400) {
                 objectToExplode.add(bodyToDestroy);
                 Vec2 bulletVel = gun1.getBullet().getLinearVelocity();
                 bulletVel.x = bulletVel.x - 30;

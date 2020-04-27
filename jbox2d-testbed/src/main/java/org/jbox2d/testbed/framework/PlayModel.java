@@ -41,8 +41,8 @@ public class PlayModel implements GamingModelIF{
   private DebugDraw draw;
   private TestbedTest test;
   private final Vector<TestChangedListener> listeners = new Vector<TestChangedListener>();
-  private final boolean[] keys = new boolean[512];
-  private final boolean[] codedKeys = new boolean[512];
+  private final boolean[] keys = new boolean[2048];
+  private final boolean[] codedKeys = new boolean[2048];
   private float calculatedFps;
   private int currTestIndex = -1;
   private TestbedTest runningTest;

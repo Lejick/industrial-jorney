@@ -12,30 +12,32 @@ public class Gun {
     private long cooldown;
     private Body bullet;
     private Body gunBody;
+    private Fixture gunBodyFixture;
     private float x;
     private float bulletVel;
     private float y;
     private World world;
 
-    public Gun(World world, float x, float y, long cooldown,float bulletVel) {
+    public Gun(World world, float x, float y, long cooldown, float bulletVel, float bulletDensity) {
         this.cooldown = cooldown;
         this.x = x;
         this.y = y;
         this.world = world;
-        this.bulletVel=bulletVel;
+        this.bulletVel = bulletVel;
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(1,1);
+        shape.setAsBox(1, 1);
         FixtureDef fd = new FixtureDef();
         fd.shape = shape;
-        fd.density = 1.0f;
+        fd.density = bulletDensity;
         fd.friction = 0.3f;
         BodyDef bd = new BodyDef();
-        bd.shapeColor=Color3f.GREEN;
+        bd.shapeColor = Color3f.GREEN;
         bd.type = BodyType.STATIC;
-        bd.position.set(x+1, y);
+        bd.position.set(x + 1, y);
         gunBody = getWorld().createBody(bd);
-        gunBody.createFixture(fd);
+        gunBodyFixture=gunBody.createFixture(fd);
+
     }
 
     public void fire() {
@@ -132,6 +134,10 @@ public class Gun {
 
     public Body getGunBody() {
         return gunBody;
+    }
+
+    public Fixture getGunBodyFixture() {
+        return gunBodyFixture;
     }
 
     public void setGunBody(Body gunBody) {
