@@ -60,6 +60,8 @@
  * Created at 4:56:29 AM Jan 14, 2011
  * <p>
  * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
  */
 /**
  * Created at 4:56:29 AM Jan 14, 2011
@@ -106,7 +108,7 @@ public class Level1 extends TestbedTest {
     List<Fixture> objectForJump = new ArrayList<>();
     List<Fixture> contactObjForJump = new ArrayList<>();
     Body action_body;
-    Gun gun1;
+    List<Gun> gunList=new ArrayList<>();
     List<Body> destroyableList = Collections.synchronizedList(new ArrayList<>());
     List<Body> objectToExplode = Collections.synchronizedList(new ArrayList<>());
     List<Body> currentToErase = Collections.synchronizedList(new ArrayList<>());
@@ -133,15 +135,15 @@ public class Level1 extends TestbedTest {
             return;
         }
         contactObjForJump.clear();
-        last_step=0;
-        lastDestroy_step=0;
+        last_step = 0;
+        lastDestroy_step = 0;
         createGameBox();
         createPlatforms();
-        createGuns();
         Body hero = createRectangle(-25, 15, commonPersonEdge, commonPersonEdge, true);
         Body simpleBox = createRectangle(20, 3, commonPersonEdge, commonPersonEdge, false);
         destroyableList.add(simpleBox);
         destroyableList.add(hero);
+        createGuns();
     }
 
 
@@ -154,7 +156,7 @@ public class Level1 extends TestbedTest {
         Fixture f = ground.createFixture(shape, 0.0f);
         objectForJump.add(f);
 
-        shape.set(new Vec2(-width / 3 , height / 2 - commonPersonEdge * 12), new Vec2(width / 2, height / 2 - commonPersonEdge * 12));
+        shape.set(new Vec2(-width / 3, height / 2 - commonPersonEdge * 12), new Vec2(width / 2, height / 2 - commonPersonEdge * 12));
         f = ground.createFixture(shape, 0.0f);
         objectForJump.add(f);
 
@@ -169,8 +171,23 @@ public class Level1 extends TestbedTest {
     }
 
     private void createGuns() {
-        gun1 = new Gun(m_world, -width / 2, commonPersonEdge * 12 - 2, 200, 100, 0.5f);
+        Gun gun1 = new Gun(m_world, -width / 2, commonPersonEdge * 12 - 2, 200, 100, 0.5f);
+        gun1.setOrientation(new Vec2(1, 0));
         objectForJump.add(gun1.getGunBodyFixture());
+        gunList.add(gun1);
+
+        Gun gun2 = new Gun(m_world, width / 2 - 2, commonPersonEdge - 2, 400, 400, 0.5f);
+        gun2.setDetection(true);
+        gun2.setDetectX1(6);
+        gun2.setDetectX2(16);
+        gun2.setDetectY1(-0.6f);
+        gun2.setDetectY2(-0.4f);
+        for(Body body:destroyableList){
+            gun2.addObjectToAttack(body);
+        }
+        gun2.setOrientation(new Vec2(-1, 0));
+        objectForJump.add(gun2.getGunBodyFixture());
+        gunList.add(gun2);
     }
 
     private void createGameBox() {
@@ -218,11 +235,6 @@ public class Level1 extends TestbedTest {
 
     public void keyPressed() {
         boolean hasContact = action_body.m_contactList != null;
-        for (int i = 0; i < 2048; i++) {
-            if (getModel().getKeys()[i]) {
-                System.out.println(i);
-            }
-        }
         if (getModel().getKeys()['a'] || getModel().getKeys()[1092]) {
             if (action_body != null && action_body.getLinearVelocity().x > minSpeedX && contactObjForJump.size() > 0) {
                 Vec2 newVel = new Vec2(action_body.getLinearVelocity().x - 1, action_body.getLinearVelocity().y);
@@ -267,11 +279,6 @@ public class Level1 extends TestbedTest {
         Body bodyToDestroy = null;
         Fixture fixtureA = contact.getFixtureA();
         Fixture fixtureB = contact.getFixtureB();
-        if (fixtureA.m_body == gun1.getBullet()) {
-            bodyToDestroy = fixtureB.m_body;
-        } else if (fixtureB.m_body == gun1.getBullet()) {
-            bodyToDestroy = fixtureA.m_body;
-        }
         if (fixtureA.getBody() == action_body) {
             if (objectForJump.contains(fixtureB)) {
                 contactObjForJump.add(fixtureB);
@@ -283,14 +290,22 @@ public class Level1 extends TestbedTest {
             }
         }
 
-        if (bodyToDestroy != null && destroyableList.contains(bodyToDestroy)) {
-            float bulletImpulse= gun1.getBullet().m_mass * gun1.getBullet().getLinearVelocity().length();
-            if (bulletImpulse>400) {
-                objectToExplode.add(bodyToDestroy);
-                Vec2 bulletVel = gun1.getBullet().getLinearVelocity();
-                bulletVel.x = bulletVel.x - 30;
-                gun1.getBullet().setLinearVelocity(bulletVel);
-                return;
+        for (Gun gun : gunList) {
+            if (fixtureA.m_body == gun.getBullet()) {
+                bodyToDestroy = fixtureB.m_body;
+            } else if (fixtureB.m_body == gun.getBullet()) {
+                bodyToDestroy = fixtureA.m_body;
+            }
+
+            if (bodyToDestroy != null && gun.getBullet()!=null && destroyableList.contains(bodyToDestroy)) {
+                float bulletImpulse = gun.getBullet().m_mass * gun.getBullet().getLinearVelocity().length();
+                if (bulletImpulse > 400) {
+                    objectToExplode.add(bodyToDestroy);
+                    Vec2 bulletVel = gun.getBullet().getLinearVelocity();
+                    bulletVel.x = bulletVel.x - 30;
+                    gun.getBullet().setLinearVelocity(bulletVel);
+                    return;
+                }
             }
         }
     }
@@ -316,11 +331,11 @@ public class Level1 extends TestbedTest {
         super.step(settings);
         keyPressed();
         explose();
-        gun1.fire();
-        gun1.setLastStep(last_step);
+        for (Gun gun : gunList) {
+            gun.checkFire(last_step);
+        }
         //  checkToErase();
         last_step++;
-
     }
 
     private void checkToErase() {

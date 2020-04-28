@@ -5,18 +5,30 @@ import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Color3f;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
+import org.jbox2d.dynamics.contacts.Position;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Gun {
     private long lastFireStep;
-    private long lastStep;
     private long cooldown;
     private Body bullet;
+    private List<Body> objectsToAttack = new ArrayList<>();
     private Body gunBody;
     private Fixture gunBodyFixture;
     private float x;
+    private Vec2 orientation;
     private float bulletVel;
     private float y;
     private World world;
+
+    private boolean isDetection;
+
+    private float detectX1;
+    private float detectX2;
+    private float detectY1;
+    private float detectY2;
 
     public Gun(World world, float x, float y, long cooldown, float bulletVel, float bulletDensity) {
         this.cooldown = cooldown;
@@ -36,11 +48,11 @@ public class Gun {
         bd.type = BodyType.STATIC;
         bd.position.set(x + 1, y);
         gunBody = getWorld().createBody(bd);
-        gunBodyFixture=gunBody.createFixture(fd);
+        gunBodyFixture = gunBody.createFixture(fd);
 
     }
 
-    public void fire() {
+    public void checkFire(long lastStep) {
 
         float shift = ((float) lastStep - (float) lastFireStep) / cooldown;
         if (shift > 1) {
@@ -48,31 +60,49 @@ public class Gun {
         }
         Color3f actualColor = new Color3f(shift, 1 - shift, 0);
         gunBody.shapeColor = actualColor;
-        if (lastStep - lastFireStep > cooldown) {
-            if (bullet != null) {
-                world.destroyBody(bullet);
-                bullet = null;
+        if (isDetection) {
+            for (Body body : objectsToAttack) {
+                float positionX = body.getPosition().x;
+                float positionY = body.getPosition().y;
+                if ((lastStep - lastFireStep > cooldown) &&
+                        positionX >= detectX1 &&
+                        positionX <= detectX2 &&
+                        positionY >= detectY1 &&
+                        positionY <= detectY2) {
+                    fireBullet();
+                    lastFireStep = lastStep;
+                }
             }
-            {
-                CircleShape shape = new CircleShape();
-                shape.m_radius = 0.25f;
+        } else if (lastStep - lastFireStep > cooldown) {
+            fireBullet();
+            lastFireStep = lastStep;
+        }
 
-                FixtureDef fd = new FixtureDef();
-                fd.shape = shape;
-                fd.density = 20.0f;
-                fd.restitution = 0.05f;
+    }
 
-                BodyDef bd = new BodyDef();
-                bd.type = BodyType.DYNAMIC;
-                bd.bullet = true;
-                bd.position.set(x + 2, y);
+    void fireBullet() {
+        if (bullet != null) {
+            world.destroyBody(bullet);
+            bullet = null;
+        }
+        {
+            CircleShape shape = new CircleShape();
+            shape.m_radius = 0.25f;
 
-                bullet = world.createBody(bd);
-                bullet.createFixture(fd);
-                bullet.shapeColor = Color3f.RED;
-                bullet.setLinearVelocity(new Vec2(bulletVel, 0.0f));
-                lastFireStep = lastStep;
-            }
+            FixtureDef fd = new FixtureDef();
+            fd.shape = shape;
+            fd.density = 20.0f;
+            fd.restitution = 0.05f;
+
+            BodyDef bd = new BodyDef();
+            bd.type = BodyType.DYNAMIC;
+            bd.bullet = true;
+            bd.position.set(x + 2 * orientation.x, y + 2 * orientation.y);
+
+            bullet = world.createBody(bd);
+            bullet.createFixture(fd);
+            bullet.shapeColor = Color3f.RED;
+            bullet.setLinearVelocity(new Vec2(orientation.x * bulletVel, orientation.y * bulletVel));
         }
     }
 
@@ -84,13 +114,6 @@ public class Gun {
         this.lastFireStep = lastFireStep;
     }
 
-    public long getLastStep() {
-        return lastStep;
-    }
-
-    public void setLastStep(long lastStep) {
-        this.lastStep = lastStep;
-    }
 
     public long getCooldown() {
         return cooldown;
@@ -142,5 +165,53 @@ public class Gun {
 
     public void setGunBody(Body gunBody) {
         this.gunBody = gunBody;
+    }
+
+    public boolean isDetection() {
+        return isDetection;
+    }
+
+    public void setDetection(boolean detection) {
+        isDetection = detection;
+    }
+
+    public float getDetectX1() {
+        return detectX1;
+    }
+
+    public void setDetectX1(float detectX1) {
+        this.detectX1 = detectX1;
+    }
+
+    public float getDetectX2() {
+        return detectX2;
+    }
+
+    public void setDetectX2(float detectX2) {
+        this.detectX2 = detectX2;
+    }
+
+    public float getDetectY1() {
+        return detectY1;
+    }
+
+    public void setDetectY1(float detectY1) {
+        this.detectY1 = detectY1;
+    }
+
+    public float getDetectY2() {
+        return detectY2;
+    }
+
+    public void setDetectY2(float detectY2) {
+        this.detectY2 = detectY2;
+    }
+
+    public void setOrientation(Vec2 orientation) {
+        this.orientation = orientation;
+    }
+
+    public void addObjectToAttack(Body body) {
+        objectsToAttack.add(body);
     }
 }
