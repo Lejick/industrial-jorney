@@ -28,5 +28,6 @@
     <orderEntry type="library" name="Maven: org.openjfx:javafx-base:11.0.2" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-base:win:11.0.2" level="project" />
     <orderEntry type="module" module-name="jbox2d-testbed-javafx" />
+    <orderEntry type="library" name="R Skeletons" level="application" />
   </component>
 </module>

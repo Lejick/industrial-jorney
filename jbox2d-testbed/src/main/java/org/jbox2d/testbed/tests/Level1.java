@@ -139,7 +139,7 @@ public class Level1 extends TestbedTest {
         createPlatforms();
         createGuns();
         Body hero = createRectangle(-25, 15, commonPersonEdge, commonPersonEdge, true);
-        Body simpleBox = createRectangle(-20, 15, commonPersonEdge, commonPersonEdge, false);
+        Body simpleBox = createRectangle(20, 3, commonPersonEdge, commonPersonEdge, false);
         destroyableList.add(simpleBox);
         destroyableList.add(hero);
     }
@@ -157,6 +157,14 @@ public class Level1 extends TestbedTest {
         shape.set(new Vec2(-width / 3 , height / 2 - commonPersonEdge * 12), new Vec2(width / 2, height / 2 - commonPersonEdge * 12));
         f = ground.createFixture(shape, 0.0f);
         objectForJump.add(f);
+
+        shape.set(new Vec2(-width / 2, height / 2 - commonPersonEdge * 18), new Vec2(width / 8, height / 2 - commonPersonEdge * 18));
+        f = ground.createFixture(shape, 0.0f);
+        objectForJump.add(f);
+        shape.set(new Vec2(width / 4, height / 2 - commonPersonEdge * 18), new Vec2(width / 2, height / 2 - commonPersonEdge * 18));
+        f = ground.createFixture(shape, 0.0f);
+        objectForJump.add(f);
+
 
     }
 
