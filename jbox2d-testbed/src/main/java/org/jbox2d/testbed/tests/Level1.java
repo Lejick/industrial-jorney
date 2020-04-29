@@ -155,17 +155,33 @@ public class Level1 extends TestbedTest {
         shape.set(new Vec2(-width / 2, height / 2 - commonPersonEdge * 6), new Vec2(width / 3, height / 2 - commonPersonEdge * 6));
         Fixture f = ground.createFixture(shape, 0.0f);
         objectForJump.add(f);
+        shape.set(new Vec2(-width / 2, height / 2 - commonPersonEdge * 6 - 0.1f), new Vec2(width / 3, height / 2 - commonPersonEdge * 6 - 0.1f));
+        ground.createFixture(shape, 0.0f);
 
         shape.set(new Vec2(-width / 3, height / 2 - commonPersonEdge * 12), new Vec2(width / 2, height / 2 - commonPersonEdge * 12));
         f = ground.createFixture(shape, 0.0f);
         objectForJump.add(f);
+        shape.set(new Vec2(-width / 3, height / 2 - commonPersonEdge * 12 - 0.1f), new Vec2(width / 2, height / 2 - commonPersonEdge * 12 - 0.1f));
+        ground.createFixture(shape, 0.0f);
+
 
         shape.set(new Vec2(-width / 2, height / 2 - commonPersonEdge * 18), new Vec2(width / 8, height / 2 - commonPersonEdge * 18));
         f = ground.createFixture(shape, 0.0f);
         objectForJump.add(f);
+        shape.set(new Vec2(-width / 2, height / 2 - commonPersonEdge * 18 - 0.1f), new Vec2(width / 8, height / 2 - commonPersonEdge * 18 - 0.1f));
+        ground.createFixture(shape, 0.0f);
+
         shape.set(new Vec2(width / 4, height / 2 - commonPersonEdge * 18), new Vec2(width / 2, height / 2 - commonPersonEdge * 18));
         f = ground.createFixture(shape, 0.0f);
         objectForJump.add(f);
+        shape.set(new Vec2(width / 4, height / 2 - commonPersonEdge * 18 - 0.1f), new Vec2(width / 2, height / 2 - commonPersonEdge * 18 - 0.1f));
+        ground.createFixture(shape, 0.0f);
+
+        shape.set(new Vec2(-width / 3, height / 2 - commonPersonEdge * 30), new Vec2(width / 2, height / 2 - commonPersonEdge * 30));
+        f = ground.createFixture(shape, 0.0f);
+        objectForJump.add(f);
+        //shape.set(new Vec2(width / 4, height / 2 - commonPersonEdge * 18 - 0.1f), new Vec2(width / 2, height / 2 - commonPersonEdge * 18 - 0.1f));
+      //  ground.createFixture(shape, 0.0f);
 
 
     }

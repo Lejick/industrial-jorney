@@ -5,7 +5,6 @@ import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Color3f;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
-import org.jbox2d.dynamics.contacts.Position;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +21,7 @@ public class Gun {
     private float bulletVel;
     private float y;
     private World world;
+    List<Fixture> objectForJump = new ArrayList<>();
 
     private boolean isDetection;
 
@@ -100,10 +100,12 @@ public class Gun {
             bd.position.set(x + 2 * orientation.x, y + 2 * orientation.y);
 
             bullet = world.createBody(bd);
-            bullet.createFixture(fd);
+            Fixture f = bullet.createFixture(fd);
+            objectForJump.add(f);
             bullet.shapeColor = Color3f.RED;
             bullet.setLinearVelocity(new Vec2(orientation.x * bulletVel, orientation.y * bulletVel));
         }
+
     }
 
     public long getLastFireStep() {
@@ -213,5 +215,9 @@ public class Gun {
 
     public void addObjectToAttack(Body body) {
         objectsToAttack.add(body);
+    }
+
+    public void setObjectForJump(List<Fixture> objectForJump) {
+        this.objectForJump = objectForJump;
     }
 }
