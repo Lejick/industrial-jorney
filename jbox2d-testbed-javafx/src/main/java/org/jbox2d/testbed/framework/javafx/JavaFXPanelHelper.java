@@ -3,6 +3,7 @@ package org.jbox2d.testbed.framework.javafx;
 import java.util.List;
 
 import org.jbox2d.common.Vec2;
+import org.jbox2d.testbed.framework.GamingModelIF;
 import org.jbox2d.testbed.framework.TestbedCamera.ZoomType;
 import org.jbox2d.testbed.framework.AbstractTestbedController;
 import org.jbox2d.testbed.framework.TestbedModel;
@@ -24,7 +25,7 @@ public class JavaFXPanelHelper {
   /**
    * Adds common help text and listeners for awt-based testbeds.
    */
-  public static void addHelpAndPanelListeners(Node panel, final TestbedModel model,
+  public static void addHelpAndPanelListeners(Node panel, final GamingModelIF model,
       final AbstractTestbedController controller, final int screenDragButton) {
     final Vec2 oldDragMouse = new Vec2();
     final Vec2 mouse = new Vec2();

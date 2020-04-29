@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2013, Daniel Murphy All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification, are permitted
  * provided that the following conditions are met: * Redistributions of source code must retain the
  * above copyright notice, this list of conditions and the following disclaimer. * Redistributions
  * in binary form must reproduce the above copyright notice, this list of conditions and the
  * following disclaimer in the documentation and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
  * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
  * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
@@ -34,46 +34,44 @@ import javafx.stage.Stage;
 
 /**
  * The entry point for the testbed application
- * 
+ *
  * @author Daniel Murphy
  */
 public class TestbedMain extends Application {
-  // private static final Logger log = LoggerFactory.getLogger(TestbedMain.class);
-
-  @Override
-  public void start(Stage primaryStage) throws Exception {
-    TestbedModel model = new TestbedModel();
-    final AbstractTestbedController controller = new TestbedControllerJavaFX(model,
-        UpdateBehavior.UPDATE_CALLED, MouseBehavior.NORMAL, (Exception e, String message) -> {
-          new Alert(Alert.AlertType.ERROR).showAndWait();
+    @Override
+    public void start(Stage primaryStage) {
+        TestbedModel model = new TestbedModel();
+        final AbstractTestbedController controller = new TestbedControllerJavaFX(model,
+                UpdateBehavior.UPDATE_CALLED, MouseBehavior.NORMAL, (Exception e, String message) -> {
+            new Alert(Alert.AlertType.ERROR).showAndWait();
         });
-    
-    BorderPane testbed = new BorderPane();
-    TestPanelJavaFX panel = new TestPanelJavaFX(model, controller, testbed);
-    model.setPanel(panel);
-    model.setDebugDraw(new DebugDrawJavaFX(panel, true));
-    TestList.populateModel(model);
-    
-    testbed.setCenter(panel);
 
-    testbed.setRight(new ScrollPane(new TestbedSidePanel(model, controller)));
+        BorderPane testbed = new BorderPane();
+        TestPanelJavaFX panel = new TestPanelJavaFX(model, controller, testbed);
+        model.setPanel(panel);
+        model.setDebugDraw(new DebugDrawJavaFX(panel, true));
+        TestList.populateModel(model);
 
-    Scene scene = new Scene(testbed, TestPanelJavaFX.INIT_WIDTH + 175, TestPanelJavaFX.INIT_HEIGHT);
-    primaryStage.setScene(scene);
-    primaryStage.setTitle("JBox2D Testbed");
-    primaryStage.show();
-    System.out.println(System.getProperty("java.home"));
+        testbed.setCenter(panel);
 
-    Platform.runLater(new Runnable() {
-      @Override
-      public void run() {
-        controller.playTest(0);
-        controller.start();
-      }
-    });
-  }
+        testbed.setRight(new ScrollPane(new TestbedSidePanel(model, controller)));
 
-  public static void main(String[] args) {
-    launch(TestbedMain.class, args);
-  }
+        Scene scene = new Scene(testbed, TestPanelJavaFX.INIT_WIDTH + 175, TestPanelJavaFX.INIT_HEIGHT);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("JBox2D Testbed");
+        primaryStage.show();
+        System.out.println(System.getProperty("java.home"));
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controller.playTest(0);
+                controller.start();
+            }
+        });
+    }
+
+    public static void main(String[] args) {
+        launch(TestbedMain.class, args);
+    }
 }
