@@ -68,6 +68,10 @@
  */
 package org.jbox2d.testbed.tests;
 
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.collision.shapes.PolygonShape;
@@ -108,6 +112,7 @@ public class Level1 extends TestbedTest {
     List<Fixture> objectForJump = new ArrayList<>();
     List<Fixture> contactObjForJump = new ArrayList<>();
     Body action_body;
+    Body exit;
     List<Gun> gunList=new ArrayList<>();
     List<Body> destroyableList = Collections.synchronizedList(new ArrayList<>());
     List<Body> objectToExplode = Collections.synchronizedList(new ArrayList<>());
@@ -141,9 +146,14 @@ public class Level1 extends TestbedTest {
         createPlatforms();
         Body hero = createRectangle(-25, 15, commonPersonEdge, commonPersonEdge, true);
         Body simpleBox = createRectangle(20, 3, commonPersonEdge, commonPersonEdge, false);
+        Body simpleBox2 = createRectangle(0, height / 2 - commonPersonEdge * 29, commonPersonEdge, commonPersonEdge, false);
+
         destroyableList.add(simpleBox);
+        destroyableList.add(simpleBox2);
         destroyableList.add(hero);
         createGuns();
+        exit = createRectangle(width/2-1, -height / 2 + 3, 1, 4, false);
+        exit.shapeColor=Color3f.GREEN;
     }
 
 
@@ -180,9 +190,12 @@ public class Level1 extends TestbedTest {
         shape.set(new Vec2(-width / 3, height / 2 - commonPersonEdge * 30), new Vec2(width / 2, height / 2 - commonPersonEdge * 30));
         f = ground.createFixture(shape, 0.0f);
         objectForJump.add(f);
-        //shape.set(new Vec2(width / 4, height / 2 - commonPersonEdge * 18 - 0.1f), new Vec2(width / 2, height / 2 - commonPersonEdge * 18 - 0.1f));
-      //  ground.createFixture(shape, 0.0f);
+        shape.set(new Vec2(-width / 3, height / 2 - commonPersonEdge * 30 - 0.1f), new Vec2(width / 2, height / 2 - commonPersonEdge * 30 - 0.1f));
+        ground.createFixture(shape, 0.0f);
 
+
+        shape.set(new Vec2(0, -height / 2 +commonPersonEdge*3), new Vec2(0, -height / 2 ));
+        f = ground.createFixture(shape, 0.0f);
 
     }
 
@@ -295,6 +308,19 @@ public class Level1 extends TestbedTest {
         Body bodyToDestroy = null;
         Fixture fixtureA = contact.getFixtureA();
         Fixture fixtureB = contact.getFixtureB();
+        if (fixtureA.getBody() == action_body && fixtureB.getBody() == exit ||
+                fixtureB.getBody() == action_body && fixtureA.getBody() == exit) {
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle(null);
+            alert.setHeaderText(null);
+            alert.setContentText("Good game. You won! Click OK to exit.");
+
+            alert.setOnHidden(evt -> Platform.exit());
+
+            alert.show();
+
+        }
         if (fixtureA.getBody() == action_body) {
             if (objectForJump.contains(fixtureB)) {
                 contactObjForJump.add(fixtureB);
@@ -352,6 +378,7 @@ public class Level1 extends TestbedTest {
         }
         //  checkToErase();
         last_step++;
+        getDebugDraw().drawString(15, 33, "Exit", Color3f.GREEN);
     }
 
     private void checkToErase() {

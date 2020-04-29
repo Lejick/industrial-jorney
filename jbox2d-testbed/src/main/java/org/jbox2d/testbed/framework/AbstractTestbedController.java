@@ -44,11 +44,11 @@ import com.google.common.collect.Lists;
 public abstract class AbstractTestbedController {
   private static final Logger log = LoggerFactory.getLogger(AbstractTestbedController.class);
 
-  public static enum UpdateBehavior {
+  public enum UpdateBehavior {
     UPDATE_CALLED, UPDATE_IGNORED
   }
 
-  public static enum MouseBehavior {
+  public enum MouseBehavior {
     NORMAL, FORCE_Y_FLIP
   }
 

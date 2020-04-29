@@ -41,7 +41,8 @@ public class TestbedMain extends Application {
     @Override
     public void start(Stage primaryStage) {
         TestbedModel model = new TestbedModel();
-        final AbstractTestbedController controller = new TestbedControllerJavaFX(model,
+        final AbstractTestbedController controller;
+        controller = new TestbedControllerJavaFX(model,
                 UpdateBehavior.UPDATE_CALLED, MouseBehavior.NORMAL, (Exception e, String message) -> {
             new Alert(Alert.AlertType.ERROR).showAndWait();
         });

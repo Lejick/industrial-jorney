@@ -28,13 +28,8 @@ import javafx.stage.Stage;
 import org.jbox2d.testbed.framework.*;
 import org.jbox2d.testbed.framework.AbstractTestbedController.MouseBehavior;
 import org.jbox2d.testbed.framework.AbstractTestbedController.UpdateBehavior;
-import org.jbox2d.testbed.framework.j2d.*;
 import org.jbox2d.testbed.framework.javafx.*;
 import org.jbox2d.testbed.framework.javafx.PlaySidePanel;
-import org.jbox2d.testbed.framework.javafx.TestbedSidePanel;
-
-import javax.swing.*;
-import java.awt.*;
 
 /**
  * The entry point for the testbed application
