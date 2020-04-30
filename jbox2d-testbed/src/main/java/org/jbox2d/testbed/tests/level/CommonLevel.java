@@ -80,6 +80,10 @@
  * Created at 4:56:29 AM Jan 14, 2011
  * <p>
  * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
  */
 /**
  * Created at 4:56:29 AM Jan 14, 2011
@@ -120,7 +124,7 @@ public abstract class CommonLevel extends TestbedTest {
     long last_step = 0;
     protected List<Fixture> objectForJump = new ArrayList<>();
     protected List<Fixture> contactObjForJump = new ArrayList<>();
-    protected Body action_body;
+    protected Body hero_body;
     protected Body exit;
     protected Body objectToPush;
     protected List<Body> movingObject = new ArrayList<>();
@@ -131,11 +135,6 @@ public abstract class CommonLevel extends TestbedTest {
     protected List<Body> objectToExplode = Collections.synchronizedList(new ArrayList<>());
     protected List<Body> currentToErase = Collections.synchronizedList(new ArrayList<>());
     protected List<Body> nextToErase = Collections.synchronizedList(new ArrayList<>());
-
-    @Override
-    public Long getTag(Body argBody) {
-        return super.getTag(argBody);
-    }
 
     @Override
     public void processBody(Body argBody, Long argTag) {
@@ -149,71 +148,15 @@ public abstract class CommonLevel extends TestbedTest {
 
     @Override
     public void initTest(boolean deserialized) {
-        if (deserialized) {
-            return;
-        }
         contactObjForJump.clear();
         last_step = 0;
         lastDestroy_step = 0;
         createGameBox();
         createPlatforms();
-        Body hero = createRectangle(-25, 15, commonPersonEdge, commonPersonEdge, true);
-        Body simpleBox = createRectangle(20, 3, commonPersonEdge, commonPersonEdge, false);
-        Body simpleBox2 = createRectangle(0, getHeight() / 2 - commonPersonEdge * 29, commonPersonEdge, commonPersonEdge, false);
-        movingObject.add(simpleBox);
-        movingObject.add(simpleBox2);
-
-        destroyableList.add(simpleBox);
-        destroyableList.add(simpleBox2);
-        destroyableList.add(hero);
-        createGuns();
-        exit = createRectangle(getWidth() / 2 - 1, -getHeight() / 2 + 3, 1, 4, false);
-        exit.shapeColor = Color3f.GREEN;
     }
 
 
-    private void createPlatforms() {
-        BodyDef bd = new BodyDef();
-        Body ground = getWorld().createBody(bd);
-        EdgeShape shape = new EdgeShape();
-
-        shape.set(new Vec2(-getWidth() / 2, getHeight() / 2 - commonPersonEdge * 6), new Vec2(getWidth() / 3, getHeight() / 2 - commonPersonEdge * 6));
-        Fixture f = ground.createFixture(shape, 0.0f);
-        objectForJump.add(f);
-        shape.set(new Vec2(-getWidth() / 2, getHeight() / 2 - commonPersonEdge * 6 - 0.1f), new Vec2(getWidth() / 3, getHeight() / 2 - commonPersonEdge * 6 - 0.1f));
-        ground.createFixture(shape, 0.0f);
-
-        shape.set(new Vec2(-getWidth() / 3, getHeight() / 2 - commonPersonEdge * 12), new Vec2(getWidth() / 2, getHeight() / 2 - commonPersonEdge * 12));
-        f = ground.createFixture(shape, 0.0f);
-        objectForJump.add(f);
-        shape.set(new Vec2(-getWidth() / 3, getHeight() / 2 - commonPersonEdge * 12 - 0.1f), new Vec2(getWidth() / 2, getHeight() / 2 - commonPersonEdge * 12 - 0.1f));
-        ground.createFixture(shape, 0.0f);
-
-
-        shape.set(new Vec2(-getWidth() / 2, getHeight() / 2 - commonPersonEdge * 18), new Vec2(getWidth() / 8, getHeight() / 2 - commonPersonEdge * 18));
-        f = ground.createFixture(shape, 0.0f);
-        objectForJump.add(f);
-        shape.set(new Vec2(-getWidth() / 2, getHeight() / 2 - commonPersonEdge * 18 - 0.1f), new Vec2(getWidth() / 8, getHeight() / 2 - commonPersonEdge * 18 - 0.1f));
-        ground.createFixture(shape, 0.0f);
-
-        shape.set(new Vec2(getWidth() / 4, getHeight() / 2 - commonPersonEdge * 18), new Vec2(getWidth() / 2, getHeight() / 2 - commonPersonEdge * 18));
-        f = ground.createFixture(shape, 0.0f);
-        objectForJump.add(f);
-        shape.set(new Vec2(getWidth() / 4, getHeight() / 2 - commonPersonEdge * 18 - 0.1f), new Vec2(getWidth() / 2, getHeight() / 2 - commonPersonEdge * 18 - 0.1f));
-        ground.createFixture(shape, 0.0f);
-
-        shape.set(new Vec2(-getWidth() / 3, getHeight() / 2 - commonPersonEdge * 30), new Vec2(getWidth() / 2, getHeight() / 2 - commonPersonEdge * 30));
-        f = ground.createFixture(shape, 0.0f);
-        objectForJump.add(f);
-        shape.set(new Vec2(-getWidth() / 3, getHeight() / 2 - commonPersonEdge * 30 - 0.1f), new Vec2(getWidth() / 2, getHeight() / 2 - commonPersonEdge * 30 - 0.1f));
-        ground.createFixture(shape, 0.0f);
-
-
-        shape.set(new Vec2(0, -getHeight() / 2 + commonPersonEdge * 3), new Vec2(0, -getHeight() / 2));
-        f = ground.createFixture(shape, 0.0f);
-        contactObjForPush.add(f);
-
-    }
+    protected abstract void createPlatforms();
 
     private void createGuns() {
         Gun gun1 = new Gun(m_world, -getWidth() / 2, commonPersonEdge * 12 - 2, 200, 100, 0.5f);
@@ -272,22 +215,26 @@ public abstract class CommonLevel extends TestbedTest {
         Body body = getWorld().createBody(bd);
         Fixture f = body.createFixture(fd);
         objectForJump.add(f);
+        body.setHero(isHero);
         if (isHero) {
-            action_body = body;
+            hero_body = body;
         }
         return body;
     }
 
     public void keyPressed() {
-        boolean hasContact = action_body.m_contactList != null;
+        if (hero_body == null) {
+            return;
+        }
+        boolean hasContact = hero_body.m_contactList != null;
         if (getModel().getKeys()['a'] || getModel().getKeys()[1092]) {
-            if (action_body != null && action_body.getLinearVelocity().x > minSpeedX && contactObjForJump.size() > 0) {
-                Vec2 newVel = new Vec2(action_body.getLinearVelocity().x - 1, action_body.getLinearVelocity().y);
-                action_body.setLinearVelocity(newVel);
+            if (hero_body.getLinearVelocity().x > minSpeedX && contactObjForJump.size() > 0) {
+                Vec2 newVel = new Vec2(hero_body.getLinearVelocity().x - 1, hero_body.getLinearVelocity().y);
+                hero_body.setLinearVelocity(newVel);
             }
-            if (action_body != null && action_body.getLinearVelocity().x > minSpeedXAir && !hasContact) {
-                Vec2 newVel = new Vec2(action_body.getLinearVelocity().x - 1, action_body.getLinearVelocity().y);
-                action_body.setLinearVelocity(newVel);
+            if (hero_body.getLinearVelocity().x > minSpeedXAir && !hasContact) {
+                Vec2 newVel = new Vec2(hero_body.getLinearVelocity().x - 1, hero_body.getLinearVelocity().y);
+                hero_body.setLinearVelocity(newVel);
             }
             if (objectToPush != null && canPush) {
                 Vec2 newVel = new Vec2(objectToPush.m_linearVelocity.x + 0.5f, 0);
@@ -295,13 +242,13 @@ public abstract class CommonLevel extends TestbedTest {
             }
         }
         if (getModel().getKeys()['d'] || getModel().getKeys()[1074]) {
-            if (action_body != null && action_body.getLinearVelocity().x < maxSpeedX && contactObjForJump.size() > 0) {
-                Vec2 newVel = new Vec2(action_body.getLinearVelocity().x + 1, action_body.getLinearVelocity().y);
-                action_body.setLinearVelocity(newVel);
+            if (hero_body.getLinearVelocity().x < maxSpeedX && contactObjForJump.size() > 0) {
+                Vec2 newVel = new Vec2(hero_body.getLinearVelocity().x + 1, hero_body.getLinearVelocity().y);
+                hero_body.setLinearVelocity(newVel);
             }
-            if (action_body != null && action_body.getLinearVelocity().x < maxSpeedXAir && !hasContact) {
-                Vec2 newVel = new Vec2(action_body.getLinearVelocity().x + 1, action_body.getLinearVelocity().y);
-                action_body.setLinearVelocity(newVel);
+            if (hero_body.getLinearVelocity().x < maxSpeedXAir && !hasContact) {
+                Vec2 newVel = new Vec2(hero_body.getLinearVelocity().x + 1, hero_body.getLinearVelocity().y);
+                hero_body.setLinearVelocity(newVel);
             }
             if (objectToPush != null && canPush) {
                 Vec2 newVel = new Vec2(objectToPush.m_linearVelocity.x - 0.5f, 0);
@@ -309,9 +256,9 @@ public abstract class CommonLevel extends TestbedTest {
             }
         }
         if (getModel().getKeys()[' ']) {
-            if (action_body != null && action_body.getLinearVelocity().y < maxSpeedY && contactObjForJump.size() > 0) {
-                Vec2 newVel = new Vec2(action_body.getLinearVelocity().x, action_body.getLinearVelocity().y + 7);
-                action_body.setLinearVelocity(newVel);
+            if (hero_body.getLinearVelocity().y < maxSpeedY && contactObjForJump.size() > 0) {
+                Vec2 newVel = new Vec2(hero_body.getLinearVelocity().x, hero_body.getLinearVelocity().y + 7);
+                hero_body.setLinearVelocity(newVel);
             }
         }
     }
@@ -320,48 +267,45 @@ public abstract class CommonLevel extends TestbedTest {
         Body bodyToDestroy = null;
         Fixture fixtureA = contact.getFixtureA();
         Fixture fixtureB = contact.getFixtureB();
-        if (fixtureA.getBody() == action_body && fixtureB.getBody() == exit ||
-                fixtureB.getBody() == action_body && fixtureA.getBody() == exit) {
+        if (fixtureA.getBody().isHero() && fixtureB.getBody() == exit ||
+                fixtureB.getBody().isHero() && fixtureA.getBody() == exit) {
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle(null);
             alert.setHeaderText(null);
             alert.setContentText("Good game. You won! Click OK to exit.");
-
             alert.setOnHidden(evt -> Platform.exit());
-
             alert.show();
-
         }
 
-        if (fixtureA.getBody() == action_body) {
+        if (fixtureA.getBody().isHero()) {
             if (objectForJump.contains(fixtureB)) {
                 contactObjForJump.add(fixtureB);
             }
         }
-        if (fixtureB.getBody() == action_body) {
+        if (fixtureB.getBody().isHero()) {
             if (objectForJump.contains(fixtureA)) {
                 contactObjForJump.add(fixtureA);
             }
         }
 
-        if (fixtureA.getBody() == action_body) {
+        if (fixtureA.getBody().isHero()) {
             if (movingObject.contains(fixtureB.getBody())) {
                 objectToPush = fixtureB.getBody();
             }
         }
-        if (fixtureB.getBody() == action_body) {
+        if (fixtureB.getBody().isHero()) {
             if (movingObject.contains(fixtureA.getBody())) {
                 objectToPush = fixtureA.getBody();
             }
         }
 
-        if (fixtureA.getBody() == action_body && contactObjForPush.contains(fixtureB)) {
+        if (fixtureA.getBody().isHero() && contactObjForPush.contains(fixtureB)) {
             log.info("BEGIN Contact for push!");
             canPush = true;
         }
 
-        if (fixtureB.getBody() == action_body && contactObjForPush.contains(fixtureA)) {
+        if (fixtureB.getBody().isHero() && contactObjForPush.contains(fixtureA)) {
             log.info("BEGIN Contact for push!");
             canPush = true;
         }
@@ -390,30 +334,30 @@ public abstract class CommonLevel extends TestbedTest {
     public void endContact(Contact contact) {
         Fixture fixtureA = contact.getFixtureA();
         Fixture fixtureB = contact.getFixtureB();
-        if (fixtureA.getBody() == action_body) {
+        if (fixtureA.getBody().isHero()) {
             if (objectForJump.contains(fixtureB)) {
                 contactObjForJump.remove(fixtureB);
             }
         }
-        if (fixtureB.getBody() == action_body) {
+        if (fixtureB.getBody().isHero()) {
             if (objectForJump.contains(fixtureA)) {
                 contactObjForJump.remove(fixtureA);
             }
         }
 
-        if (fixtureA.getBody() == action_body && objectToPush == fixtureB.getBody()) {
+        if (fixtureA.getBody().isHero() && objectToPush == fixtureB.getBody()) {
             objectToPush = null;
         }
 
-        if (fixtureB.getBody() == action_body && objectToPush == fixtureA.getBody()) {
+        if (fixtureB.getBody().isHero() && objectToPush == fixtureA.getBody()) {
             objectToPush = null;
         }
 
-        if (fixtureA.getBody() == action_body && contactObjForPush.contains(fixtureB.getBody())) {
+        if (fixtureA.getBody().isHero() && contactObjForPush.contains(fixtureB.getBody())) {
             canPush = false;
         }
 
-        if (fixtureB.getBody() == action_body && contactObjForPush.contains(fixtureA.getBody())) {
+        if (fixtureB.getBody().isHero() && contactObjForPush.contains(fixtureA.getBody())) {
             canPush = false;
         }
 
@@ -453,7 +397,7 @@ public abstract class CommonLevel extends TestbedTest {
                 fd.density = 1.0f;
                 fd.friction = 0.3f;
                 BodyDef bd = new BodyDef();
-                if (body == action_body) {
+                if (body.isHero()) {
                     bd.shapeColor = Color3f.BLUE;
                 }
                 bd.type = BodyType.DYNAMIC;

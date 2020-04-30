@@ -99,17 +99,12 @@ public class Level2 extends CommonLevel {
 
     @Override
     public void initTest(boolean deserialized) {
-        contactObjForJump.clear();
-        last_step = 0;
-        lastDestroy_step = 0;
-        createGameBox();
-        createPlatforms();
+       super.initTest(false);
         Body hero = createRectangle(-25, 15, commonPersonEdge, commonPersonEdge, true);
         Body simpleBox = createRectangle(20, 3, commonPersonEdge, commonPersonEdge, false);
         Body simpleBox2 = createRectangle(0, getHeight() / 2 - commonPersonEdge * 29, commonPersonEdge, commonPersonEdge, false);
         movingObject.add(simpleBox);
         movingObject.add(simpleBox2);
-
         destroyableList.add(simpleBox);
         destroyableList.add(simpleBox2);
         destroyableList.add(hero);
@@ -119,7 +114,7 @@ public class Level2 extends CommonLevel {
     }
 
 
-    private void createPlatforms() {
+    protected void createPlatforms() {
         BodyDef bd = new BodyDef();
         Body ground = getWorld().createBody(bd);
         EdgeShape shape = new EdgeShape();
