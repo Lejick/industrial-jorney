@@ -62,6 +62,14 @@
  * Created at 4:56:29 AM Jan 14, 2011
  * <p>
  * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
  */
 /**
  * Created at 4:56:29 AM Jan 14, 2011
@@ -113,7 +121,11 @@ public class Level1 extends TestbedTest {
     List<Fixture> contactObjForJump = new ArrayList<>();
     Body action_body;
     Body exit;
-    List<Gun> gunList=new ArrayList<>();
+    Body objectToPush;
+    List<Body> movingObject = new ArrayList<>();
+    boolean canPush = false;
+    List<Fixture> contactObjForPush = new ArrayList<>();
+    List<Gun> gunList = new ArrayList<>();
     List<Body> destroyableList = Collections.synchronizedList(new ArrayList<>());
     List<Body> objectToExplode = Collections.synchronizedList(new ArrayList<>());
     List<Body> currentToErase = Collections.synchronizedList(new ArrayList<>());
@@ -147,13 +159,15 @@ public class Level1 extends TestbedTest {
         Body hero = createRectangle(-25, 15, commonPersonEdge, commonPersonEdge, true);
         Body simpleBox = createRectangle(20, 3, commonPersonEdge, commonPersonEdge, false);
         Body simpleBox2 = createRectangle(0, height / 2 - commonPersonEdge * 29, commonPersonEdge, commonPersonEdge, false);
+        movingObject.add(simpleBox);
+        movingObject.add(simpleBox2);
 
         destroyableList.add(simpleBox);
         destroyableList.add(simpleBox2);
         destroyableList.add(hero);
         createGuns();
-        exit = createRectangle(width/2-1, -height / 2 + 3, 1, 4, false);
-        exit.shapeColor=Color3f.GREEN;
+        exit = createRectangle(width / 2 - 1, -height / 2 + 3, 1, 4, false);
+        exit.shapeColor = Color3f.GREEN;
     }
 
 
@@ -194,8 +208,9 @@ public class Level1 extends TestbedTest {
         ground.createFixture(shape, 0.0f);
 
 
-        shape.set(new Vec2(0, -height / 2 +commonPersonEdge*3), new Vec2(0, -height / 2 ));
+        shape.set(new Vec2(0, -height / 2 + commonPersonEdge * 3), new Vec2(0, -height / 2));
         f = ground.createFixture(shape, 0.0f);
+        contactObjForPush.add(f);
 
     }
 
@@ -211,7 +226,7 @@ public class Level1 extends TestbedTest {
         gun2.setDetectX2(16);
         gun2.setDetectY1(-0.6f);
         gun2.setDetectY2(-0.4f);
-        for(Body body:destroyableList){
+        for (Body body : destroyableList) {
             gun2.addObjectToAttack(body);
         }
         gun2.setOrientation(new Vec2(-1, 0));
@@ -231,12 +246,12 @@ public class Level1 extends TestbedTest {
         shape.set(new Vec2(-width / 2, height / 2), new Vec2(width / 2, height / 2));
         ground.createFixture(shape, 0.0f);
 
-
         shape.set(new Vec2(width / 2, height / 2), new Vec2(width / 2, -height / 2));
-        ground.createFixture(shape, 0.0f);
-
+        f = ground.createFixture(shape, 0.0f);
+        contactObjForPush.add(f);
         shape.set(new Vec2(-width / 2, height / 2), new Vec2(-width / 2, -height / 2));
-        ground.createFixture(shape, 0.0f);
+        f = ground.createFixture(shape, 0.0f);
+        contactObjForPush.add(f);
     }
 
     private Body createRectangle(float x, float y, float hx, float hy, boolean isHero) {
@@ -273,6 +288,10 @@ public class Level1 extends TestbedTest {
                 Vec2 newVel = new Vec2(action_body.getLinearVelocity().x - 1, action_body.getLinearVelocity().y);
                 action_body.setLinearVelocity(newVel);
             }
+            if (objectToPush != null && canPush) {
+                Vec2 newVel = new Vec2(objectToPush.getLinearVelocity().x - 0.1f, objectToPush.getLinearVelocity().y);
+                objectToPush.setLinearVelocity(newVel);
+            }
         }
         if (getModel().getKeys()['d'] || getModel().getKeys()[1074]) {
             if (action_body != null && action_body.getLinearVelocity().x < maxSpeedX && contactObjForJump.size() > 0) {
@@ -283,20 +302,12 @@ public class Level1 extends TestbedTest {
                 Vec2 newVel = new Vec2(action_body.getLinearVelocity().x + 1, action_body.getLinearVelocity().y);
                 action_body.setLinearVelocity(newVel);
             }
+            if (objectToPush != null && canPush) {
+                Vec2 newVel = new Vec2(objectToPush.getLinearVelocity().x + 0.1f, objectToPush.getLinearVelocity().y);
+                objectToPush.setLinearVelocity(newVel);
+            }
         }
         if (getModel().getKeys()[' ']) {
-            if (action_body != null && action_body.getLinearVelocity().y < maxSpeedY && contactObjForJump.size() > 0) {
-                Vec2 newVel = new Vec2(action_body.getLinearVelocity().x, action_body.getLinearVelocity().y + 7);
-                action_body.setLinearVelocity(newVel);
-            }
-        }
-        if (getModel().getKeys()['f']) {
-            if (action_body != null && action_body.getLinearVelocity().y < maxSpeedY && contactObjForJump.size() > 0) {
-                Vec2 newVel = new Vec2(action_body.getLinearVelocity().x, action_body.getLinearVelocity().y + 7);
-                action_body.setLinearVelocity(newVel);
-            }
-        }
-        if (getModel().getKeys()[16]) {
             if (action_body != null && action_body.getLinearVelocity().y < maxSpeedY && contactObjForJump.size() > 0) {
                 Vec2 newVel = new Vec2(action_body.getLinearVelocity().x, action_body.getLinearVelocity().y + 7);
                 action_body.setLinearVelocity(newVel);
@@ -321,6 +332,7 @@ public class Level1 extends TestbedTest {
             alert.show();
 
         }
+
         if (fixtureA.getBody() == action_body) {
             if (objectForJump.contains(fixtureB)) {
                 contactObjForJump.add(fixtureB);
@@ -332,6 +344,27 @@ public class Level1 extends TestbedTest {
             }
         }
 
+        if (fixtureA.getBody() == action_body) {
+            if (movingObject.contains(fixtureB.getBody())) {
+                objectToPush = fixtureB.getBody();
+            }
+        }
+        if (fixtureB.getBody() == action_body) {
+            if (movingObject.contains(fixtureA.getBody())) {
+                objectToPush = fixtureA.getBody();
+            }
+        }
+
+        if (fixtureA.getBody() == action_body && contactObjForPush.contains(fixtureB)) {
+            log.info("BEGIN Contact for push!");
+            canPush = true;
+        }
+
+        if (fixtureB.getBody() == action_body && contactObjForPush.contains(fixtureA)) {
+            log.info("BEGIN Contact for push!");
+            canPush = true;
+        }
+
         for (Gun gun : gunList) {
             if (fixtureA.m_body == gun.getBullet()) {
                 bodyToDestroy = fixtureB.m_body;
@@ -339,7 +372,7 @@ public class Level1 extends TestbedTest {
                 bodyToDestroy = fixtureA.m_body;
             }
 
-            if (bodyToDestroy != null && gun.getBullet()!=null && destroyableList.contains(bodyToDestroy)) {
+            if (bodyToDestroy != null && gun.getBullet() != null && destroyableList.contains(bodyToDestroy)) {
                 float bulletImpulse = gun.getBullet().m_mass * gun.getBullet().getLinearVelocity().length();
                 if (bulletImpulse > 400) {
                     objectToExplode.add(bodyToDestroy);
@@ -366,6 +399,19 @@ public class Level1 extends TestbedTest {
                 contactObjForJump.remove(fixtureA);
             }
         }
+
+        if (fixtureA.getBody() == action_body && contactObjForPush.contains(fixtureB)) {
+            log.info("END Contact for push!");
+            canPush = false;
+            objectToPush = null;
+        }
+
+        if (fixtureB.getBody() == action_body && contactObjForPush.contains(fixtureA)) {
+            log.info("END Contact for push!");
+            canPush = false;
+            objectToPush = null;
+        }
+
     }
 
     @Override
