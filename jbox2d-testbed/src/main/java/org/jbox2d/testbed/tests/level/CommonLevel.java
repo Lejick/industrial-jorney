@@ -70,17 +70,24 @@
  * Created at 4:56:29 AM Jan 14, 2011
  * <p>
  * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
  */
 /**
  * Created at 4:56:29 AM Jan 14, 2011
  */
-package org.jbox2d.testbed.tests;
+package org.jbox2d.testbed.tests.level;
 
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextArea;
-import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Color3f;
@@ -93,43 +100,37 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.jbox2d.testbed.framework.Gun;
 
-import java.util.AbstractSequentialList;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author Daniel Murphy
  */
-public class Level1 extends TestbedTest {
-    private static final long BULLET_TAG = 1;
+public abstract class CommonLevel extends TestbedTest {
+    protected static final Logger log = LoggerFactory.getLogger(Level1.class);
+    protected final static float maxSpeedX = 6f;
+    protected final static float minSpeedX = -6f;
+    protected final static float maxSpeedXAir = 3f;
+    protected final static float minSpeedXAir = -3f;
+    protected final static float maxSpeedY = 5f;
 
-    private static final Logger log = LoggerFactory.getLogger(Level1.class);
-    private final static float maxSpeedX = 6f;
-    private final static float minSpeedX = -6f;
-    private final static float maxSpeedXAir = 3f;
-    private final static float minSpeedXAir = -3f;
-    private final static float maxSpeedY = 5f;
-
-    private static float width = 60;
-    private static float height = 40;
-    private static final float commonPersonEdge = 1f;
+    protected static final float commonPersonEdge = 1f;
     long lastDestroy_step = 0;
     long last_step = 0;
-    List<Fixture> objectForJump = new ArrayList<>();
-    List<Fixture> contactObjForJump = new ArrayList<>();
-    Body action_body;
-    Body exit;
-    Body objectToPush;
-    List<Body> movingObject = new ArrayList<>();
-    boolean canPush = false;
-    List<Fixture> contactObjForPush = new ArrayList<>();
-    List<Gun> gunList = new ArrayList<>();
-    List<Body> destroyableList = Collections.synchronizedList(new ArrayList<>());
-    List<Body> objectToExplode = Collections.synchronizedList(new ArrayList<>());
-    List<Body> currentToErase = Collections.synchronizedList(new ArrayList<>());
-    List<Body> nextToErase = Collections.synchronizedList(new ArrayList<>());
+    protected List<Fixture> objectForJump = new ArrayList<>();
+    protected List<Fixture> contactObjForJump = new ArrayList<>();
+    protected Body action_body;
+    protected Body exit;
+    protected Body objectToPush;
+    protected List<Body> movingObject = new ArrayList<>();
+    protected boolean canPush = false;
+    protected List<Fixture> contactObjForPush = new ArrayList<>();
+    protected List<Gun> gunList = new ArrayList<>();
+    protected List<Body> destroyableList = Collections.synchronizedList(new ArrayList<>());
+    protected List<Body> objectToExplode = Collections.synchronizedList(new ArrayList<>());
+    protected List<Body> currentToErase = Collections.synchronizedList(new ArrayList<>());
+    protected List<Body> nextToErase = Collections.synchronizedList(new ArrayList<>());
 
     @Override
     public Long getTag(Body argBody) {
@@ -158,7 +159,7 @@ public class Level1 extends TestbedTest {
         createPlatforms();
         Body hero = createRectangle(-25, 15, commonPersonEdge, commonPersonEdge, true);
         Body simpleBox = createRectangle(20, 3, commonPersonEdge, commonPersonEdge, false);
-        Body simpleBox2 = createRectangle(0, height / 2 - commonPersonEdge * 29, commonPersonEdge, commonPersonEdge, false);
+        Body simpleBox2 = createRectangle(0, getHeight() / 2 - commonPersonEdge * 29, commonPersonEdge, commonPersonEdge, false);
         movingObject.add(simpleBox);
         movingObject.add(simpleBox2);
 
@@ -166,7 +167,7 @@ public class Level1 extends TestbedTest {
         destroyableList.add(simpleBox2);
         destroyableList.add(hero);
         createGuns();
-        exit = createRectangle(width / 2 - 1, -height / 2 + 3, 1, 4, false);
+        exit = createRectangle(getWidth() / 2 - 1, -getHeight() / 2 + 3, 1, 4, false);
         exit.shapeColor = Color3f.GREEN;
     }
 
@@ -176,51 +177,51 @@ public class Level1 extends TestbedTest {
         Body ground = getWorld().createBody(bd);
         EdgeShape shape = new EdgeShape();
 
-        shape.set(new Vec2(-width / 2, height / 2 - commonPersonEdge * 6), new Vec2(width / 3, height / 2 - commonPersonEdge * 6));
+        shape.set(new Vec2(-getWidth() / 2, getHeight() / 2 - commonPersonEdge * 6), new Vec2(getWidth() / 3, getHeight() / 2 - commonPersonEdge * 6));
         Fixture f = ground.createFixture(shape, 0.0f);
         objectForJump.add(f);
-        shape.set(new Vec2(-width / 2, height / 2 - commonPersonEdge * 6 - 0.1f), new Vec2(width / 3, height / 2 - commonPersonEdge * 6 - 0.1f));
+        shape.set(new Vec2(-getWidth() / 2, getHeight() / 2 - commonPersonEdge * 6 - 0.1f), new Vec2(getWidth() / 3, getHeight() / 2 - commonPersonEdge * 6 - 0.1f));
         ground.createFixture(shape, 0.0f);
 
-        shape.set(new Vec2(-width / 3, height / 2 - commonPersonEdge * 12), new Vec2(width / 2, height / 2 - commonPersonEdge * 12));
+        shape.set(new Vec2(-getWidth() / 3, getHeight() / 2 - commonPersonEdge * 12), new Vec2(getWidth() / 2, getHeight() / 2 - commonPersonEdge * 12));
         f = ground.createFixture(shape, 0.0f);
         objectForJump.add(f);
-        shape.set(new Vec2(-width / 3, height / 2 - commonPersonEdge * 12 - 0.1f), new Vec2(width / 2, height / 2 - commonPersonEdge * 12 - 0.1f));
+        shape.set(new Vec2(-getWidth() / 3, getHeight() / 2 - commonPersonEdge * 12 - 0.1f), new Vec2(getWidth() / 2, getHeight() / 2 - commonPersonEdge * 12 - 0.1f));
         ground.createFixture(shape, 0.0f);
 
 
-        shape.set(new Vec2(-width / 2, height / 2 - commonPersonEdge * 18), new Vec2(width / 8, height / 2 - commonPersonEdge * 18));
+        shape.set(new Vec2(-getWidth() / 2, getHeight() / 2 - commonPersonEdge * 18), new Vec2(getWidth() / 8, getHeight() / 2 - commonPersonEdge * 18));
         f = ground.createFixture(shape, 0.0f);
         objectForJump.add(f);
-        shape.set(new Vec2(-width / 2, height / 2 - commonPersonEdge * 18 - 0.1f), new Vec2(width / 8, height / 2 - commonPersonEdge * 18 - 0.1f));
+        shape.set(new Vec2(-getWidth() / 2, getHeight() / 2 - commonPersonEdge * 18 - 0.1f), new Vec2(getWidth() / 8, getHeight() / 2 - commonPersonEdge * 18 - 0.1f));
         ground.createFixture(shape, 0.0f);
 
-        shape.set(new Vec2(width / 4, height / 2 - commonPersonEdge * 18), new Vec2(width / 2, height / 2 - commonPersonEdge * 18));
+        shape.set(new Vec2(getWidth() / 4, getHeight() / 2 - commonPersonEdge * 18), new Vec2(getWidth() / 2, getHeight() / 2 - commonPersonEdge * 18));
         f = ground.createFixture(shape, 0.0f);
         objectForJump.add(f);
-        shape.set(new Vec2(width / 4, height / 2 - commonPersonEdge * 18 - 0.1f), new Vec2(width / 2, height / 2 - commonPersonEdge * 18 - 0.1f));
+        shape.set(new Vec2(getWidth() / 4, getHeight() / 2 - commonPersonEdge * 18 - 0.1f), new Vec2(getWidth() / 2, getHeight() / 2 - commonPersonEdge * 18 - 0.1f));
         ground.createFixture(shape, 0.0f);
 
-        shape.set(new Vec2(-width / 3, height / 2 - commonPersonEdge * 30), new Vec2(width / 2, height / 2 - commonPersonEdge * 30));
+        shape.set(new Vec2(-getWidth() / 3, getHeight() / 2 - commonPersonEdge * 30), new Vec2(getWidth() / 2, getHeight() / 2 - commonPersonEdge * 30));
         f = ground.createFixture(shape, 0.0f);
         objectForJump.add(f);
-        shape.set(new Vec2(-width / 3, height / 2 - commonPersonEdge * 30 - 0.1f), new Vec2(width / 2, height / 2 - commonPersonEdge * 30 - 0.1f));
+        shape.set(new Vec2(-getWidth() / 3, getHeight() / 2 - commonPersonEdge * 30 - 0.1f), new Vec2(getWidth() / 2, getHeight() / 2 - commonPersonEdge * 30 - 0.1f));
         ground.createFixture(shape, 0.0f);
 
 
-        shape.set(new Vec2(0, -height / 2 + commonPersonEdge * 3), new Vec2(0, -height / 2));
+        shape.set(new Vec2(0, -getHeight() / 2 + commonPersonEdge * 3), new Vec2(0, -getHeight() / 2));
         f = ground.createFixture(shape, 0.0f);
         contactObjForPush.add(f);
 
     }
 
     private void createGuns() {
-        Gun gun1 = new Gun(m_world, -width / 2, commonPersonEdge * 12 - 2, 200, 100, 0.5f);
+        Gun gun1 = new Gun(m_world, -getWidth() / 2, commonPersonEdge * 12 - 2, 200, 100, 0.5f);
         gun1.setOrientation(new Vec2(1, 0));
         objectForJump.add(gun1.getGunBodyFixture());
         gunList.add(gun1);
 
-        Gun gun2 = new Gun(m_world, width / 2 - 2, commonPersonEdge - 2, 400, 400, 0.5f);
+        Gun gun2 = new Gun(m_world, getWidth() / 2 - 2, commonPersonEdge - 2, 400, 400, 0.5f);
         gun2.setDetection(true);
         gun2.setDetectX1(6);
         gun2.setDetectX2(16);
@@ -234,27 +235,27 @@ public class Level1 extends TestbedTest {
         gunList.add(gun2);
     }
 
-    private void createGameBox() {
+    protected void createGameBox() {
         BodyDef bd = new BodyDef();
         Body ground = getWorld().createBody(bd);
 
         EdgeShape shape = new EdgeShape();
-        shape.set(new Vec2(-width / 2, -height / 2), new Vec2(width / 2, -height / 2));
+        shape.set(new Vec2(-getWidth() / 2, -getHeight() / 2), new Vec2(getWidth() / 2, -getHeight() / 2));
         Fixture f = ground.createFixture(shape, 0.0f);
         objectForJump.add(f);
 
-        shape.set(new Vec2(-width / 2, height / 2), new Vec2(width / 2, height / 2));
+        shape.set(new Vec2(-getWidth() / 2, getHeight() / 2), new Vec2(getWidth() / 2, getHeight() / 2));
         ground.createFixture(shape, 0.0f);
 
-        shape.set(new Vec2(width / 2, height / 2), new Vec2(width / 2, -height / 2));
+        shape.set(new Vec2(getWidth() / 2, getHeight() / 2), new Vec2(getWidth() / 2, -getHeight() / 2));
         f = ground.createFixture(shape, 0.0f);
         contactObjForPush.add(f);
-        shape.set(new Vec2(-width / 2, height / 2), new Vec2(-width / 2, -height / 2));
+        shape.set(new Vec2(-getWidth() / 2, getHeight() / 2), new Vec2(-getWidth() / 2, -getHeight() / 2));
         f = ground.createFixture(shape, 0.0f);
         contactObjForPush.add(f);
     }
 
-    private Body createRectangle(float x, float y, float hx, float hy, boolean isHero) {
+    protected Body createRectangle(float x, float y, float hx, float hy, boolean isHero) {
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(hx, hy);
         FixtureDef fd = new FixtureDef();
@@ -289,7 +290,7 @@ public class Level1 extends TestbedTest {
                 action_body.setLinearVelocity(newVel);
             }
             if (objectToPush != null && canPush) {
-                Vec2 newVel = new Vec2(objectToPush.getLinearVelocity().x - 0.1f, objectToPush.getLinearVelocity().y);
+                Vec2 newVel = new Vec2(objectToPush.m_linearVelocity.x + 0.5f, 0);
                 objectToPush.setLinearVelocity(newVel);
             }
         }
@@ -303,7 +304,7 @@ public class Level1 extends TestbedTest {
                 action_body.setLinearVelocity(newVel);
             }
             if (objectToPush != null && canPush) {
-                Vec2 newVel = new Vec2(objectToPush.getLinearVelocity().x + 0.1f, objectToPush.getLinearVelocity().y);
+                Vec2 newVel = new Vec2(objectToPush.m_linearVelocity.x - 0.5f, 0);
                 objectToPush.setLinearVelocity(newVel);
             }
         }
@@ -400,16 +401,20 @@ public class Level1 extends TestbedTest {
             }
         }
 
-        if (fixtureA.getBody() == action_body && contactObjForPush.contains(fixtureB)) {
-            log.info("END Contact for push!");
-            canPush = false;
+        if (fixtureA.getBody() == action_body && objectToPush == fixtureB.getBody()) {
             objectToPush = null;
         }
 
-        if (fixtureB.getBody() == action_body && contactObjForPush.contains(fixtureA)) {
-            log.info("END Contact for push!");
-            canPush = false;
+        if (fixtureB.getBody() == action_body && objectToPush == fixtureA.getBody()) {
             objectToPush = null;
+        }
+
+        if (fixtureA.getBody() == action_body && contactObjForPush.contains(fixtureB.getBody())) {
+            canPush = false;
+        }
+
+        if (fixtureB.getBody() == action_body && contactObjForPush.contains(fixtureA.getBody())) {
+            canPush = false;
         }
 
     }
@@ -424,7 +429,6 @@ public class Level1 extends TestbedTest {
         }
         //  checkToErase();
         last_step++;
-        getDebugDraw().drawString(15, 33, "Exit", Color3f.GREEN);
     }
 
     private void checkToErase() {
@@ -469,4 +473,8 @@ public class Level1 extends TestbedTest {
     public String getTestName() {
         return "Level 1";
     }
+
+    protected abstract float getWidth();
+
+    protected abstract float getHeight();
 }

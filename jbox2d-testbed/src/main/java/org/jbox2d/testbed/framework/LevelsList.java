@@ -23,7 +23,8 @@
  ******************************************************************************/
 package org.jbox2d.testbed.framework;
 
-import org.jbox2d.testbed.tests.*;
+import org.jbox2d.testbed.tests.level.Level1;
+import org.jbox2d.testbed.tests.level.Level2;
 
 /**
  * @author Daniel Murphy
