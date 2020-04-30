@@ -64,7 +64,7 @@ public class PlayableMain extends Application {
         System.out.println(System.getProperty("java.home"));
 
         Platform.runLater(() -> {
-            controller.playTest(0);
+            controller.playTest(2);
             controller.start();
         });
     }

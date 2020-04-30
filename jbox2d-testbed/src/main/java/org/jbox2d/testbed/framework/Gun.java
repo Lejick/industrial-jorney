@@ -21,14 +21,12 @@ public class Gun {
     private float bulletVel;
     private float y;
     private World world;
-    List<Fixture> objectForJump = new ArrayList<>();
-
+    private List<Fixture> objectForJump = new ArrayList<>();
     private boolean isDetection;
-
-    private float detectX1;
-    private float detectX2;
-    private float detectY1;
-    private float detectY2;
+    private Float detectX1;
+    private Float detectX2;
+    private Float detectY1;
+    private Float detectY2;
 
     public Gun(World world, float x, float y, long cooldown, float bulletVel, float bulletDensity) {
         this.cooldown = cooldown;
@@ -64,11 +62,28 @@ public class Gun {
             for (Body body : objectsToAttack) {
                 float positionX = body.getPosition().x;
                 float positionY = body.getPosition().y;
+
+                boolean condition1 = true;
+                if (detectX1 != null) {
+                    condition1 = positionX >= detectX1;
+                }
+                boolean condition2 = true;
+                if (detectX2 != null) {
+                    condition2 = positionX <= detectX2;
+                }
+                boolean condition3 = true;
+                if (detectY1 != null) {
+                    condition3 = positionY >= detectY1;
+                }
+                boolean condition4 = true;
+                if (detectY2 != null) {
+                    condition4 = positionY <= detectY2;
+                }
                 if ((lastStep - lastFireStep > cooldown) &&
-                        positionX >= detectX1 &&
-                        positionX <= detectX2 &&
-                        positionY >= detectY1 &&
-                        positionY <= detectY2) {
+                        condition1 &&
+                        condition2 &&
+                        condition3 &&
+                        condition4) {
                     fireBullet();
                     lastFireStep = lastStep;
                 }

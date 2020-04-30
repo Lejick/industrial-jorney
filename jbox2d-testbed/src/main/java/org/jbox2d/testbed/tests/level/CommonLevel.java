@@ -198,7 +198,7 @@ public abstract class CommonLevel extends TestbedTest {
         contactObjForPush.add(f);
     }
 
-    protected Body createRectangle(float x, float y, float hx, float hy, boolean isHero) {
+    protected Body createRectangle(float x, float y, float hx, float hy, boolean isHero, BodyType bodyType) {
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(hx, hy);
         FixtureDef fd = new FixtureDef();
@@ -209,7 +209,7 @@ public abstract class CommonLevel extends TestbedTest {
         if (isHero) {
             bd.shapeColor = Color3f.BLUE;
         }
-        bd.type = BodyType.DYNAMIC;
+        bd.type = bodyType;
         bd.position.set(x, y);
 
         Body body = getWorld().createBody(bd);
@@ -412,12 +412,6 @@ public abstract class CommonLevel extends TestbedTest {
         }
         objectToExplode.clear();
     }
-
-    @Override
-    public String getTestName() {
-        return "Level 1";
-    }
-
     protected abstract float getWidth();
 
     protected abstract float getHeight();

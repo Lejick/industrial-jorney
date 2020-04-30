@@ -110,16 +110,16 @@ public class Level1 extends CommonLevel {
     @Override
     public void initTest(boolean deserialized) {
         super.initTest(false);
-        Body hero = createRectangle(-25, 15, commonPersonEdge, commonPersonEdge, true);
-        Body simpleBox = createRectangle(20, 3, commonPersonEdge, commonPersonEdge, false);
-        Body simpleBox2 = createRectangle(0, getHeight() / 2 - commonPersonEdge * 29, commonPersonEdge, commonPersonEdge, false);
+        Body hero = createRectangle(-25, 15, commonPersonEdge, commonPersonEdge, true, BodyType.DYNAMIC);
+        Body simpleBox = createRectangle(20, 3, commonPersonEdge, commonPersonEdge, false, BodyType.DYNAMIC);
+        Body simpleBox2 = createRectangle(0, getHeight() / 2 - commonPersonEdge * 29, commonPersonEdge, commonPersonEdge, false, BodyType.DYNAMIC);
         movingObject.add(simpleBox);
         movingObject.add(simpleBox2);
         destroyableList.add(simpleBox);
         destroyableList.add(simpleBox2);
         destroyableList.add(hero);
         createGuns();
-        exit = createRectangle(getWidth() / 2 - 1, -getHeight() / 2 + 3, 1, 4, false);
+        exit = createRectangle(getWidth() / 2 - 1, -getHeight() / 2 + 4 * commonPersonEdge, 1, 4, false, BodyType.STATIC);
         exit.shapeColor = Color3f.GREEN;
     }
 
@@ -174,8 +174,6 @@ public class Level1 extends CommonLevel {
 
         Gun gun2 = new Gun(m_world, getWidth() / 2 - 2, commonPersonEdge - 2, 400, 400, 0.5f);
         gun2.setDetection(true);
-        gun2.setDetectX1(6);
-        gun2.setDetectX2(16);
         gun2.setDetectY1(-0.6f);
         gun2.setDetectY2(-0.4f);
         for (Body body : destroyableList) {

@@ -100,16 +100,16 @@ public class Level2 extends CommonLevel {
     @Override
     public void initTest(boolean deserialized) {
        super.initTest(false);
-        Body hero = createRectangle(-25, 15, commonPersonEdge, commonPersonEdge, true);
-        Body simpleBox = createRectangle(20, 3, commonPersonEdge, commonPersonEdge, false);
-        Body simpleBox2 = createRectangle(0, getHeight() / 2 - commonPersonEdge * 29, commonPersonEdge, commonPersonEdge, false);
+        Body hero = createRectangle(-getWidth() / 2 + 2, getHeight()/2-2*commonPersonEdge, commonPersonEdge, commonPersonEdge, true,BodyType.DYNAMIC);
+        Body simpleBox = createRectangle(20, 3, commonPersonEdge, commonPersonEdge, false,BodyType.DYNAMIC);
+        Body simpleBox2 = createRectangle(0, getHeight() / 2 - commonPersonEdge * 29, commonPersonEdge, commonPersonEdge, false,BodyType.DYNAMIC);
         movingObject.add(simpleBox);
         movingObject.add(simpleBox2);
         destroyableList.add(simpleBox);
         destroyableList.add(simpleBox2);
         destroyableList.add(hero);
         createGuns();
-        exit = createRectangle(getWidth() / 2 - 1, -getHeight() / 2 + 3, 1, 4, false);
+        exit = createRectangle(getWidth() / 2 - 1, getHeight() / 2 - commonPersonEdge*4, 1, 4, false,BodyType.STATIC);
         exit.shapeColor = Color3f.GREEN;
     }
 
@@ -118,47 +118,17 @@ public class Level2 extends CommonLevel {
         BodyDef bd = new BodyDef();
         Body ground = getWorld().createBody(bd);
         EdgeShape shape = new EdgeShape();
+        shape.set(new Vec2(-getWidth() / 2 + commonPersonEdge * 6, getHeight() / 2), new Vec2(-getWidth() / 2 + commonPersonEdge * 6, commonPersonEdge * 3));
+        ground.createFixture(shape, 0.0f);
 
-        shape.set(new Vec2(-getWidth() / 2, getHeight() / 2 - commonPersonEdge * 6), new Vec2(getWidth() / 3, getHeight() / 2 - commonPersonEdge * 6));
+        shape.set(new Vec2(-getWidth() / 2 + commonPersonEdge * 5, 0), new Vec2(getWidth() / 8, 0));
         Fixture f = ground.createFixture(shape, 0.0f);
         objectForJump.add(f);
-        shape.set(new Vec2(-getWidth() / 2, getHeight() / 2 - commonPersonEdge * 6 - 0.1f), new Vec2(getWidth() / 3, getHeight() / 2 - commonPersonEdge * 6 - 0.1f));
-        ground.createFixture(shape, 0.0f);
-
-        shape.set(new Vec2(-getWidth() / 3, getHeight() / 2 - commonPersonEdge * 12), new Vec2(getWidth() / 2, getHeight() / 2 - commonPersonEdge * 12));
-        f = ground.createFixture(shape, 0.0f);
-        objectForJump.add(f);
-        shape.set(new Vec2(-getWidth() / 3, getHeight() / 2 - commonPersonEdge * 12 - 0.1f), new Vec2(getWidth() / 2, getHeight() / 2 - commonPersonEdge * 12 - 0.1f));
-        ground.createFixture(shape, 0.0f);
-
-
-        shape.set(new Vec2(-getWidth() / 2, getHeight() / 2 - commonPersonEdge * 18), new Vec2(getWidth() / 8, getHeight() / 2 - commonPersonEdge * 18));
-        f = ground.createFixture(shape, 0.0f);
-        objectForJump.add(f);
-        shape.set(new Vec2(-getWidth() / 2, getHeight() / 2 - commonPersonEdge * 18 - 0.1f), new Vec2(getWidth() / 8, getHeight() / 2 - commonPersonEdge * 18 - 0.1f));
-        ground.createFixture(shape, 0.0f);
-
-        shape.set(new Vec2(getWidth() / 4, getHeight() / 2 - commonPersonEdge * 18), new Vec2(getWidth() / 2, getHeight() / 2 - commonPersonEdge * 18));
-        f = ground.createFixture(shape, 0.0f);
-        objectForJump.add(f);
-        shape.set(new Vec2(getWidth() / 4, getHeight() / 2 - commonPersonEdge * 18 - 0.1f), new Vec2(getWidth() / 2, getHeight() / 2 - commonPersonEdge * 18 - 0.1f));
-        ground.createFixture(shape, 0.0f);
-
-        shape.set(new Vec2(-getWidth() / 3, getHeight() / 2 - commonPersonEdge * 30), new Vec2(getWidth() / 2, getHeight() / 2 - commonPersonEdge * 30));
-        f = ground.createFixture(shape, 0.0f);
-        objectForJump.add(f);
-        shape.set(new Vec2(-getWidth() / 3, getHeight() / 2 - commonPersonEdge * 30 - 0.1f), new Vec2(getWidth() / 2, getHeight() / 2 - commonPersonEdge * 30 - 0.1f));
-        ground.createFixture(shape, 0.0f);
-
-
-        shape.set(new Vec2(0, -getHeight() / 2 + commonPersonEdge * 3), new Vec2(0, -getHeight() / 2));
-        f = ground.createFixture(shape, 0.0f);
-        contactObjForPush.add(f);
     }
 
     private void createGuns() {
-        Gun gun1 = new Gun(m_world, -getWidth() / 2, commonPersonEdge * 12 - 2, 200, 100, 0.5f);
-        gun1.setOrientation(new Vec2(1, 0));
+        Gun gun1 = new Gun(m_world, -getWidth() / 2 + 2, -getHeight() / 2 + commonPersonEdge, 70, 400, 0.5f);
+        gun1.setOrientation(new Vec2(0, 1));
         objectForJump.add(gun1.getGunBodyFixture());
         gunList.add(gun1);
 
