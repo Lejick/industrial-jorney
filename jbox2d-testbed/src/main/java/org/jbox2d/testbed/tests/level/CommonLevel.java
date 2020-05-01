@@ -153,6 +153,8 @@ public abstract class CommonLevel extends TestbedTest {
         contactObjForJump.clear();
         last_step = 0;
         lastDestroy_step = 0;
+        objectToPush=null;
+        canPush=false;
         createGameBox();
         createPlatforms();
     }

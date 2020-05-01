@@ -113,7 +113,7 @@ public class Level2 extends CommonLevel {
     protected void createGameObjects() {
         Body hero = createRectangle(-getWidth() / 2 + 2, getHeight() / 2 - 2 * commonPersonEdge, commonPersonEdge, commonPersonEdge, true, BodyType.DYNAMIC);
         destroyableList.add(hero);
-        Body jumplatform = createRectangle(0, commonPersonEdge, commonPersonEdge * 5, commonPersonEdge / 3, false, BodyType.DYNAMIC);
+        Body jumplatform = createRectangle(0, commonPersonEdge, commonPersonEdge * 5, commonPersonEdge / 1.5f, false, BodyType.DYNAMIC);
         movingObject.add(jumplatform);
 
         //  Body simpleBox2 = createRectangle(0, getHeight() / 2 - commonPersonEdge * 29, commonPersonEdge, commonPersonEdge, false, BodyType.DYNAMIC);
@@ -139,7 +139,14 @@ public class Level2 extends CommonLevel {
         shape.set(new Vec2(-getWidth() / 2 + commonPersonEdge * 5, 0), new Vec2(-getWidth() / 2 + commonPersonEdge * 5, -getHeight() / 2));
         f = ground.createFixture(shape, 0.0f);
 
-        shape.set(new Vec2(getWidth() / 8 + 5 * commonPersonEdge, 0), new Vec2(getWidth() / 8 + 5 * commonPersonEdge, -getHeight() / 2));
+        shape.set(new Vec2(getWidth() / 8, -getHeight() / 2 + 3), new Vec2(getWidth() / 8 + 2, -getHeight() / 2 + 3));
+        f = ground.createFixture(shape, 0.0f);
+
+        shape.set(new Vec2(getWidth() / 4 + 3.5f * commonPersonEdge-2, -getHeight() / 2 + 3), new Vec2(getWidth() / 4 + 3.5f * commonPersonEdge, -getHeight() / 2 + 3));
+        f = ground.createFixture(shape, 0.0f);
+
+
+        shape.set(new Vec2(getWidth() / 4 + 3.5f * commonPersonEdge, 0), new Vec2(getWidth() / 4 + 3.5f * commonPersonEdge, -getHeight() / 2));
         f = ground.createFixture(shape, 0.0f);
 
     }
@@ -154,6 +161,11 @@ public class Level2 extends CommonLevel {
         gun2.setOrientation(new Vec2(0, 1));
         objectForJump.add(gun2.getGunBodyFixture());
         gunList.add(gun2);
+
+        Gun gun3 = new Gun(m_world, 14*commonPersonEdge, -getHeight() / 2 + commonPersonEdge, 500, 300, 0.5f);
+        gun3.setOrientation(new Vec2(0, 1));
+        objectForJump.add(gun3.getGunBodyFixture());
+        gunList.add(gun3);
     }
 
     @Override
