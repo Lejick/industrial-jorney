@@ -78,6 +78,10 @@
  * Created at 4:56:29 AM Jan 14, 2011
  * <p>
  * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
  */
 /**
  * Created at 4:56:29 AM Jan 14, 2011
@@ -99,20 +103,24 @@ public class Level2 extends CommonLevel {
 
     @Override
     public void initTest(boolean deserialized) {
-       super.initTest(false);
-        Body hero = createRectangle(-getWidth() / 2 + 2, getHeight()/2-2*commonPersonEdge, commonPersonEdge, commonPersonEdge, true,BodyType.DYNAMIC);
-        Body simpleBox = createRectangle(20, 3, commonPersonEdge, commonPersonEdge, false,BodyType.DYNAMIC);
-        Body simpleBox2 = createRectangle(0, getHeight() / 2 - commonPersonEdge * 29, commonPersonEdge, commonPersonEdge, false,BodyType.DYNAMIC);
-        movingObject.add(simpleBox);
-        movingObject.add(simpleBox2);
-        destroyableList.add(simpleBox);
-        destroyableList.add(simpleBox2);
-        destroyableList.add(hero);
+        super.initTest(false);
+        createGameObjects();
         createGuns();
-        exit = createRectangle(getWidth() / 2 - 1, getHeight() / 2 - commonPersonEdge*4, 1, 4, false,BodyType.STATIC);
+        exit = createRectangle(getWidth() / 2 - 1, getHeight() / 2 - commonPersonEdge * 4, 1, 4, false, BodyType.STATIC);
         exit.shapeColor = Color3f.GREEN;
     }
 
+    protected void createGameObjects() {
+        Body hero = createRectangle(-getWidth() / 2 + 2, getHeight() / 2 - 2 * commonPersonEdge, commonPersonEdge, commonPersonEdge, true, BodyType.DYNAMIC);
+        destroyableList.add(hero);
+        Body jumplatform = createRectangle(0, commonPersonEdge, commonPersonEdge * 5, commonPersonEdge / 3, false, BodyType.DYNAMIC);
+        movingObject.add(jumplatform);
+
+        //  Body simpleBox2 = createRectangle(0, getHeight() / 2 - commonPersonEdge * 29, commonPersonEdge, commonPersonEdge, false, BodyType.DYNAMIC);
+        // movingObject.add(simpleBox2);
+        // destroyableList.add(simpleBox2);
+
+    }
 
     protected void createPlatforms() {
         BodyDef bd = new BodyDef();
@@ -124,6 +132,16 @@ public class Level2 extends CommonLevel {
         shape.set(new Vec2(-getWidth() / 2 + commonPersonEdge * 5, 0), new Vec2(getWidth() / 8, 0));
         Fixture f = ground.createFixture(shape, 0.0f);
         objectForJump.add(f);
+
+        shape.set(new Vec2(getWidth() / 8, 0), new Vec2(getWidth() / 8, -getHeight() / 2));
+        f = ground.createFixture(shape, 0.0f);
+
+        shape.set(new Vec2(-getWidth() / 2 + commonPersonEdge * 5, 0), new Vec2(-getWidth() / 2 + commonPersonEdge * 5, -getHeight() / 2));
+        f = ground.createFixture(shape, 0.0f);
+
+        shape.set(new Vec2(getWidth() / 8 + 5 * commonPersonEdge, 0), new Vec2(getWidth() / 8 + 5 * commonPersonEdge, -getHeight() / 2));
+        f = ground.createFixture(shape, 0.0f);
+
     }
 
     private void createGuns() {
@@ -132,16 +150,8 @@ public class Level2 extends CommonLevel {
         objectForJump.add(gun1.getGunBodyFixture());
         gunList.add(gun1);
 
-        Gun gun2 = new Gun(m_world, getWidth() / 2 - 2, commonPersonEdge - 2, 400, 400, 0.5f);
-        gun2.setDetection(true);
-        gun2.setDetectX1(6);
-        gun2.setDetectX2(16);
-        gun2.setDetectY1(-0.6f);
-        gun2.setDetectY2(-0.4f);
-        for (Body body : destroyableList) {
-            gun2.addObjectToAttack(body);
-        }
-        gun2.setOrientation(new Vec2(-1, 0));
+        Gun gun2 = new Gun(m_world, 9*commonPersonEdge, -getHeight() / 2 + commonPersonEdge, 500, 400, 0.5f);
+        gun2.setOrientation(new Vec2(0, 1));
         objectForJump.add(gun2.getGunBodyFixture());
         gunList.add(gun2);
     }

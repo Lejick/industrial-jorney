@@ -84,6 +84,8 @@
  * Created at 4:56:29 AM Jan 14, 2011
  * <p>
  * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
  */
 /**
  * Created at 4:56:29 AM Jan 14, 2011
@@ -263,19 +265,23 @@ public abstract class CommonLevel extends TestbedTest {
         }
     }
 
+    protected void endLevel() {
+        getModel().getSettings().setPause(true);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(null);
+        alert.setHeaderText(null);
+        alert.setContentText("Good game. You won! Click OK to exit.");
+        alert.setOnHidden(evt -> Platform.exit());
+        alert.show();
+    }
+
     public void beginContact(Contact contact) {
         Body bodyToDestroy = null;
         Fixture fixtureA = contact.getFixtureA();
         Fixture fixtureB = contact.getFixtureB();
         if (fixtureA.getBody().isHero() && fixtureB.getBody() == exit ||
                 fixtureB.getBody().isHero() && fixtureA.getBody() == exit) {
-
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle(null);
-            alert.setHeaderText(null);
-            alert.setContentText("Good game. You won! Click OK to exit.");
-            alert.setOnHidden(evt -> Platform.exit());
-            alert.show();
+            endLevel();
         }
 
         if (fixtureA.getBody().isHero()) {
@@ -412,6 +418,7 @@ public abstract class CommonLevel extends TestbedTest {
         }
         objectToExplode.clear();
     }
+
     protected abstract float getWidth();
 
     protected abstract float getHeight();
