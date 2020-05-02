@@ -93,7 +93,7 @@ public class PlayedSettings implements SettingsIF {
         addSetting(new TestbedSetting(DrawStats, SettingType.DRAWING, true));
         addSetting(new TestbedSetting(DrawHelp, SettingType.DRAWING, false));
         addSetting(new TestbedSetting(DrawTree, SettingType.DRAWING, false));
-        addSetting(new TestbedSetting(DrawWireframe, SettingType.DRAWING, true));
+       addSetting(new TestbedSetting(DrawWireframe, SettingType.DRAWING, false));
     }
 
     /**
