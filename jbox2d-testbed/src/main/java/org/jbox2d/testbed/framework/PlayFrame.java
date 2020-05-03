@@ -415,10 +415,6 @@ public abstract class PlayFrame implements ContactListener, ObjectListener, Obje
     flags +=
         settings.getSetting(TestbedSettings.DrawCOMs).enabled ? DebugDraw.e_centerOfMassBit : 0;
     flags += settings.getSetting(TestbedSettings.DrawTree).enabled ? DebugDraw.e_dynamicTreeBit : 0;
-    flags +=
-        settings.getSetting(TestbedSettings.DrawWireframe).enabled
-            ? DebugDraw.e_wireframeDrawingBit
-            : 0;
     debugDraw.setFlags(flags);
 
     m_world.setAllowSleep(settings.getSetting(TestbedSettings.AllowSleep).enabled);

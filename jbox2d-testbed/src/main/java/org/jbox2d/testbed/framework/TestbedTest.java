@@ -425,10 +425,6 @@ public abstract class TestbedTest implements ContactListener, ObjectListener, Ob
     flags +=
         settings.getSetting(TestbedSettings.DrawCOMs).enabled ? DebugDraw.e_centerOfMassBit : 0;
     flags += settings.getSetting(TestbedSettings.DrawTree).enabled ? DebugDraw.e_dynamicTreeBit : 0;
-   flags +=
-        settings.getSetting(TestbedSettings.DrawWireframe).enabled
-            ? DebugDraw.e_wireframeDrawingBit
-            : 0;
     debugDraw.setFlags(flags);
 
     m_world.setAllowSleep(settings.getSetting(TestbedSettings.AllowSleep).enabled);
