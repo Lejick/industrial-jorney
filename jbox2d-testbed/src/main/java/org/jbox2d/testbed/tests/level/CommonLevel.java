@@ -221,7 +221,45 @@ public abstract class CommonLevel extends TestbedTest {
         objectForJump.add(f);
         body.setHero(isHero);
         if (isHero) {
+            shape = new PolygonShape();
+            shape.setAsBox(0.05f, hy,new Vec2(hx,0), 0);
+            fd = new FixtureDef();
+            fd.shape = shape;
+            fd.density = 1.0f;
+            fd.friction = 0.3f;
+            body.createFixture(fd);
+
+            shape = new PolygonShape();
+            shape.setAsBox(0.05f, hy,new Vec2(-hx,0), 0);
+            fd = new FixtureDef();
+            fd.shape = shape;
+            fd.density = 1.0f;
+            fd.friction = 0.3f;
+            body.createFixture(fd);
+
+
+            shape = new PolygonShape();
+            shape.setAsBox(hx, 0.05f,new Vec2(0,hy), 0);
+            fd = new FixtureDef();
+            fd.shape = shape;
+            fd.density = 1.0f;
+            fd.friction = 0.3f;
+            body.createFixture(fd);
+
+
+            shape = new PolygonShape();
+            shape.setAsBox(hx, 0.05f,new Vec2(0,-hy), 0);
+            fd = new FixtureDef();
+            fd.shape = shape;
+            fd.density = 1.0f;
+            fd.friction = 0.3f;
+            body.createFixture(fd);
+
+
+
+
             hero_body = body;
+
         }
         return body;
     }
