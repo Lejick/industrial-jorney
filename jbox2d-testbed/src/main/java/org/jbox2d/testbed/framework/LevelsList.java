@@ -32,8 +32,6 @@ import org.jbox2d.testbed.tests.level.Level2;
 public class LevelsList {
 
   public static void populateModel(PlayModel model) {
-
-    model.addCategory("- Play Level -");
     model.addTest(new Level1());
     model.addTest(new Level2());
   }

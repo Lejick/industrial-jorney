@@ -26,7 +26,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
-import org.jbox2d.testbed.framework.TestList;
 import org.jbox2d.testbed.framework.AbstractTestbedController;
 import org.jbox2d.testbed.framework.AbstractTestbedController.MouseBehavior;
 import org.jbox2d.testbed.framework.AbstractTestbedController.UpdateBehavior;
@@ -61,7 +60,6 @@ public class TestbedMain {
     TestPanelJ2D panel = new TestPanelJ2D(model, controller);
     model.setPanel(panel);
     model.setDebugDraw(new DebugDrawJ2D(panel, true));
-    TestList.populateModel(model);
 
     JFrame testbed = new JFrame();
     testbed.setTitle("JBox2D Testbed");
