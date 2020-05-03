@@ -687,7 +687,7 @@ public class World {
 
 
         int flags = m_debugDraw.getFlags();
-        boolean wireframe = (flags & DebugDraw.e_wireframeDrawingBit) != 0;
+        boolean wireframe = false;
 
         if ((flags & DebugDraw.e_shapeBit) != 0) {
             for (Body b = m_bodyList; b != null; b = b.getNext()) {
@@ -1634,7 +1634,7 @@ public class World {
     }
 
     private void drawParticleSystem(ParticleSystem system) {
-        boolean wireframe = (m_debugDraw.getFlags() & DebugDraw.e_wireframeDrawingBit) != 0;
+        boolean wireframe = false;
         int particleCount = system.getParticleCount();
         if (particleCount != 0) {
             float particleRadius = system.getParticleRadius();
