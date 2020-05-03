@@ -360,9 +360,12 @@ public abstract class CommonLevel extends PlayLevel {
             }
 
             if (bodyToDestroy != null && gun.getBullet() != null && destroyableList.contains(bodyToDestroy)) {
+                log.info("vel: "+gun.getBullet().getLinearVelocity().length());
+
                 float bulletImpulse = gun.getBullet().m_mass * gun.getBullet().getLinearVelocity().length();
                 if (bulletImpulse > 400) {
                     objectToExplode.add(bodyToDestroy);
+
                     Vec2 bulletVel = gun.getBullet().getLinearVelocity();
                     bulletVel.x = bulletVel.x - 30;
                     gun.getBullet().setLinearVelocity(bulletVel);
