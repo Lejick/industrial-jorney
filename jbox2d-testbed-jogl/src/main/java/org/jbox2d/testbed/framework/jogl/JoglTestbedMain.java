@@ -63,7 +63,6 @@ public class JoglTestbedMain {
     model.setDebugDraw(new JoglDebugDraw(panel));
     model.setPanel(panel);
     TestList.populateModel(model);
-    model.getSettings().getSetting(TestbedSettings.DrawWireframe).enabled = false;
 
     JFrame testbed = new JFrame();
     testbed.setTitle("JBox2D Testbed");

@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/game-logic/game-logic.iml" filepath="$PROJECT_DIR$/game-logic/game-logic.iml" />
       <module fileurl="file://$PROJECT_DIR$/industrial-jorney.iml" filepath="$PROJECT_DIR$/industrial-jorney.iml" />
       <module fileurl="file://$PROJECT_DIR$/jbox2d-jni-broadphase/jbox2d-jni-broadphase.iml" filepath="$PROJECT_DIR$/jbox2d-jni-broadphase/jbox2d-jni-broadphase.iml" />
       <module fileurl="file://$PROJECT_DIR$/jbox2d-library/jbox2d-library.iml" filepath="$PROJECT_DIR$/jbox2d-library/jbox2d-library.iml" />

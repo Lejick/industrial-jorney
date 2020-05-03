@@ -92,8 +92,8 @@
  */
 package org.jbox2d.testbed.tests.level;
 
-import javafx.application.Platform;
-import javafx.scene.control.Alert;
+/*import javafx.application.Platform;
+import javafx.scene.control.Alert;*/
 import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Color3f;
@@ -306,13 +306,13 @@ public abstract class CommonLevel extends PlayLevel {
     }
 
     protected void endLevel() {
-        getModel().getSettings().setPause(true);
+     /*   getModel().getSettings().setPause(true);
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(null);
         alert.setHeaderText(null);
         alert.setContentText("Good game. You won! Click OK to exit.");
         alert.setOnHidden(evt -> Platform.exit());
-        alert.show();
+        alert.show();*/
     }
 
     public void beginContact(Contact contact) {

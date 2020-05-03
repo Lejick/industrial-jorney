@@ -20,7 +20,6 @@
     <orderEntry type="module" module-name="jbox2d-serialization" />
     <orderEntry type="library" name="Maven: com.google.protobuf:protobuf-java:3.3.1" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:guava:14.0.1" level="project" />
-    <orderEntry type="module" module-name="game-logic" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-fxml:11.0.2" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-fxml:win:11.0.2" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-controls:11.0.2" level="project" />
