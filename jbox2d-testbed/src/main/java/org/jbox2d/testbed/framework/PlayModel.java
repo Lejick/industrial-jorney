@@ -30,6 +30,8 @@ import javax.swing.*;
 import java.util.List;
 import java.util.Vector;
 
+import static org.jbox2d.testbed.framework.TestbedSettings.WarmStarting;
+
 /**
  * Model for the testbed
  * 

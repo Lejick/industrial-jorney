@@ -51,13 +51,9 @@ public class PlaySidePanel extends BorderPane {
 
   public ComboBox<ListItem> tests;
 
-  private Button pauseButton = new Button("Pause");
-  private Button stepButton = new Button("Step");
   private Button resetButton = new Button("Reset");
   private Button quitButton = new Button("Quit");
 
-  public Button saveButton = new Button("Save");
-  public Button loadButton = new Button("Load");
 
   public PlaySidePanel(PlayModel argModel, AbstractTestbedController argController) {
     model = argModel;
@@ -67,8 +63,6 @@ public class PlaySidePanel extends BorderPane {
 
     model.addTestChangeListener((argTest, argIndex) -> {
       tests.getSelectionModel().select(argIndex);
-      saveButton.setDisable(!argTest.isSaveLoadEnabled());
-      loadButton.setDisable(!argTest.isSaveLoadEnabled());
     });
   }
 
@@ -138,25 +132,14 @@ public class PlaySidePanel extends BorderPane {
     addSettings(middle, settings, SettingType.ENGINE);
 
     setCenter(middle);
-
-    pauseButton.setAlignment(Pos.CENTER);
-    stepButton.setAlignment(Pos.CENTER);
     resetButton.setAlignment(Pos.CENTER);
-    saveButton.setAlignment(Pos.CENTER);
-    loadButton.setAlignment(Pos.CENTER);
     quitButton.setAlignment(Pos.CENTER);
 
     HBox buttonGroups = new HBox();
     VBox buttons1 = new VBox();
     buttons1.getChildren().add(resetButton);
-
     VBox buttons2 = new VBox();
-    buttons2.getChildren().add(pauseButton);
-    buttons2.getChildren().add(stepButton);
-
     VBox buttons3 = new VBox();
-    buttons3.getChildren().add(saveButton);
-    buttons3.getChildren().add(loadButton);
     buttons3.getChildren().add(quitButton);
 
     buttonGroups.getChildren().add(buttons1);
@@ -172,25 +155,6 @@ public class PlaySidePanel extends BorderPane {
   }
 
   public void addListeners() {
-    pauseButton.setOnAction((e) -> {
-      if (model.getSettings().isPause()) {
-        model.getSettings().setPause(false);
-        pauseButton.setText("Pause");
-      } else {
-        model.getSettings().setPause( true);
-        pauseButton.setText("Resume");
-      }
-      model.getPanel().grabFocus();
-    });
-
-    stepButton.setOnAction((e) -> {
-      model.getSettings().setSingleStep(true);
-      if (!model.getSettings().isPause()) {
-        model.getSettings().setPause(true);
-        pauseButton.setText("Resume");
-      }
-      model.getPanel().grabFocus();
-    });
 
     resetButton.setOnAction((e) -> {
       controller.reset();
@@ -200,13 +164,6 @@ public class PlaySidePanel extends BorderPane {
       System.exit(0);
     });
 
-    saveButton.setOnAction((e) -> {
-      controller.save();
-    });
-
-    loadButton.setOnAction((e) -> {
-      controller.load();
-    });
   }
 
   private void addSettings(Pane argPanel, SettingsIF argSettings, SettingType argIgnore) {

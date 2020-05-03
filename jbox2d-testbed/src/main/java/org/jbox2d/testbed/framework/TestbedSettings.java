@@ -73,7 +73,7 @@ public class TestbedSettings implements SettingsIF{
   }
 
   private void populateDefaultSettings() {
-    addSetting(new TestbedSetting(Hz, SettingType.ENGINE, 60, 1, 400));
+    addSetting(new TestbedSetting(Hz, SettingType.ENGINE, 40, 1, 400));
     addSetting(new TestbedSetting(PositionIterations, SettingType.ENGINE, 3, 0, 100));
     addSetting(new TestbedSetting(VelocityIterations, SettingType.ENGINE, 8, 1, 100));
     addSetting(new TestbedSetting(AllowSleep, SettingType.ENGINE, true));

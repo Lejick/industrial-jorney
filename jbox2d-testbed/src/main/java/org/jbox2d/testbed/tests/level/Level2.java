@@ -141,10 +141,10 @@ public class Level2 extends CommonLevel {
 
         shape.set(new Vec2(getWidth() / 8, -getHeight() / 2 + 3), new Vec2(getWidth() / 8 + 2, -getHeight() / 2 + 3));
         f = ground.createFixture(shape, 0.0f);
-
+        objectForJump.add(f);
         shape.set(new Vec2(getWidth() / 4 + 3.5f * commonPersonEdge-2, -getHeight() / 2 + 3), new Vec2(getWidth() / 4 + 3.5f * commonPersonEdge, -getHeight() / 2 + 3));
         f = ground.createFixture(shape, 0.0f);
-
+        objectForJump.add(f);
 
         shape.set(new Vec2(getWidth() / 4 + 3.5f * commonPersonEdge, 0), new Vec2(getWidth() / 4 + 3.5f * commonPersonEdge, -getHeight() / 2));
         f = ground.createFixture(shape, 0.0f);

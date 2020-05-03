@@ -26,7 +26,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="industrial-jorney" target="1.5" />
-      <module name="jbox2d-jni-broadphase" target="1.5" />
+      <module name="jbox2d-jni-broadphase" target="6" />
       <module name="jbox2d-library" target="11" />
       <module name="jbox2d-serialization" target="11" />
       <module name="jbox2d-testbed" target="11" />

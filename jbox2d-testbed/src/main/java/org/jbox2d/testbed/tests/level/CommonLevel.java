@@ -151,6 +151,7 @@ public abstract class CommonLevel extends PlayLevel {
     @Override
     public void initTest(boolean deserialized) {
         contactObjForJump.clear();
+        contactObjForPush.clear();
         last_step = 0;
         lastDestroy_step = 0;
         objectToPush=null;
@@ -237,7 +238,6 @@ public abstract class CommonLevel extends PlayLevel {
             fd.friction = 0.3f;
             body.createFixture(fd);
 
-
             shape = new PolygonShape();
             shape.setAsBox(hx, 0.05f,new Vec2(0,hy), 0);
             fd = new FixtureDef();
@@ -254,10 +254,6 @@ public abstract class CommonLevel extends PlayLevel {
             fd.density = 1.0f;
             fd.friction = 0.3f;
             body.createFixture(fd);
-
-
-
-
             hero_body = body;
 
         }
@@ -399,11 +395,11 @@ public abstract class CommonLevel extends PlayLevel {
             objectToPush = null;
         }
 
-        if (fixtureA.getBody().isHero() && contactObjForPush.contains(fixtureB.getBody())) {
+        if (fixtureA.getBody().isHero() && contactObjForPush.contains(fixtureB)) {
             canPush = false;
         }
 
-        if (fixtureB.getBody().isHero() && contactObjForPush.contains(fixtureA.getBody())) {
+        if (fixtureB.getBody().isHero() && contactObjForPush.contains(fixtureA)) {
             canPush = false;
         }
 
