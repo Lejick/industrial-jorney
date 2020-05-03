@@ -8,7 +8,7 @@ import java.util.List;
 public interface GamingModelIF {
     void setImplSpecificHelp(List<String> help);
 
-    TestbedTest getCurrTest();
+    PlayLevel getCurrTest();
 
     boolean[] getCodedKeys();
 
@@ -36,7 +36,7 @@ public interface GamingModelIF {
 
     void setCurrTestIndex(int index);
 
-    void setRunningTest(TestbedTest nextTest);
+    void setRunningTest(PlayLevel nextTest);
 
     void setCalculatedFps(float frameRate);
 

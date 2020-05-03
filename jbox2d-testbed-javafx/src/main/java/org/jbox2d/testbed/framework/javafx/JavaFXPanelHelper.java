@@ -6,8 +6,7 @@ import org.jbox2d.common.Vec2;
 import org.jbox2d.testbed.framework.GamingModelIF;
 import org.jbox2d.testbed.framework.TestbedCamera.ZoomType;
 import org.jbox2d.testbed.framework.AbstractTestbedController;
-import org.jbox2d.testbed.framework.TestbedModel;
-import org.jbox2d.testbed.framework.TestbedTest;
+import org.jbox2d.testbed.framework.PlayLevel;
 
 import com.google.common.collect.Lists;
 
@@ -38,7 +37,7 @@ public class JavaFXPanelHelper {
     model.setImplSpecificHelp(help);
 
     panel.setOnZoom((zoomEvent) -> {
-      TestbedTest currTest = model.getCurrTest();
+      PlayLevel currTest = model.getCurrTest();
       if (currTest == null) {
         return;
       }
@@ -47,7 +46,7 @@ public class JavaFXPanelHelper {
     });
     
     panel.setOnScroll((scrollEvent) -> {
-      TestbedTest currTest = model.getCurrTest();
+      PlayLevel currTest = model.getCurrTest();
       if (currTest == null || scrollEvent.getDeltaY() == 0) {
         return;
       }
@@ -59,9 +58,9 @@ public class JavaFXPanelHelper {
       if (toInt(mouseEvent.getButton()) == screenDragButton) {
         screenDragButtonDown = false;
       } else if (model.getCodedKeys()[toInt(KeyCode.SHIFT)] && !mouseJointButtonDown) {
-        controller.queueMouseUp(toVec(mouseEvent), TestbedTest.BOMB_SPAWN_BUTTON);
+        controller.queueMouseUp(toVec(mouseEvent), PlayLevel.BOMB_SPAWN_BUTTON);
       } else {
-        if (toInt(mouseEvent.getButton()) == TestbedTest.MOUSE_JOINT_BUTTON) {
+        if (toInt(mouseEvent.getButton()) == PlayLevel.MOUSE_JOINT_BUTTON) {
           mouseJointButtonDown = false;
         }
         controller.queueMouseUp(new Vec2((float) mouseEvent.getX(), (float) mouseEvent.getY()),
@@ -75,9 +74,9 @@ public class JavaFXPanelHelper {
         oldDragMouse.set(toVec(mouseEvent));
         return;
       } else if (model.getCodedKeys()[toInt(KeyCode.SHIFT)]) {
-        controller.queueMouseDown(toVec(mouseEvent), TestbedTest.BOMB_SPAWN_BUTTON);
+        controller.queueMouseDown(toVec(mouseEvent), PlayLevel.BOMB_SPAWN_BUTTON);
       } else {
-        if (toInt(mouseEvent.getButton()) == TestbedTest.MOUSE_JOINT_BUTTON) {
+        if (toInt(mouseEvent.getButton()) == PlayLevel.MOUSE_JOINT_BUTTON) {
           mouseJointButtonDown = true;
         }
         controller.queueMouseDown(toVec(mouseEvent), toInt(mouseEvent.getButton()));
@@ -92,7 +91,7 @@ public class JavaFXPanelHelper {
     panel.setOnMouseDragged((mouseEvent) -> {
       mouse.set(toVec(mouseEvent));
       if (screenDragButtonDown) {
-        TestbedTest currTest = model.getCurrTest();
+        PlayLevel currTest = model.getCurrTest();
         if (currTest == null) {
           return;
         }
@@ -100,9 +99,9 @@ public class JavaFXPanelHelper {
         currTest.getCamera().moveWorld(diff);
         oldDragMouse.set(mouse);
       } else if (mouseJointButtonDown) {
-        controller.queueMouseDrag(new Vec2(mouse), TestbedTest.MOUSE_JOINT_BUTTON);
+        controller.queueMouseDrag(new Vec2(mouse), PlayLevel.MOUSE_JOINT_BUTTON);
       } else if (model.getCodedKeys()[toInt(KeyCode.SHIFT)]) {
-        controller.queueMouseDrag(toVec(mouseEvent), TestbedTest.BOMB_SPAWN_BUTTON);
+        controller.queueMouseDrag(toVec(mouseEvent), PlayLevel.BOMB_SPAWN_BUTTON);
       } else {
         controller.queueMouseDrag(toVec(mouseEvent), toInt(mouseEvent.getButton()));
       }

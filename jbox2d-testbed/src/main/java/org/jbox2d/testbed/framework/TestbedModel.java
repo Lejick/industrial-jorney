@@ -40,13 +40,13 @@ public class TestbedModel implements GamingModelIF{
   private final DefaultComboBoxModel tests = new DefaultComboBoxModel();
   private final SettingsIF settings = new TestbedSettings();
   private DebugDraw draw;
-  private TestbedTest test;
+  private PlayLevel test;
   private final Vector<TestChangedListener> listeners = new Vector<TestChangedListener>();
   private final boolean[] keys = new boolean[2048];
   private final boolean[] codedKeys = new boolean[2048];
   private float calculatedFps;
   private int currTestIndex = -1;
-  private TestbedTest runningTest;
+  private PlayLevel runningTest;
   private List<String> implSpecificHelp;
   private TestbedPanel panel;
   private WorldCreator worldCreator = new DefaultWorldCreator();
@@ -97,7 +97,7 @@ public class TestbedModel implements GamingModelIF{
     return draw;
   }
 
-  public TestbedTest getCurrTest() {
+  public PlayLevel getCurrTest() {
     return test;
   }
 
@@ -142,11 +142,11 @@ public class TestbedModel implements GamingModelIF{
     return currTestIndex;
   }
 
-  public void setRunningTest(TestbedTest runningTest) {
+  public void setRunningTest(PlayLevel runningTest) {
     this.runningTest = runningTest;
   }
 
-  public TestbedTest getRunningTest() {
+  public PlayLevel getRunningTest() {
     return runningTest;
   }
 
@@ -158,7 +158,7 @@ public class TestbedModel implements GamingModelIF{
     listeners.remove(argListener);
   }
 
-  public void addTest(TestbedTest argTest) {
+  public void addTest(PlayLevel argTest) {
     tests.addElement(new ListItem(argTest));
   }
 
@@ -166,7 +166,7 @@ public class TestbedModel implements GamingModelIF{
     tests.addElement(new ListItem(argName));
   }
 
-  public TestbedTest getTestAt(int argIndex) {
+  public PlayLevel getTestAt(int argIndex) {
     ListItem item = (ListItem) tests.getElementAt(argIndex);
     if (item.isCategory()) {
       return null;

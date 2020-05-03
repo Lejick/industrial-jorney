@@ -23,7 +23,15 @@
  ******************************************************************************/
 package org.jbox2d.testbed.framework;
 
-import org.jbox2d.callbacks.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.jbox2d.callbacks.ContactImpulse;
+import org.jbox2d.callbacks.ContactListener;
+import org.jbox2d.callbacks.DebugDraw;
+import org.jbox2d.callbacks.DestructionListener;
+import org.jbox2d.callbacks.ParticleDestructionListener;
 import org.jbox2d.collision.AABB;
 import org.jbox2d.collision.Collision;
 import org.jbox2d.collision.Collision.PointState;
@@ -35,7 +43,13 @@ import org.jbox2d.common.Color3f;
 import org.jbox2d.common.Settings;
 import org.jbox2d.common.Transform;
 import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.*;
+import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.BodyDef;
+import org.jbox2d.dynamics.BodyType;
+import org.jbox2d.dynamics.Fixture;
+import org.jbox2d.dynamics.FixtureDef;
+import org.jbox2d.dynamics.Profile;
+import org.jbox2d.dynamics.World;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.jbox2d.dynamics.joints.Joint;
 import org.jbox2d.dynamics.joints.MouseJoint;
@@ -49,10 +63,6 @@ import org.jbox2d.testbed.framework.utils.ListenerAdapter;
 import org.jbox2d.testbed.framework.utils.ParticleVelocityQueryCallback;
 import org.jbox2d.testbed.framework.utils.SignerAdapter;
 import org.jbox2d.testbed.framework.utils.TestQueryCallback;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * @author Daniel Murphy
@@ -415,10 +425,6 @@ public abstract class PlayLevel implements ContactListener, ObjectListener, Obje
     flags +=
         settings.getSetting(TestbedSettings.DrawCOMs).enabled ? DebugDraw.e_centerOfMassBit : 0;
     flags += settings.getSetting(TestbedSettings.DrawTree).enabled ? DebugDraw.e_dynamicTreeBit : 0;
-  /*  flags +=
-        settings.getSetting(TestbedSettings.DrawWireframe).enabled
-            ? DebugDraw.e_wireframeDrawingBit
-            : 0;*/
     debugDraw.setFlags(flags);
 
     m_world.setAllowSleep(settings.getSetting(TestbedSettings.AllowSleep).enabled);

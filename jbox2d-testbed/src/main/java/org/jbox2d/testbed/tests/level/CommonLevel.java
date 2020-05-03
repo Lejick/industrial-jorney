@@ -101,7 +101,7 @@ import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.jbox2d.testbed.framework.SettingsIF;
-import org.jbox2d.testbed.framework.TestbedTest;
+import org.jbox2d.testbed.framework.PlayLevel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.jbox2d.testbed.framework.Gun;
@@ -113,7 +113,7 @@ import java.util.List;
 /**
  * @author Daniel Murphy
  */
-public abstract class CommonLevel extends TestbedTest {
+public abstract class CommonLevel extends PlayLevel {
     protected static final Logger log = LoggerFactory.getLogger(Level1.class);
     protected final static float maxSpeedX = 6f;
     protected final static float minSpeedX = -6f;

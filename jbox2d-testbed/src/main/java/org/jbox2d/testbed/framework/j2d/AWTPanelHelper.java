@@ -14,8 +14,7 @@ import org.jbox2d.common.Vec2;
 import org.jbox2d.testbed.framework.GamingModelIF;
 import org.jbox2d.testbed.framework.TestbedCamera.ZoomType;
 import org.jbox2d.testbed.framework.AbstractTestbedController;
-import org.jbox2d.testbed.framework.TestbedModel;
-import org.jbox2d.testbed.framework.TestbedTest;
+import org.jbox2d.testbed.framework.PlayLevel;
 
 import com.google.common.collect.Lists;
 
@@ -41,7 +40,7 @@ public class AWTPanelHelper {
     panel.addMouseWheelListener(new MouseWheelListener() {
       public void mouseWheelMoved(MouseWheelEvent e) {
         int notches = e.getWheelRotation();
-        TestbedTest currTest = model.getCurrTest();
+        PlayLevel currTest = model.getCurrTest();
         if (currTest == null) {
           return;
         }
@@ -57,9 +56,9 @@ public class AWTPanelHelper {
           screenDragButtonDown = false;
         } else if (model.getCodedKeys()[KeyEvent.VK_SHIFT] && !mouseJointButtonDown) {
           controller.queueMouseUp(new Vec2(arg0.getX(), arg0.getY()),
-              TestbedTest.BOMB_SPAWN_BUTTON);
+                  PlayLevel.BOMB_SPAWN_BUTTON);
         } else {
-          if (arg0.getButton() == TestbedTest.MOUSE_JOINT_BUTTON) {
+          if (arg0.getButton() == PlayLevel.MOUSE_JOINT_BUTTON) {
             mouseJointButtonDown = false;
           }
           controller.queueMouseUp(new Vec2(arg0.getX(), arg0.getY()), arg0.getButton());
@@ -74,9 +73,9 @@ public class AWTPanelHelper {
           return;
         } else if (model.getCodedKeys()[KeyEvent.VK_SHIFT]) {
           controller.queueMouseDown(new Vec2(arg0.getX(), arg0.getY()),
-              TestbedTest.BOMB_SPAWN_BUTTON);
+                  PlayLevel.BOMB_SPAWN_BUTTON);
         } else {
-          if (arg0.getButton() == TestbedTest.MOUSE_JOINT_BUTTON) {
+          if (arg0.getButton() == PlayLevel.MOUSE_JOINT_BUTTON) {
             mouseJointButtonDown = true;
           }
           controller.queueMouseDown(new Vec2(arg0.getX(), arg0.getY()), arg0.getButton());
@@ -95,7 +94,7 @@ public class AWTPanelHelper {
       public void mouseDragged(MouseEvent arg0) {
         mouse.set(arg0.getX(), arg0.getY());
         if (screenDragButtonDown) {
-          TestbedTest currTest = model.getCurrTest();
+          PlayLevel currTest = model.getCurrTest();
           if (currTest == null) {
             return;
           }
@@ -103,10 +102,10 @@ public class AWTPanelHelper {
           currTest.getCamera().moveWorld(diff);
           oldDragMouse.set(mouse);
         } else if (mouseJointButtonDown) {
-          controller.queueMouseDrag(new Vec2(mouse), TestbedTest.MOUSE_JOINT_BUTTON);
+          controller.queueMouseDrag(new Vec2(mouse), PlayLevel.MOUSE_JOINT_BUTTON);
         } else if (model.getCodedKeys()[KeyEvent.VK_SHIFT]) {
           controller.queueMouseDrag(new Vec2(arg0.getX(), arg0.getY()),
-              TestbedTest.BOMB_SPAWN_BUTTON);
+                  PlayLevel.BOMB_SPAWN_BUTTON);
         } else {
           controller.queueMouseDrag(new Vec2(mouse), arg0.getButton());
         }

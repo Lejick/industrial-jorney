@@ -54,8 +54,8 @@ public abstract class AbstractTestbedController {
 
   public static final int DEFAULT_FPS = 60;
 
-  private TestbedTest currTest = null;
-  private TestbedTest nextTest = null;
+  private PlayLevel currTest = null;
+  private PlayLevel nextTest = null;
 
   private long frameCount;
   private int targetFrameRate;
@@ -90,7 +90,7 @@ public abstract class AbstractTestbedController {
     // time for our controlling
     model.addTestChangeListener(new TestChangedListener() {
       @Override
-      public void testChanged(TestbedTest test, int index) {
+      public void testChanged(PlayLevel test, int index) {
         model.getPanel().grabFocus();
         nextTest = test;
       }
@@ -174,7 +174,7 @@ public abstract class AbstractTestbedController {
     }
   }
 
-  private void initTest(TestbedTest test) {
+  private void initTest(PlayLevel test) {
     test.init(model);
     test.getCamera().getTransform().setExtents(viewportHalfWidth, viewportHalfHeight);
     model.getPanel().grabFocus();
