@@ -86,6 +86,14 @@
  * Created at 4:56:29 AM Jan 14, 2011
  * <p>
  * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
  */
 /**
  * Created at 4:56:29 AM Jan 14, 2011
@@ -94,6 +102,7 @@ package org.jbox2d.testbed.tests.level;
 
 /*import javafx.application.Platform;
 import javafx.scene.control.Alert;*/
+
 import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Color3f;
@@ -154,8 +163,8 @@ public abstract class CommonLevel extends PlayLevel {
         contactObjForPush.clear();
         last_step = 0;
         lastDestroy_step = 0;
-        objectToPush=null;
-        canPush=false;
+        objectToPush = null;
+        canPush = false;
         createGameBox();
         createPlatforms();
     }
@@ -222,40 +231,7 @@ public abstract class CommonLevel extends PlayLevel {
         objectForJump.add(f);
         body.setHero(isHero);
         if (isHero) {
-            shape = new PolygonShape();
-            shape.setAsBox(0.05f, hy,new Vec2(hx,0), 0);
-            fd = new FixtureDef();
-            fd.shape = shape;
-            fd.density = 1.0f;
-            fd.friction = 0.3f;
-            body.createFixture(fd);
-
-            shape = new PolygonShape();
-            shape.setAsBox(0.05f, hy,new Vec2(-hx,0), 0);
-            fd = new FixtureDef();
-            fd.shape = shape;
-            fd.density = 1.0f;
-            fd.friction = 0.3f;
-            body.createFixture(fd);
-
-            shape = new PolygonShape();
-            shape.setAsBox(hx, 0.05f,new Vec2(0,hy), 0);
-            fd = new FixtureDef();
-            fd.shape = shape;
-            fd.density = 1.0f;
-            fd.friction = 0.3f;
-            body.createFixture(fd);
-
-
-            shape = new PolygonShape();
-            shape.setAsBox(hx, 0.05f,new Vec2(0,-hy), 0);
-            fd = new FixtureDef();
-            fd.shape = shape;
-            fd.density = 1.0f;
-            fd.friction = 0.3f;
-            body.createFixture(fd);
             hero_body = body;
-
         }
         return body;
     }
@@ -360,10 +336,11 @@ public abstract class CommonLevel extends PlayLevel {
             }
 
             if (bodyToDestroy != null && gun.getBullet() != null && destroyableList.contains(bodyToDestroy)) {
-                log.info("vel: "+gun.getBullet().getLinearVelocity().length());
+
 
                 float bulletImpulse = gun.getBullet().m_mass * gun.getBullet().getLinearVelocity().length();
-                if (bulletImpulse > 400) {
+                log.info("impulse: " + bulletImpulse);
+                if (bulletImpulse > 200) {
                     objectToExplode.add(bodyToDestroy);
 
                     Vec2 bulletVel = gun.getBullet().getLinearVelocity();

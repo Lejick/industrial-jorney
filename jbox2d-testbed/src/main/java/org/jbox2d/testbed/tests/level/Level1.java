@@ -167,7 +167,7 @@ public class Level1 extends CommonLevel {
     }
 
     private void createGuns() {
-        Gun gun1 = new Gun(m_world, -getWidth() / 2, commonPersonEdge * 12 - 2, 200, 100, 0.5f);
+        Gun gun1 = new Gun(m_world, -getWidth() / 2, commonPersonEdge * 12 - 2, 200, 30, 0.01f);
         gun1.setOrientation(new Vec2(1, 0));
         objectForJump.add(gun1.getGunBodyFixture());
         gunList.add(gun1);

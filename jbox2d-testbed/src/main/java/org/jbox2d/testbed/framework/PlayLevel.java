@@ -456,8 +456,8 @@ public abstract class PlayLevel implements ContactListener, ObjectListener, Obje
 
 
       statsList.clear();
-      Profile p = getWorld().getProfile();
-      p.toDebugStrings(statsList);
+    //  Profile p = getWorld().getProfile();
+     // p.toDebugStrings(statsList);
 
       for (String s : statsList) {
         debugDraw.drawString(5, m_textLine, s, Color3f.WHITE);
@@ -578,7 +578,7 @@ public abstract class PlayLevel implements ContactListener, ObjectListener, Obje
     }
 
     if (button == MOUSE_JOINT_BUTTON) {
-      spawnMouseJoint(p);
+    //  spawnMouseJoint(p);
     }
   }
 
