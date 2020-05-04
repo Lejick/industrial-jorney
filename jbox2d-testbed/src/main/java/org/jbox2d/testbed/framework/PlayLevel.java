@@ -393,7 +393,7 @@ public abstract class PlayLevel implements ContactListener, ObjectListener, Obje
   private final AABB paabb = new AABB();
 
   public void step(SettingsIF settings) {
-    float hz = settings.getSetting(TestbedSettings.Hz).value;
+    float hz = 40;
     float timeStep = hz > 0f ? 1f / hz : 0;
     if (settings.isSingleStep() && !settings.isPause()) {
       settings.setPause(true);
@@ -434,8 +434,8 @@ public abstract class PlayLevel implements ContactListener, ObjectListener, Obje
 
     pointCount = 0;
 
-    m_world.step(timeStep, settings.getSetting(TestbedSettings.VelocityIterations).value,
-        settings.getSetting(TestbedSettings.PositionIterations).value);
+    m_world.step(timeStep, 8,
+        3);
 
     m_world.drawDebugData();
 
@@ -450,16 +450,6 @@ public abstract class PlayLevel implements ContactListener, ObjectListener, Obje
     m_textLine += TEXT_LINE_SPACE;
 
     if (settings.getSetting(TestbedSettings.DrawStats).enabled) {
-      int particleCount = m_world.getParticleCount();
-      int groupCount = m_world.getParticleGroupCount();
-      debugDraw.drawString(
-          5,
-          m_textLine,
-          "bodies/contacts/joints/proxies/particles/groups = " + m_world.getBodyCount() + "/"
-              + m_world.getContactCount() + "/" + m_world.getJointCount() + "/"
-              + m_world.getProxyCount() + "/" + particleCount + "/" + groupCount, Color3f.WHITE);
-      m_textLine += TEXT_LINE_SPACE;
-
       debugDraw.drawString(5, m_textLine, "World mouse position: " + mouseWorld.toString(),
           Color3f.WHITE);
       m_textLine += TEXT_LINE_SPACE;
