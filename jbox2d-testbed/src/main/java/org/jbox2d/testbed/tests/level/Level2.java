@@ -106,14 +106,14 @@ public class Level2 extends CommonLevel {
         super.initTest(false);
         createGameObjects();
         createGuns();
-        exit = createRectangle(getWidth() / 2 - 1, getHeight() / 2 - commonPersonEdge * 4, 1, 4, false, BodyType.STATIC);
+        exit = createRectangle(getWidth() / 2 - 1, getHeight() / 2 - commonPersonEdge * 8, 1, 4, false, BodyType.STATIC);
         exit.shapeColor = Color3f.GREEN;
     }
 
     protected void createGameObjects() {
         Body hero = createRectangle(-getWidth() / 2 + 2, getHeight() / 2 - 2 * commonPersonEdge, commonPersonEdge, commonPersonEdge, true, BodyType.DYNAMIC);
         destroyableList.add(hero);
-        Body jumplatform = createRectangle(0, commonPersonEdge, commonPersonEdge * 5, commonPersonEdge / 1.5f, false, BodyType.DYNAMIC);
+        Body jumplatform = createRectangle(0, commonPersonEdge, commonPersonEdge * 8, commonPersonEdge / 1.5f, false, BodyType.DYNAMIC);
         movingObject.add(jumplatform);
 
         //  Body simpleBox2 = createRectangle(0, getHeight() / 2 - commonPersonEdge * 29, commonPersonEdge, commonPersonEdge, false, BodyType.DYNAMIC);
