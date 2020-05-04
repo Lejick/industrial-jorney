@@ -113,7 +113,7 @@ public class Level2 extends CommonLevel {
     protected void createGameObjects() {
         Body hero = createRectangle(-getWidth() / 2 + 2, getHeight() / 2 - 2 * commonPersonEdge, commonPersonEdge, commonPersonEdge, true, BodyType.DYNAMIC);
         destroyableList.add(hero);
-        Body jumplatform = createRectangle(0, commonPersonEdge, commonPersonEdge * 8, commonPersonEdge / 1.5f, false, BodyType.DYNAMIC);
+        Body jumplatform = createRectangle(0, commonPersonEdge, commonPersonEdge * 12, commonPersonEdge / 1.5f, false, BodyType.DYNAMIC);
         movingObject.add(jumplatform);
 
         //  Body simpleBox2 = createRectangle(0, getHeight() / 2 - commonPersonEdge * 29, commonPersonEdge, commonPersonEdge, false, BodyType.DYNAMIC);
@@ -139,15 +139,12 @@ public class Level2 extends CommonLevel {
         shape.set(new Vec2(-getWidth() / 2 + commonPersonEdge * 5, 0), new Vec2(-getWidth() / 2 + commonPersonEdge * 5, -getHeight() / 2));
         f = ground.createFixture(shape, 0.0f);
 
-        shape.set(new Vec2(getWidth() / 8, -getHeight() / 2 + 3), new Vec2(getWidth() / 8 + 2, -getHeight() / 2 + 3));
+        shape.set(new Vec2(getWidth() / 4 + 3.5f * commonPersonEdge, -1), new Vec2(getWidth() / 4 + 3.5f * commonPersonEdge, -getHeight() / 2));
         f = ground.createFixture(shape, 0.0f);
-        objectForJump.add(f);
-        shape.set(new Vec2(getWidth() / 4 + 3.5f * commonPersonEdge-2, -getHeight() / 2 + 3), new Vec2(getWidth() / 4 + 3.5f * commonPersonEdge, -getHeight() / 2 + 3));
-        f = ground.createFixture(shape, 0.0f);
-        objectForJump.add(f);
 
-        shape.set(new Vec2(getWidth() / 4 + 3.5f * commonPersonEdge, 0), new Vec2(getWidth() / 4 + 3.5f * commonPersonEdge, -getHeight() / 2));
+        shape.set(new Vec2(getWidth() / 4 + 3.5f * commonPersonEdge, -1), new Vec2(getWidth() / 2, -1));
         f = ground.createFixture(shape, 0.0f);
+        objectForJump.add(f);
 
     }
 
