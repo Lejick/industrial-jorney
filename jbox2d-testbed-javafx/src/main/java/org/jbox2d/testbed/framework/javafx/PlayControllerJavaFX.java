@@ -22,7 +22,6 @@ import javafx.animation.AnimationTimer;
 import org.jbox2d.testbed.framework.AbstractTestbedController;
 import org.jbox2d.testbed.framework.PlayModel;
 import org.jbox2d.testbed.framework.TestbedErrorHandler;
-import org.jbox2d.testbed.framework.TestbedModel;
 
 /**
  * This class contains most control logic for the testbed and the update loop. It also watches the

@@ -32,7 +32,7 @@ import org.jbox2d.testbed.tests.level.Level2;
 public class LevelsList {
 
   public static void populateModel(PlayModel model) {
-    model.addTest(new Level1());
-    model.addTest(new Level2());
+    model.addTest(new Level1(model));
+    model.addTest(new Level2(model));
   }
 }
