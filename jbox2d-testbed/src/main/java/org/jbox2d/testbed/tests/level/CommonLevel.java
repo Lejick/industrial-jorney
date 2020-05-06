@@ -96,6 +96,8 @@
  * Created at 4:56:29 AM Jan 14, 2011
  * <p>
  * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
  */
 /**
  * Created at 4:56:29 AM Jan 14, 2011
@@ -127,7 +129,7 @@ public abstract class CommonLevel extends PlayLevel {
     protected final static float minSpeedX = -6f;
     protected final static float maxSpeedXAir = 3f;
     protected final static float minSpeedXAir = -3f;
-    protected final static float maxSpeedY = 5f;
+    protected final static float maxSpeedY = 3f;
 
     protected static final float commonPersonEdge = 1f;
     long lastDestroy_step = 0;
@@ -146,6 +148,12 @@ public abstract class CommonLevel extends PlayLevel {
     protected List<Body> objectToExplode = Collections.synchronizedList(new ArrayList<>());
     protected List<Body> currentToErase = Collections.synchronizedList(new ArrayList<>());
     protected List<Body> nextToErase = Collections.synchronizedList(new ArrayList<>());
+
+    protected List<Fixture> leftBlockedFixtures = new ArrayList<>();
+    protected List<Filter> rightBlockedFixtures = new ArrayList<>();
+
+    protected boolean blockedFromLeft;
+    protected boolean blockedFromRight;
 
     @Override
     public void processBody(Body argBody, Long argTag) {
@@ -246,7 +254,7 @@ public abstract class CommonLevel extends PlayLevel {
         }
         boolean hasContact = hero_body.m_contactList != null;
         if (getModel().getKeys()['a'] || getModel().getKeys()[1092]) {
-            if (hero_body.getLinearVelocity().x > minSpeedX && contactObjForJump.size() > 0) {
+            if (hero_body.getLinearVelocity().x > minSpeedX && !blockedFromLeft) {
                 Vec2 newVel = new Vec2(hero_body.getLinearVelocity().x - 1, hero_body.getLinearVelocity().y);
                 hero_body.setLinearVelocity(newVel);
             }
@@ -260,7 +268,7 @@ public abstract class CommonLevel extends PlayLevel {
             }
         }
         if (getModel().getKeys()['d'] || getModel().getKeys()[1074]) {
-            if (hero_body.getLinearVelocity().x < maxSpeedX && contactObjForJump.size() > 0) {
+            if (hero_body.getLinearVelocity().x < maxSpeedX && !blockedFromRight) {
                 Vec2 newVel = new Vec2(hero_body.getLinearVelocity().x + 1, hero_body.getLinearVelocity().y);
                 hero_body.setLinearVelocity(newVel);
             }
@@ -330,6 +338,17 @@ public abstract class CommonLevel extends PlayLevel {
             }
         }
 
+        if (fixtureA.getBody().isHero()) {
+            if (leftBlockedFixtures.contains(fixtureB)) {
+                blockedFromLeft = true;
+            }
+        }
+        if (fixtureB.getBody().isHero()) {
+            if (leftBlockedFixtures.contains(fixtureA)) {
+                blockedFromLeft = true;
+            }
+        }
+
         if (fixtureA.getBody().isHero() && contactObjForPush.contains(fixtureB)) {
             log.info("BEGIN Contact for push!");
             canPush = true;
@@ -376,6 +395,17 @@ public abstract class CommonLevel extends PlayLevel {
         if (fixtureB.getBody().isHero()) {
             if (objectForJump.contains(fixtureA)) {
                 contactObjForJump.remove(fixtureA);
+            }
+        }
+
+        if (fixtureA.getBody().isHero()) {
+            if (leftBlockedFixtures.contains(fixtureB)) {
+                blockedFromLeft = false;
+            }
+        }
+        if (fixtureB.getBody().isHero()) {
+            if (leftBlockedFixtures.contains(fixtureA)) {
+                blockedFromLeft = false;
             }
         }
 

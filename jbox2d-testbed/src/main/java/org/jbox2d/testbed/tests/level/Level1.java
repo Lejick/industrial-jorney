@@ -139,7 +139,8 @@ public class Level1 extends CommonLevel {
         Fixture f = ground.createFixture(shape, 0.0f);
         objectForJump.add(f);
         shape.set(new Vec2(-getWidth() / 2, getHeight() / 2 - commonPersonEdge * 6 - 0.1f), new Vec2(getWidth() / 3, getHeight() / 2 - commonPersonEdge * 6 - 0.1f));
-        ground.createFixture(shape, 0.0f);
+        f = ground.createFixture(shape, 0.0f);
+        leftBlockedFixtures.add(f);
 
         shape.set(new Vec2(-getWidth() / 3, getHeight() / 2 - commonPersonEdge * 12), new Vec2(getWidth() / 2, getHeight() / 2 - commonPersonEdge * 12));
         f = ground.createFixture(shape, 0.0f);
