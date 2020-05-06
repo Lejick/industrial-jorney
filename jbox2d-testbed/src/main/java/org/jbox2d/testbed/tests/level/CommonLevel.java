@@ -285,7 +285,9 @@ public abstract class CommonLevel extends PlayLevel {
         alert.setTitle(null);
         alert.setHeaderText(null);
         alert.setContentText("Good game. You won! Click OK to exit.");
-        alert.setOnHidden(evt -> Platform.exit());
+        alert.setOnHidden(evt -> {
+           initTest(false);
+        });
         alert.show();
     }
 

@@ -117,7 +117,7 @@ public class PlaySidePanel extends BorderPane {
       }
     });
 
-    top.getChildren().add(new Label("Choose a test:"));
+    top.getChildren().add(new Label("Choose a level:"));
     top.getChildren().add(tests);
 
     addSettings(top, settings, SettingType.DRAWING);
