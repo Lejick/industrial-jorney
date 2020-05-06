@@ -94,12 +94,15 @@
  * Created at 4:56:29 AM Jan 14, 2011
  * <p>
  * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
  */
 /**
  * Created at 4:56:29 AM Jan 14, 2011
  */
 package org.jbox2d.testbed.tests.level;
 
+import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.collision.shapes.PolygonShape;
@@ -107,12 +110,9 @@ import org.jbox2d.common.Color3f;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
 import org.jbox2d.dynamics.contacts.Contact;
-import org.jbox2d.testbed.framework.GamingModelIF;
-import org.jbox2d.testbed.framework.SettingsIF;
-import org.jbox2d.testbed.framework.PlayLevel;
+import org.jbox2d.testbed.framework.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.jbox2d.testbed.framework.Gun;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -137,7 +137,7 @@ public abstract class CommonLevel extends PlayLevel {
     protected Body hero_body;
     protected Body exit;
     protected Body objectToPush;
-    protected GamingModelIF model;
+    protected AbstractTestbedController controller;
     protected List<Body> movingObject = new ArrayList<>();
     protected boolean canPush = false;
     protected List<Fixture> contactObjForPush = new ArrayList<>();
@@ -157,8 +157,8 @@ public abstract class CommonLevel extends PlayLevel {
         return true;
     }
 
-    public CommonLevel(GamingModelIF model) {
-        this.model = model;
+    public CommonLevel(AbstractTestbedController controller) {
+        this.controller = controller;
     }
 
     @Override
@@ -288,7 +288,13 @@ public abstract class CommonLevel extends PlayLevel {
         alert.setHeaderText(null);
         alert.setContentText("Good game. You won! Click OK to exit.");
         alert.setOnHidden(evt -> {
-           initTest(false);
+            Platform.runLater(() -> {
+                getModel().getSettings().setPause(false);
+                controller.playTest(1);
+                //   controller.start();
+
+                controller.reset();
+            });
         });
         alert.show();
     }

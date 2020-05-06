@@ -92,6 +92,7 @@ import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.common.Color3f;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
+import org.jbox2d.testbed.framework.AbstractTestbedController;
 import org.jbox2d.testbed.framework.GamingModelIF;
 import org.jbox2d.testbed.framework.Gun;
 
@@ -102,8 +103,8 @@ public class Level2 extends CommonLevel {
     private static float width = 60;
     private static float height = 40;
 
-    public Level2(GamingModelIF model) {
-        super(model);
+    public Level2(AbstractTestbedController controller) {
+        super(controller);
     }
 
     @Override

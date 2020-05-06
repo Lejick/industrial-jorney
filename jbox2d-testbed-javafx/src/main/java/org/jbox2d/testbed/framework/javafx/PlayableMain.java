@@ -49,7 +49,7 @@ public class PlayableMain extends Application {
         PlayPanelJavaFX panel = new PlayPanelJavaFX(model, controller, testbed);
         model.setPanel(panel);
         model.setDebugDraw(new DebugPlayDrawJavaFX(panel, true));
-        LevelsList.populateModel(model);
+        LevelsList.populateModel(model, controller);
 
 
         testbed.setCenter(panel);
