@@ -251,11 +251,11 @@ public abstract class CommonLevel extends PlayLevel {
             }
         }
 
-        if (fixtureA.getBody().isHero() && contactObjForPush.contains(fixtureB)) {
+        if (fixtureA.getBody().isHero() && (leftBlockedFixtures.contains(fixtureB) || rightBlockedFixtures.contains(fixtureB))) {
             canPush = true;
         }
 
-        if (fixtureB.getBody().isHero() && contactObjForPush.contains(fixtureA)) {
+        if (fixtureB.getBody().isHero() && (leftBlockedFixtures.contains(fixtureA) || rightBlockedFixtures.contains(fixtureA))) {
             canPush = true;
         }
 

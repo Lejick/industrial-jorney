@@ -121,8 +121,16 @@ public class Level3 extends CommonLevel {
     }
 
     protected void createGameObjects() {
-        Body hero = createRectangle(-getWidth() / 2 + 2, getHeight() / 2 - 2 * commonPersonEdge, commonPersonEdge, commonPersonEdge, true, BodyType.DYNAMIC);
+        Body hero = createRectangle(-36, -27, commonPersonEdge, commonPersonEdge, true, BodyType.DYNAMIC);
         destroyableList.add(hero);
+
+        Body simpleBox = createRectangle(-30, 3, commonPersonEdge, commonPersonEdge, false, BodyType.DYNAMIC);
+        Body simpleBox2 = createRectangle(-25, getHeight() / 2 - commonPersonEdge * 29, commonPersonEdge, commonPersonEdge, false, BodyType.DYNAMIC);
+        movingObject.add(simpleBox);
+        movingObject.add(simpleBox2);
+        destroyableList.add(simpleBox);
+        destroyableList.add(simpleBox2);
+
     }
 
     protected void createPlatforms() {
