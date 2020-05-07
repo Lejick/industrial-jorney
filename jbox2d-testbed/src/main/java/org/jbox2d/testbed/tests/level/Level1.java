@@ -191,6 +191,11 @@ public class Level1 extends CommonLevel {
     }
 
     @Override
+    protected int getLevelIndex() {
+        return 0;
+    }
+
+    @Override
     public String getTestName() {
         return "Level 1";
     }

@@ -20,6 +20,7 @@ package org.jbox2d.testbed.framework.javafx;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ScrollPane;
@@ -56,12 +57,10 @@ public class PlayableMain extends Application {
 
         testbed.setRight(new ScrollPane(new PlaySidePanel(model, controller)));
 
-        Scene scene = new Scene(testbed, TestPanelJavaFX.INIT_WIDTH + 175, TestPanelJavaFX.INIT_HEIGHT);
+        Scene scene = new Scene(testbed, TestPanelJavaFX.INIT_WIDTH, TestPanelJavaFX.INIT_HEIGHT);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("JBox2D Testbed");
+        primaryStage.setTitle("War of Shapes");
         primaryStage.show();
-
-        System.out.println(System.getProperty("java.home"));
 
         Platform.runLater(() -> {
             controller.playTest(0);

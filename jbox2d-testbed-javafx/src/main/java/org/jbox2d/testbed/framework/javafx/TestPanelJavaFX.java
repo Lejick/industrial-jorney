@@ -43,8 +43,8 @@ public class TestPanelJavaFX extends Canvas implements TestbedPanel {
 
   public static final int SCREEN_DRAG_BUTTON = MouseButton.SECONDARY.ordinal();
 
-  public static final int INIT_WIDTH = 600;
-  public static final int INIT_HEIGHT = 600;
+  public static final int INIT_WIDTH = 1024;
+  public static final int INIT_HEIGHT = 768;
 
   private final AbstractTestbedController controller;
 
@@ -52,7 +52,7 @@ public class TestPanelJavaFX extends Canvas implements TestbedPanel {
     this(model, controller);
       
     //bind canvas size to parent
-    widthProperty().bind(parent.widthProperty().subtract(175));
+    widthProperty().bind(parent.widthProperty());
     heightProperty().bind(parent.heightProperty());
   }
   

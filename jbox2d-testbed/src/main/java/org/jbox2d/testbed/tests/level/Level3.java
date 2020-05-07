@@ -82,6 +82,8 @@
  * Created at 4:56:29 AM Jan 14, 2011
  * <p>
  * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
  */
 /**
  * Created at 4:56:29 AM Jan 14, 2011
@@ -91,19 +93,21 @@ package org.jbox2d.testbed.tests.level;
 import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.common.Color3f;
 import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.*;
+import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.BodyDef;
+import org.jbox2d.dynamics.BodyType;
+import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.testbed.framework.AbstractTestbedController;
-import org.jbox2d.testbed.framework.GamingModelIF;
 import org.jbox2d.testbed.framework.Gun;
 
 /**
  * @author Daniel Murphy
  */
-public class Level2 extends CommonLevel {
-    private static float width = 60;
-    private static float height = 40;
-    private int levelIndex=1;
-    public Level2(AbstractTestbedController controller) {
+public class Level3 extends CommonLevel {
+    private static float width = 80;
+    private static float height = 60;
+
+    public Level3(AbstractTestbedController controller) {
         super(controller);
     }
 
@@ -112,73 +116,30 @@ public class Level2 extends CommonLevel {
         super.initTest(false);
         createGameObjects();
         createGuns();
-        exit = createRectangle(getWidth() / 2 - 1, getHeight() / 2 - commonPersonEdge * 8, 1, 4, false, BodyType.STATIC);
+        exit = createRectangle(getWidth() / 2 - 1, -getHeight() / 2 + 4 * commonPersonEdge, 1, 4, false, BodyType.STATIC);
         exit.shapeColor = Color3f.GREEN;
     }
 
     protected void createGameObjects() {
         Body hero = createRectangle(-getWidth() / 2 + 2, getHeight() / 2 - 2 * commonPersonEdge, commonPersonEdge, commonPersonEdge, true, BodyType.DYNAMIC);
         destroyableList.add(hero);
-        Body jumplatform = createRectangle(0, commonPersonEdge, commonPersonEdge * 12, commonPersonEdge / 1.5f, false, BodyType.DYNAMIC);
-        movingObject.add(jumplatform);
-
-        //  Body simpleBox2 = createRectangle(0, getHeight() / 2 - commonPersonEdge * 29, commonPersonEdge, commonPersonEdge, false, BodyType.DYNAMIC);
-        // movingObject.add(simpleBox2);
-        // destroyableList.add(simpleBox2);
-
     }
 
     protected void createPlatforms() {
-        BodyDef bd = new BodyDef();
-        Body ground = getWorld().createBody(bd);
-        EdgeShape shape = new EdgeShape();
-        shape.set(new Vec2(-getWidth() / 2 + commonPersonEdge * 6, getHeight() / 2), new Vec2(-getWidth() / 2 + commonPersonEdge * 6, commonPersonEdge * 3));
-        ground.createFixture(shape, 0.0f);
-
-        shape.set(new Vec2(-getWidth() / 2 + commonPersonEdge * 5, 0), new Vec2(getWidth() / 8, 0));
-        Fixture f = ground.createFixture(shape, 0.0f);
-        objectForJump.add(f);
-
-        shape.set(new Vec2(getWidth() / 8, 0), new Vec2(getWidth() / 8, -getHeight() / 2));
-        f = ground.createFixture(shape, 0.0f);
-
-        shape.set(new Vec2(-getWidth() / 2 + commonPersonEdge * 5, 0), new Vec2(-getWidth() / 2 + commonPersonEdge * 5, -getHeight() / 2));
-        f = ground.createFixture(shape, 0.0f);
-
-        shape.set(new Vec2(getWidth() / 4 + 3.5f * commonPersonEdge, -1), new Vec2(getWidth() / 4 + 3.5f * commonPersonEdge, -getHeight() / 2));
-        f = ground.createFixture(shape, 0.0f);
-
-        shape.set(new Vec2(getWidth() / 4 + 3.5f * commonPersonEdge, -1), new Vec2(getWidth() / 2, -1));
-        f = ground.createFixture(shape, 0.0f);
-        objectForJump.add(f);
-
     }
 
     private void createGuns() {
-        Gun gun1 = new Gun(m_world, -getWidth() / 2 + 2, -getHeight() / 2 + commonPersonEdge, 70, 400, 0.5f);
-        gun1.setOrientation(new Vec2(0, 1));
-        objectForJump.add(gun1.getGunBodyFixture());
-        gunList.add(gun1);
 
-        Gun gun2 = new Gun(m_world, 9*commonPersonEdge, -getHeight() / 2 + commonPersonEdge, 500, 400, 0.5f);
-        gun2.setOrientation(new Vec2(0, 1));
-        objectForJump.add(gun2.getGunBodyFixture());
-        gunList.add(gun2);
-
-        Gun gun3 = new Gun(m_world, 14*commonPersonEdge, -getHeight() / 2 + commonPersonEdge, 500, 300, 0.5f);
-        gun3.setOrientation(new Vec2(0, 1));
-        objectForJump.add(gun3.getGunBodyFixture());
-        gunList.add(gun3);
     }
 
     @Override
     protected int getLevelIndex() {
-        return 1;
+        return 2;
     }
 
     @Override
     public String getTestName() {
-        return "Level 2";
+        return "Level 3";
     }
 
     @Override

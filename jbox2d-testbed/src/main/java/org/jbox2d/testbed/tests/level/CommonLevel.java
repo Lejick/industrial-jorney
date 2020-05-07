@@ -96,6 +96,8 @@
  * Created at 4:56:29 AM Jan 14, 2011
  * <p>
  * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
  */
 /**
  * Created at 4:56:29 AM Jan 14, 2011
@@ -128,7 +130,7 @@ public abstract class CommonLevel extends PlayLevel {
     protected final static float maxSpeedXAir = 3f;
     protected final static float minSpeedXAir = -3f;
     protected final static float maxSpeedY = 5f;
-
+    private int maxLevelIndex = 2;
     protected static final float commonPersonEdge = 1f;
     long lastDestroy_step = 0;
     long last_step = 0;
@@ -290,15 +292,18 @@ public abstract class CommonLevel extends PlayLevel {
         alert.setOnHidden(evt -> {
             Platform.runLater(() -> {
                 getModel().getSettings().setPause(false);
-                controller.playTest(1);
-                //   controller.start();
-
+                int nextLevelIndex = getLevelIndex() + 1;
+                if (getLevelIndex() == maxLevelIndex) {
+                    nextLevelIndex = 0;
+                }
+                controller.playTest(nextLevelIndex);
                 controller.reset();
             });
         });
         alert.show();
     }
 
+    protected abstract int getLevelIndex();
     public void beginContact(Contact contact) {
         Body bodyToDestroy = null;
         Fixture fixtureA = contact.getFixtureA();
