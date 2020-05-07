@@ -154,8 +154,6 @@ public class ContactSolver {
         VelocityConstraintPoint vcp = vc.points[j];
 
         if (m_step.warmStarting) {
-          // assert(cp.normalImpulse == 0);
-          // System.out.println("contact normal impulse: " + cp.normalImpulse);
           vcp.normalImpulse = m_step.dtRatio * cp.normalImpulse;
           vcp.tangentImpulse = m_step.dtRatio * cp.tangentImpulse;
         } else {
