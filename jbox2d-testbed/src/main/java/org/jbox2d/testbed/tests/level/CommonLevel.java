@@ -1,6 +1,8 @@
 package org.jbox2d.testbed.tests.level;
 
 import javafx.application.Platform;
+import javafx.scene.Cursor;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.collision.shapes.PolygonShape;
@@ -43,9 +45,9 @@ public abstract class CommonLevel extends PlayLevel {
     protected List<Body> objectToExplode = Collections.synchronizedList(new ArrayList<>());
     protected List<Body> currentToErase = Collections.synchronizedList(new ArrayList<>());
     protected List<Body> nextToErase = Collections.synchronizedList(new ArrayList<>());
-
+    protected Scene scene;
     protected List<Fixture> leftBlockedFixtures = new ArrayList<>();
-    protected List<Fixture>  rightBlockedFixtures = new ArrayList<>();
+    protected List<Fixture> rightBlockedFixtures = new ArrayList<>();
 
     protected boolean blockedFromLeft;
     protected boolean blockedFromRight;
@@ -60,8 +62,9 @@ public abstract class CommonLevel extends PlayLevel {
         return true;
     }
 
-    public CommonLevel(AbstractTestbedController controller) {
+    public CommonLevel(AbstractTestbedController controller, Scene scene) {
         this.controller = controller;
+        this.scene = scene;
     }
 
     @Override
@@ -324,6 +327,14 @@ public abstract class CommonLevel extends PlayLevel {
 
     @Override
     public void step(SettingsIF settings) {
+        if (    getWorldMouse().x < getWidth() / 2
+                && getWorldMouse().x > -getWidth() / 2
+                && getWorldMouse().y > -getHeight() / 2
+                && getWorldMouse().y < getHeight() / 2) {
+            scene.setCursor(Cursor.CROSSHAIR);
+        } else {
+            scene.setCursor(Cursor.DEFAULT);
+        }
         super.step(settings);
         keyPressed();
         explose();

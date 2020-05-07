@@ -23,6 +23,7 @@
  ******************************************************************************/
 package org.jbox2d.testbed.framework;
 
+import javafx.scene.Scene;
 import org.jbox2d.testbed.tests.level.Level1;
 import org.jbox2d.testbed.tests.level.Level2;
 import org.jbox2d.testbed.tests.level.Level3;
@@ -32,9 +33,9 @@ import org.jbox2d.testbed.tests.level.Level3;
  */
 public class LevelsList {
 
-  public static void populateModel(PlayModel model, AbstractTestbedController controller) {
-    model.addTest(new Level1(controller));
-    model.addTest(new Level2(controller));
-    model.addTest(new Level3(controller));
+  public static void populateModel(PlayModel model, AbstractTestbedController controller, Scene scene) {
+    model.addTest(new Level1(controller,scene));
+    model.addTest(new Level2(controller,scene));
+    model.addTest(new Level3(controller,scene));
   }
 }

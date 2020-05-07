@@ -50,14 +50,15 @@ public class PlayableMain extends Application {
         PlayPanelJavaFX panel = new PlayPanelJavaFX(model, controller, testbed);
         model.setPanel(panel);
         model.setDebugDraw(new DebugPlayDrawJavaFX(panel, true));
-        LevelsList.populateModel(model, controller);
+
+        Scene scene = new Scene(testbed, PlayPanelJavaFX.INIT_WIDTH, PlayPanelJavaFX.INIT_HEIGHT);
+        LevelsList.populateModel(model, controller, scene);
 
 
         testbed.setCenter(panel);
 
         testbed.setRight(new ScrollPane(new PlaySidePanel(model, controller)));
 
-        Scene scene = new Scene(testbed, PlayPanelJavaFX.INIT_WIDTH, PlayPanelJavaFX.INIT_HEIGHT);
         primaryStage.setScene(scene);
         primaryStage.setTitle("War of Shapes");
         primaryStage.show();

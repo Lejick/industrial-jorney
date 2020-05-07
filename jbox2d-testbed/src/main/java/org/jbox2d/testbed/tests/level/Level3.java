@@ -90,6 +90,7 @@
  */
 package org.jbox2d.testbed.tests.level;
 
+import javafx.scene.Scene;
 import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.common.Color3f;
 import org.jbox2d.common.Vec2;
@@ -107,8 +108,8 @@ public class Level3 extends CommonLevel {
     private static float width = 80;
     private static float height = 60;
 
-    public Level3(AbstractTestbedController controller) {
-        super(controller);
+    public Level3(AbstractTestbedController controller, Scene scene) {
+        super(controller, scene);
     }
 
     @Override

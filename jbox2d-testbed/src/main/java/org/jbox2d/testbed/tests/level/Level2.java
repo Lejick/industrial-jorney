@@ -88,6 +88,7 @@
  */
 package org.jbox2d.testbed.tests.level;
 
+import javafx.scene.Scene;
 import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.common.Color3f;
 import org.jbox2d.common.Vec2;
@@ -102,9 +103,10 @@ import org.jbox2d.testbed.framework.Gun;
 public class Level2 extends CommonLevel {
     private static float width = 60;
     private static float height = 40;
-    private int levelIndex=1;
-    public Level2(AbstractTestbedController controller) {
-        super(controller);
+    private int levelIndex = 1;
+
+    public Level2(AbstractTestbedController controller, Scene scene) {
+        super(controller, scene);
     }
 
     @Override
@@ -173,7 +175,7 @@ public class Level2 extends CommonLevel {
 
     @Override
     protected int getLevelIndex() {
-        return 1;
+        return levelIndex;
     }
 
     @Override
