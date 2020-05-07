@@ -48,7 +48,6 @@ import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.FixtureDef;
-import org.jbox2d.dynamics.Profile;
 import org.jbox2d.dynamics.World;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.jbox2d.dynamics.joints.Joint;
@@ -63,6 +62,7 @@ import org.jbox2d.testbed.framework.utils.ListenerAdapter;
 import org.jbox2d.testbed.framework.utils.ParticleVelocityQueryCallback;
 import org.jbox2d.testbed.framework.utils.SignerAdapter;
 import org.jbox2d.testbed.framework.utils.TestQueryCallback;
+import org.slf4j.Logger;
 
 /**
  * @author Daniel Murphy
@@ -380,6 +380,8 @@ public abstract class PlayLevel implements ContactListener, ObjectListener, Obje
      */
     public void exit() {
     }
+    protected abstract Logger getLogger();
+
 
     private final Color3f color1 = new Color3f(.3f, .95f, .3f);
     private final Color3f color2 = new Color3f(.3f, .3f, .95f);
@@ -536,9 +538,11 @@ public abstract class PlayLevel implements ContactListener, ObjectListener, Obje
         }
 
         if (button == MOUSE_JOINT_BUTTON) {
-            //  spawnMouseJoint(p);
+            leftMouseAction();
         }
     }
+
+    protected abstract void leftMouseAction();
 
     public void mouseMove(Vec2 p) {
         mouseWorld.set(p);
