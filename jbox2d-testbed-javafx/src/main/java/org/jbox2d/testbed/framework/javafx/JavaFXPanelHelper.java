@@ -117,23 +117,6 @@ public class JavaFXPanelHelper {
       String keyName = keyEvent.getText();
       char c = (keyName.length() == 1 ? keyName.charAt(0) : '\0');
       controller.queueKeyPressed(c, toInt(keyEvent.getCode()));
-      switch (c) {
-        case '[':
-          controller.lastTest();
-          break;
-        case ']':
-          controller.nextTest();
-          break;
-        case 'r':
-          controller.reset();
-          break;
-        case ' ':
-       //   controller.queueLaunchBomb();
-          break;
-        case 'p':
-          controller.queuePause();
-          break;
-      }
     });
   }
 

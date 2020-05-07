@@ -325,9 +325,11 @@ public abstract class CommonLevel extends PlayLevel {
 
     }
 
+    protected abstract boolean hasGun();
+
     @Override
     public void step(SettingsIF settings) {
-        if (    getWorldMouse().x < getWidth() / 2
+        if (hasGun() && getWorldMouse().x < getWidth() / 2
                 && getWorldMouse().x > -getWidth() / 2
                 && getWorldMouse().y > -getHeight() / 2
                 && getWorldMouse().y < getHeight() / 2) {

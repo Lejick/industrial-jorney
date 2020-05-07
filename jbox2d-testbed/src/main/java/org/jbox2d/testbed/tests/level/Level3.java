@@ -147,6 +147,11 @@ public class Level3 extends CommonLevel {
     }
 
     @Override
+    protected boolean hasGun() {
+        return true;
+    }
+
+    @Override
     public String getTestName() {
         return "Level 3";
     }
