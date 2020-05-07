@@ -38,7 +38,6 @@ public abstract class CommonLevel extends PlayLevel {
     protected AbstractTestbedController controller;
     protected List<Body> movingObject = new ArrayList<>();
     protected boolean canPush = false;
-    protected List<Fixture> contactObjForPush = new ArrayList<>();
     protected List<Gun> gunList = new ArrayList<>();
     protected List<Body> destroyableList = Collections.synchronizedList(new ArrayList<>());
     protected List<Body> objectToExplode = Collections.synchronizedList(new ArrayList<>());
@@ -68,7 +67,6 @@ public abstract class CommonLevel extends PlayLevel {
     @Override
     public void initTest(boolean deserialized) {
         contactObjForJump.clear();
-        contactObjForPush.clear();
         last_step = 0;
         lastDestroy_step = 0;
         objectToPush = null;
@@ -114,11 +112,9 @@ public abstract class CommonLevel extends PlayLevel {
 
         shape.set(new Vec2(getWidth() / 2, getHeight() / 2), new Vec2(getWidth() / 2, -getHeight() / 2));
         f = ground.createFixture(shape, 0.0f);
-        contactObjForPush.add(f);
         rightBlockedFixtures.add(f);
         shape.set(new Vec2(-getWidth() / 2, getHeight() / 2), new Vec2(-getWidth() / 2, -getHeight() / 2));
         f = ground.createFixture(shape, 0.0f);
-        contactObjForPush.add(f);
         leftBlockedFixtures.add(f);
     }
 
@@ -316,11 +312,11 @@ public abstract class CommonLevel extends PlayLevel {
             objectToPush = null;
         }
 
-        if (fixtureA.getBody().isHero() && contactObjForPush.contains(fixtureB)) {
+        if (fixtureA.getBody().isHero() && (leftBlockedFixtures.contains(fixtureB) || rightBlockedFixtures.contains(fixtureB))) {
             canPush = false;
         }
 
-        if (fixtureB.getBody().isHero() && contactObjForPush.contains(fixtureA)) {
+        if (fixtureB.getBody().isHero() && (leftBlockedFixtures.contains(fixtureA) || rightBlockedFixtures.contains(fixtureA))) {
             canPush = false;
         }
 

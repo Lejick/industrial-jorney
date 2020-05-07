@@ -169,8 +169,6 @@ public class Level1 extends CommonLevel {
 
         shape.set(new Vec2(0, -getHeight() / 2 + commonPersonEdge * 3), new Vec2(0, -getHeight() / 2));
         f = ground.createFixture(shape, 0.0f);
-        contactObjForPush.add(f);
-
     }
 
     private void createGuns() {
