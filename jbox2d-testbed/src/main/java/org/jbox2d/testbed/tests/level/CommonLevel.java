@@ -116,9 +116,11 @@ public abstract class CommonLevel extends PlayLevel {
         shape.set(new Vec2(getWidth() / 2, getHeight() / 2), new Vec2(getWidth() / 2, -getHeight() / 2));
         f = ground.createFixture(shape, 0.0f);
         rightBlockedFixtures.add(f);
+        f.m_friction=0;
         shape.set(new Vec2(-getWidth() / 2, getHeight() / 2), new Vec2(-getWidth() / 2, -getHeight() / 2));
         f = ground.createFixture(shape, 0.0f);
         leftBlockedFixtures.add(f);
+        f.m_friction=0;
     }
 
     protected Body createRectangle(float x, float y, float hx, float hy, boolean isHero, BodyType bodyType) {
@@ -204,6 +206,17 @@ public abstract class CommonLevel extends PlayLevel {
             });
         });
         alert.show();
+    }
+
+    @Override
+    protected Logger getLogger() {
+        return log;
+    }
+
+    protected void leftMouseAction() {
+        if (hasGun() && cursorInPlayArea()) {
+            log.info("Fire!");
+        }
     }
 
     protected abstract int getLevelIndex();
@@ -327,12 +340,16 @@ public abstract class CommonLevel extends PlayLevel {
 
     protected abstract boolean hasGun();
 
-    @Override
-    public void step(SettingsIF settings) {
-        if (hasGun() && getWorldMouse().x < getWidth() / 2
+    protected boolean cursorInPlayArea() {
+        return getWorldMouse().x < getWidth() / 2
                 && getWorldMouse().x > -getWidth() / 2
                 && getWorldMouse().y > -getHeight() / 2
-                && getWorldMouse().y < getHeight() / 2) {
+                && getWorldMouse().y < getHeight() / 2;
+    }
+
+    @Override
+    public void step(SettingsIF settings) {
+        if (hasGun() && cursorInPlayArea()) {
             scene.setCursor(Cursor.CROSSHAIR);
         } else {
             scene.setCursor(Cursor.DEFAULT);
