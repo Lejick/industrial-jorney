@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Color3f;
@@ -215,7 +216,32 @@ public abstract class CommonLevel extends PlayLevel {
 
     protected void leftMouseAction() {
         if (hasGun() && cursorInPlayArea()) {
-            log.info("Fire!");
+          Vec2 orientation=new Vec2( getWorldMouse().x-hero_body.getPosition().x,
+                  getWorldMouse().y - hero_body.getPosition().y);
+            float norm = Math.abs(getWorldMouse().x - hero_body.getPosition().x);
+            orientation.x = orientation.x / norm;
+            orientation.y = orientation.y / norm;
+            {
+                CircleShape shape = new CircleShape();
+                shape.m_radius = 0.25f;
+
+                FixtureDef fd = new FixtureDef();
+                fd.shape = shape;
+                fd.density = 20.0f;
+                fd.restitution = 0.05f;
+
+                BodyDef bd = new BodyDef();
+                bd.type = BodyType.DYNAMIC;
+                bd.bullet = true;
+                bd.position.set(hero_body.getPosition().x + 1 * orientation.x, hero_body.getPosition().y + 1 * orientation.y);
+
+                Body  bullet = getWorld().createBody(bd);
+                Fixture f = bullet.createFixture(fd);
+                objectForJump.add(f);
+                bullet.shapeColor = Color3f.RED;
+                bullet.setLinearVelocity(new Vec2(orientation.x * 500, orientation.y * 500));
+            }
+
         }
     }
 
