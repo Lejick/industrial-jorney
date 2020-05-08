@@ -11,7 +11,6 @@
 		<module>jbox2d-library</module>
 		<module>jbox2d-serialization</module>
 		<module>jbox2d-testbed</module>
-		<module>jbox2d-testbed-jogl</module>
 		<module>jbox2d-testbed-javafx</module>
 	</modules>
 
