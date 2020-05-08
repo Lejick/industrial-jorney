@@ -16,7 +16,7 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
  * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  ******************************************************************************/
-package org.jbox2d.testbed.framework.javafx;
+package org.jbox2d.fx;
 
 import javafx.animation.AnimationTimer;
 import org.jbox2d.testbed.framework.AbstractTestbedController;

@@ -1,4 +1,4 @@
-package org.jbox2d.testbed.framework.javafx;
+package org.jbox2d.fx;
 
 import java.util.HashMap;
 import java.util.Map;

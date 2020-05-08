@@ -16,11 +16,10 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
  * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  ******************************************************************************/
-package org.jbox2d.testbed.framework.javafx;
+package org.jbox2d.fx;
 
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ScrollPane;
@@ -29,8 +28,6 @@ import javafx.stage.Stage;
 import org.jbox2d.testbed.framework.*;
 import org.jbox2d.testbed.framework.AbstractTestbedController.MouseBehavior;
 import org.jbox2d.testbed.framework.AbstractTestbedController.UpdateBehavior;
-import org.jbox2d.testbed.framework.javafx.*;
-import org.jbox2d.testbed.framework.javafx.PlaySidePanel;
 
 /**
  * The entry point for the testbed application

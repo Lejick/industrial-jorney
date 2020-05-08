@@ -6,7 +6,6 @@
       <module fileurl="file://$PROJECT_DIR$/jbox2d-library/jbox2d-library.iml" filepath="$PROJECT_DIR$/jbox2d-library/jbox2d-library.iml" />
       <module fileurl="file://$PROJECT_DIR$/jbox2d-serialization/jbox2d-serialization.iml" filepath="$PROJECT_DIR$/jbox2d-serialization/jbox2d-serialization.iml" />
       <module fileurl="file://$PROJECT_DIR$/jbox2d-testbed/jbox2d-testbed.iml" filepath="$PROJECT_DIR$/jbox2d-testbed/jbox2d-testbed.iml" />
-      <module fileurl="file://$PROJECT_DIR$/jbox2d-testbed-javafx/jbox2d-testbed-javafx.iml" filepath="$PROJECT_DIR$/jbox2d-testbed-javafx/jbox2d-testbed-javafx.iml" />
     </modules>
   </component>
 </project>
