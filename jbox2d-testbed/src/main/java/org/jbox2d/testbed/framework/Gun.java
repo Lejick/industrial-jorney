@@ -79,7 +79,7 @@ public class Gun {
                 if (detectY2 != null) {
                     condition4 = positionY <= detectY2;
                 }
-                if ((lastStep - lastFireStep > cooldown) &&
+                if ((lastStep - lastFireStep > cooldown) && !body.isDestroy() &&
                         condition1 &&
                         condition2 &&
                         condition3 &&

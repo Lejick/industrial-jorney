@@ -36,6 +36,7 @@ public abstract class CommonLevel extends PlayLevel {
     protected List<Fixture> objectForJump = new ArrayList<>();
     protected List<Fixture> contactObjForJump = new ArrayList<>();
     protected Body hero_body;
+    protected Body hero_bullet;
     protected Body exit;
     protected Body objectToPush;
     protected AbstractTestbedController controller;
@@ -74,6 +75,8 @@ public abstract class CommonLevel extends PlayLevel {
         last_step = 0;
         lastDestroy_step = 0;
         objectToPush = null;
+        blockedFromRight=false;
+        blockedFromLeft=false;
         canPush = false;
         createGameBox();
         createPlatforms();
@@ -215,7 +218,7 @@ public abstract class CommonLevel extends PlayLevel {
     }
 
     protected void leftMouseAction() {
-        if (hasGun() && cursorInPlayArea()) {
+        if (hasGun() && cursorInPlayArea() && !hero_body.isDestroy()) {
           Vec2 orientation=new Vec2( getWorldMouse().x-hero_body.getPosition().x,
                   getWorldMouse().y - hero_body.getPosition().y);
             float norm = Math.abs(getWorldMouse().x - hero_body.getPosition().x);
@@ -240,6 +243,7 @@ public abstract class CommonLevel extends PlayLevel {
                 objectForJump.add(f);
                 bullet.shapeColor = Color3f.RED;
                 bullet.setLinearVelocity(new Vec2(orientation.x * 500, orientation.y * 500));
+                hero_bullet=bullet;
             }
 
         }
@@ -316,6 +320,24 @@ public abstract class CommonLevel extends PlayLevel {
                     gun.getBullet().setLinearVelocity(bulletVel);
                     return;
                 }
+            }
+        }
+        if (fixtureA.m_body == hero_bullet) {
+            bodyToDestroy = fixtureB.m_body;
+        } else if (fixtureB.m_body == hero_bullet) {
+            bodyToDestroy = fixtureA.m_body;
+        }
+        if (bodyToDestroy == hero_body) {
+            return;
+        }
+        if (bodyToDestroy != null  && hero_bullet != null && destroyableList.contains(bodyToDestroy)) {
+            float bulletImpulse = hero_bullet.m_mass * hero_bullet.getLinearVelocity().length();
+            if (bulletImpulse > 200) {
+                objectToExplode.add(bodyToDestroy);
+                Vec2 bulletVel = hero_bullet.getLinearVelocity();
+                bulletVel.x = bulletVel.x - 30;
+                hero_bullet.setLinearVelocity(bulletVel);
+                return;
             }
         }
     }
@@ -404,6 +426,7 @@ public abstract class CommonLevel extends PlayLevel {
         for (Body body : objectToExplode) {
             Vec2 oldPosition = body.getPosition();
             m_world.destroyBody(body);
+            body.setDestroy(true);
             for (int i = 0; i < 10; i++) {
                 PolygonShape shape = new PolygonShape();
                 shape.setAsBox(0.1f, 0.1f);

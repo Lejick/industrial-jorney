@@ -84,6 +84,8 @@
  * Created at 4:56:29 AM Jan 14, 2011
  * <p>
  * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
  */
 /**
  * Created at 4:56:29 AM Jan 14, 2011
@@ -125,13 +127,22 @@ public class Level3 extends CommonLevel {
         Body hero = createRectangle(-36, 26, commonPersonEdge, commonPersonEdge, true, BodyType.DYNAMIC);
         destroyableList.add(hero);
 
-      /*  Body simpleBox = createRectangle(-30, 3, commonPersonEdge, commonPersonEdge, false, BodyType.DYNAMIC);
-        Body simpleBox2 = createRectangle(-25, getHeight() / 2 - commonPersonEdge * 29, commonPersonEdge, commonPersonEdge, false, BodyType.DYNAMIC);
-        movingObject.add(simpleBox);
-        movingObject.add(simpleBox2);
-        destroyableList.add(simpleBox);
-        destroyableList.add(simpleBox2);*/
 
+        float deltaY = 0;
+        for(int j=0;j<3;j++) {
+            float deltaX = 0;
+            for (int i = 0; i < 8; i++) {
+                Body simpleBox = createRectangle(31 + deltaX, 21 + deltaY, commonPersonEdge / 2, commonPersonEdge / 2, false, BodyType.DYNAMIC);
+                movingObject.add(simpleBox);
+                destroyableList.add(simpleBox);
+                deltaX = deltaX + commonPersonEdge + 0.1f;
+            }
+        deltaY=deltaY+commonPersonEdge+0.1f;
+        }
+        Body simpleBox = createRectangle(35, 25 , commonPersonEdge, commonPersonEdge, false, BodyType.DYNAMIC);
+        simpleBox.getFixtureList().m_friction=5f;
+        simpleBox.getFixtureList().m_density=100f;
+        movingObject.add(simpleBox);
     }
 
     protected void createPlatforms() {
@@ -139,18 +150,26 @@ public class Level3 extends CommonLevel {
         Body ground = getWorld().createBody(bd);
         EdgeShape shape = new EdgeShape();
 
-        shape.set(new Vec2(-40, 24), new Vec2(20,24));
+        shape.set(new Vec2(-40, 20), new Vec2(18, 20));
         Fixture f = ground.createFixture(shape, 0.0f);
+        objectForJump.add(f);
+
+        shape.set(new Vec2(30, 20), new Vec2(40, 20));
+        f = ground.createFixture(shape, 0.0f);
+        objectForJump.add(f);
+
+        shape.set(new Vec2(-30, 13), new Vec2(40, 13));
+        f = ground.createFixture(shape, 0.0f);
         objectForJump.add(f);
 
     }
 
 
     private void createGuns() {
-        Gun gun2 = new Gun(m_world, getWidth() / 2 - 2, 20, 100, 800, 1f);
+        Gun gun2 = new Gun(m_world, 32, 14, 100, 1000, 1f);
         gun2.setDetection(true);
-        gun2.setDetectY1(19f);
-        gun2.setDetectY2(21f);
+        gun2.setDetectY1(13f);
+        gun2.setDetectY2(15f);
         for (Body body : destroyableList) {
             gun2.addObjectToAttack(body);
         }
