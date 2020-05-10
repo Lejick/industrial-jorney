@@ -122,23 +122,41 @@ public class Level3 extends CommonLevel {
     }
 
     protected void createGameObjects() {
-        Body hero = createRectangle(-36, -27, commonPersonEdge, commonPersonEdge, true, BodyType.DYNAMIC);
+        Body hero = createRectangle(-36, 26, commonPersonEdge, commonPersonEdge, true, BodyType.DYNAMIC);
         destroyableList.add(hero);
 
-        Body simpleBox = createRectangle(-30, 3, commonPersonEdge, commonPersonEdge, false, BodyType.DYNAMIC);
+      /*  Body simpleBox = createRectangle(-30, 3, commonPersonEdge, commonPersonEdge, false, BodyType.DYNAMIC);
         Body simpleBox2 = createRectangle(-25, getHeight() / 2 - commonPersonEdge * 29, commonPersonEdge, commonPersonEdge, false, BodyType.DYNAMIC);
         movingObject.add(simpleBox);
         movingObject.add(simpleBox2);
         destroyableList.add(simpleBox);
-        destroyableList.add(simpleBox2);
+        destroyableList.add(simpleBox2);*/
 
     }
 
     protected void createPlatforms() {
+        BodyDef bd = new BodyDef();
+        Body ground = getWorld().createBody(bd);
+        EdgeShape shape = new EdgeShape();
+
+        shape.set(new Vec2(-40, 24), new Vec2(20,24));
+        Fixture f = ground.createFixture(shape, 0.0f);
+        objectForJump.add(f);
+
     }
 
-    private void createGuns() {
 
+    private void createGuns() {
+        Gun gun2 = new Gun(m_world, getWidth() / 2 - 2, 20, 100, 800, 1f);
+        gun2.setDetection(true);
+        gun2.setDetectY1(19f);
+        gun2.setDetectY2(21f);
+        for (Body body : destroyableList) {
+            gun2.addObjectToAttack(body);
+        }
+        gun2.setOrientation(new Vec2(-1, 0));
+        objectForJump.add(gun2.getGunBodyFixture());
+        gunList.add(gun2);
     }
 
     @Override
