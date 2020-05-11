@@ -409,9 +409,11 @@ public abstract class CommonLevel extends PlayLevel {
             gun.checkFire(last_step);
         }
         //  checkToErase();
+        movePlatforms();
         last_step++;
     }
 
+    protected abstract void movePlatforms();
     private void checkToErase() {
         if (last_step - lastDestroy_step > 1000) {
             for (Body body : currentToErase) {

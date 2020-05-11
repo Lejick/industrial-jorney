@@ -201,6 +201,11 @@ public class Level1 extends CommonLevel {
     }
 
     @Override
+    protected void movePlatforms() {
+
+    }
+
+    @Override
     public String getTestName() {
         return "Level 1";
     }
