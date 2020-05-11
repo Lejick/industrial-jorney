@@ -131,17 +131,19 @@ public class Level3 extends CommonLevel {
         float deltaY = 0;
         for(int j=0;j<3;j++) {
             float deltaX = 0;
-            for (int i = 0; i < 8; i++) {
-                Body simpleBox = createRectangle(31 + deltaX, 21 + deltaY, commonPersonEdge / 2, commonPersonEdge / 2, false, BodyType.DYNAMIC);
+            for (int i = 0; i < 2; i++) {
+                Body simpleBox = createRectangle(31 + deltaX, 21 + deltaY, commonPersonEdge / 1.5f, commonPersonEdge / 1.5f, false, BodyType.DYNAMIC);
                 movingObject.add(simpleBox);
                 destroyableList.add(simpleBox);
-                deltaX = deltaX + commonPersonEdge + 0.1f;
+                deltaX = deltaX + commonPersonEdge + 6f;
             }
         deltaY=deltaY+commonPersonEdge+0.1f;
         }
-        Body simpleBox = createRectangle(35, 25 , commonPersonEdge, commonPersonEdge, false, BodyType.DYNAMIC);
+        Body platformBox = createRectangle(35, 25 , 6, 0.2f, false, BodyType.DYNAMIC);
+
+        Body simpleBox = createRectangle(35, 27 , commonPersonEdge, commonPersonEdge, false, BodyType.DYNAMIC);
         simpleBox.getFixtureList().m_friction=5f;
-        simpleBox.getFixtureList().m_density=100f;
+        simpleBox.getFixtureList().m_density=1f;
         movingObject.add(simpleBox);
     }
 
