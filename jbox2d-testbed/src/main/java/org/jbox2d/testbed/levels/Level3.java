@@ -94,7 +94,7 @@
 /**
  * Created at 4:56:29 AM Jan 14, 2011
  */
-package org.jbox2d.testbed.tests.level;
+package org.jbox2d.testbed.levels;
 
 import javafx.scene.Scene;
 import org.jbox2d.collision.shapes.EdgeShape;
@@ -212,8 +212,9 @@ public class Level3 extends CommonLevel {
         platform1 = createMovingPlatform(5.5f, 5, 5, 0.2f, false, BodyType.KINEMATIC);
         List<Vec2> coordinatesList = new ArrayList<>();
         coordinatesList.add(new Vec2(5.5f, 5));
-        coordinatesList.add(new Vec2(5.5f, -10));
+        coordinatesList.add(new Vec2(5.5f, 0));
         MovingObject movingObject = new MovingObject(platform1, coordinatesList);
+        platform1.setLinearVelocity(new Vec2(0,-1));
         movingObjectList.add(movingObject);
     }
 

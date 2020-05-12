@@ -1,4 +1,4 @@
-package org.jbox2d.testbed.tests.level;
+package org.jbox2d.testbed.levels;
 
 import javafx.application.Platform;
 import javafx.scene.Cursor;

@@ -24,9 +24,9 @@
 package org.jbox2d.testbed.framework;
 
 import javafx.scene.Scene;
-import org.jbox2d.testbed.tests.level.Level1;
-import org.jbox2d.testbed.tests.level.Level2;
-import org.jbox2d.testbed.tests.level.Level3;
+import org.jbox2d.testbed.levels.Level1;
+import org.jbox2d.testbed.levels.Level2;
+import org.jbox2d.testbed.levels.Level3;
 
 /**
  * @author Daniel Murphy

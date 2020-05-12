@@ -86,7 +86,7 @@
 /**
  * Created at 4:56:29 AM Jan 14, 2011
  */
-package org.jbox2d.testbed.tests.level;
+package org.jbox2d.testbed.levels;
 
 import javafx.scene.Scene;
 import org.jbox2d.collision.shapes.EdgeShape;
@@ -94,7 +94,6 @@ import org.jbox2d.common.Color3f;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
 import org.jbox2d.testbed.framework.AbstractTestbedController;
-import org.jbox2d.testbed.framework.GamingModelIF;
 import org.jbox2d.testbed.framework.Gun;
 
 /**
