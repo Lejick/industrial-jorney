@@ -50,6 +50,7 @@ public abstract class CommonLevel extends PlayLevel {
     protected Scene scene;
     protected List<Fixture> leftBlockedFixtures = new ArrayList<>();
     protected List<Fixture> rightBlockedFixtures = new ArrayList<>();
+    protected List<MovingObject> movingObjectList = new ArrayList<>();
 
     protected boolean blockedFromLeft;
     protected boolean blockedFromRight;
@@ -75,8 +76,8 @@ public abstract class CommonLevel extends PlayLevel {
         last_step = 0;
         lastDestroy_step = 0;
         objectToPush = null;
-        blockedFromRight=false;
-        blockedFromLeft=false;
+        blockedFromRight = false;
+        blockedFromLeft = false;
         canPush = false;
         createGameBox();
         createPlatforms();
@@ -120,11 +121,11 @@ public abstract class CommonLevel extends PlayLevel {
         shape.set(new Vec2(getWidth() / 2, getHeight() / 2), new Vec2(getWidth() / 2, -getHeight() / 2));
         f = ground.createFixture(shape, 0.0f);
         rightBlockedFixtures.add(f);
-        f.m_friction=0;
+        f.m_friction = 0;
         shape.set(new Vec2(-getWidth() / 2, getHeight() / 2), new Vec2(-getWidth() / 2, -getHeight() / 2));
         f = ground.createFixture(shape, 0.0f);
         leftBlockedFixtures.add(f);
-        f.m_friction=0;
+        f.m_friction = 0;
     }
 
     protected Body createRectangle(float x, float y, float hx, float hy, boolean isHero, BodyType bodyType) {
@@ -243,8 +244,8 @@ public abstract class CommonLevel extends PlayLevel {
 
     protected void leftMouseAction() {
         if (hasGun() && cursorInPlayArea() && !hero_body.isDestroy()) {
-          Vec2 orientation=new Vec2( getWorldMouse().x-hero_body.getPosition().x,
-                  getWorldMouse().y - hero_body.getPosition().y);
+            Vec2 orientation = new Vec2(getWorldMouse().x - hero_body.getPosition().x,
+                    getWorldMouse().y - hero_body.getPosition().y);
             float norm = Math.abs(getWorldMouse().x - hero_body.getPosition().x);
             orientation.x = orientation.x / norm;
             orientation.y = orientation.y / norm;
@@ -262,11 +263,11 @@ public abstract class CommonLevel extends PlayLevel {
                 bd.bullet = true;
                 bd.position.set(hero_body.getPosition().x + 1 * orientation.x, hero_body.getPosition().y + 1 * orientation.y);
 
-                Body  bullet = getWorld().createBody(bd);
+                Body bullet = getWorld().createBody(bd);
                 Fixture f = bullet.createFixture(fd);
                 bullet.shapeColor = Color3f.RED;
                 bullet.setLinearVelocity(new Vec2(orientation.x * 500, orientation.y * 500));
-                hero_bullet=bullet;
+                hero_bullet = bullet;
             }
 
         }
@@ -353,7 +354,7 @@ public abstract class CommonLevel extends PlayLevel {
         if (bodyToDestroy == hero_body) {
             return;
         }
-        if (bodyToDestroy != null  && hero_bullet != null && destroyableList.contains(bodyToDestroy)) {
+        if (bodyToDestroy != null && hero_bullet != null && destroyableList.contains(bodyToDestroy)) {
             float bulletImpulse = hero_bullet.m_mass * hero_bullet.getLinearVelocity().length();
             if (bulletImpulse > 200) {
                 objectToExplode.add(bodyToDestroy);
@@ -431,12 +432,12 @@ public abstract class CommonLevel extends PlayLevel {
         for (Gun gun : gunList) {
             gun.checkFire(last_step);
         }
-        //  checkToErase();
-        movePlatforms();
+        for (MovingObject movingObject : movingObjectList) {
+            movingObject.calculateStep();
+        }
+
         last_step++;
     }
-
-    protected abstract void movePlatforms();
 
     private void checkToErase() {
         if (last_step - lastDestroy_step > 1000) {

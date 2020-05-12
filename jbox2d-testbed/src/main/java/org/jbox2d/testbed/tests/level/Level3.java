@@ -88,6 +88,8 @@
  * Created at 4:56:29 AM Jan 14, 2011
  * <p>
  * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
  */
 /**
  * Created at 4:56:29 AM Jan 14, 2011
@@ -104,6 +106,10 @@ import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.testbed.framework.AbstractTestbedController;
 import org.jbox2d.testbed.framework.Gun;
+import org.jbox2d.testbed.framework.MovingObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Daniel Murphy
@@ -159,7 +165,7 @@ public class Level3 extends CommonLevel {
         Fixture f = ground.createFixture(shape, 0.0f);
         objectForJump.add(f);
         shape.set(new Vec2(-40, 19.9f), new Vec2(18, 19.9f));
-         ground.createFixture(shape, 0.0f);
+        ground.createFixture(shape, 0.0f);
 
         shape.set(new Vec2(30, 20), new Vec2(40, 20));
         f = ground.createFixture(shape, 0.0f);
@@ -204,16 +210,11 @@ public class Level3 extends CommonLevel {
 
     private void createMovingPlatforms() {
         platform1 = createMovingPlatform(5.5f, 5, 5, 0.2f, false, BodyType.KINEMATIC);
-    }
-
-    @Override
-    protected void movePlatforms() {
-        if (platform1.getPosition().y >= 5) {
-            platform1.setLinearVelocity(new Vec2(0, -3));
-        }
-        if (platform1.getPosition().y <= -10) {
-            platform1.setLinearVelocity(new Vec2(0, 3));
-        }
+        List<Vec2> coordinatesList = new ArrayList<>();
+        coordinatesList.add(new Vec2(5.5f, 5));
+        coordinatesList.add(new Vec2(5.5f, -10));
+        MovingObject movingObject = new MovingObject(platform1, coordinatesList);
+        movingObjectList.add(movingObject);
     }
 
     @Override
