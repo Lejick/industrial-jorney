@@ -450,9 +450,6 @@ public abstract class PlayLevel implements ContactListener, ObjectListener, Obje
             debugDraw.drawString(5, m_textLine, "World mouse position: " + mouseWorld.toString(),
                     Color3f.WHITE);
             m_textLine += TEXT_LINE_SPACE;
-            debugDraw.drawString(5, m_textLine, "Framerate: " + (int) model.getCalculatedFps(),
-                    Color3f.WHITE);
-            m_textLine += TEXT_LINE_SPACE;
 
             statsList.clear();
             for (String s : statsList) {

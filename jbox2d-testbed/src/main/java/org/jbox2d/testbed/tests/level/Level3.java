@@ -158,22 +158,33 @@ public class Level3 extends CommonLevel {
         shape.set(new Vec2(-40, 20), new Vec2(18, 20));
         Fixture f = ground.createFixture(shape, 0.0f);
         objectForJump.add(f);
+        shape.set(new Vec2(-40, 19.9f), new Vec2(18, 19.9f));
+         ground.createFixture(shape, 0.0f);
 
         shape.set(new Vec2(30, 20), new Vec2(40, 20));
         f = ground.createFixture(shape, 0.0f);
         objectForJump.add(f);
+        shape.set(new Vec2(30, 19.9f), new Vec2(40, 19.9f));
+        f = ground.createFixture(shape, 0.0f);
 
         shape.set(new Vec2(-30, 13), new Vec2(40, 13));
         f = ground.createFixture(shape, 0.0f);
         objectForJump.add(f);
+        shape.set(new Vec2(-30, 12.9f), new Vec2(40, 12.9f));
+        f = ground.createFixture(shape, 0.0f);
 
         shape.set(new Vec2(-40, 5), new Vec2(0, 5));
         f = ground.createFixture(shape, 0.0f);
         objectForJump.add(f);
+        shape.set(new Vec2(-40, 4.9f), new Vec2(0, 4.9f));
+        f = ground.createFixture(shape, 0.0f);
+
 
         shape.set(new Vec2(11, 5), new Vec2(40, 5));
         f = ground.createFixture(shape, 0.0f);
         objectForJump.add(f);
+        shape.set(new Vec2(11, 4.9f), new Vec2(40, 4.9f));
+        f = ground.createFixture(shape, 0.0f);
 
     }
 
@@ -192,7 +203,7 @@ public class Level3 extends CommonLevel {
     }
 
     private void createMovingPlatforms() {
-        platform1 = createRectangle(5.5f, 5, 5, 0.2f, false, BodyType.KINEMATIC);
+        platform1 = createMovingPlatform(5.5f, 5, 5, 0.2f, false, BodyType.KINEMATIC);
     }
 
     @Override

@@ -151,6 +151,30 @@ public abstract class CommonLevel extends PlayLevel {
         return body;
     }
 
+    protected Body createMovingPlatform(float x, float y, float hx, float hy, boolean isHero, BodyType bodyType) {
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(hx, hy);
+        FixtureDef fd = new FixtureDef();
+        fd.shape = shape;
+        fd.density = 1.0f;
+        fd.friction = 0.3f;
+        BodyDef bd = new BodyDef();
+        if (isHero) {
+            bd.shapeColor = Color3f.BLUE;
+        }
+        bd.type = bodyType;
+        bd.position.set(x, y);
+
+        Body body = getWorld().createBody(bd);
+        Fixture f = body.createFixture(fd);
+        objectForJump.add(f);
+        body.setHero(isHero);
+        if (isHero) {
+            hero_body = body;
+        }
+        return body;
+    }
+
     public void keyPressed() {
         if (hero_body == null) {
             return;
@@ -240,7 +264,6 @@ public abstract class CommonLevel extends PlayLevel {
 
                 Body  bullet = getWorld().createBody(bd);
                 Fixture f = bullet.createFixture(fd);
-                objectForJump.add(f);
                 bullet.shapeColor = Color3f.RED;
                 bullet.setLinearVelocity(new Vec2(orientation.x * 500, orientation.y * 500));
                 hero_bullet=bullet;
@@ -414,6 +437,7 @@ public abstract class CommonLevel extends PlayLevel {
     }
 
     protected abstract void movePlatforms();
+
     private void checkToErase() {
         if (last_step - lastDestroy_step > 1000) {
             for (Body body : currentToErase) {
