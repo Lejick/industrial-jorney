@@ -346,6 +346,13 @@ public abstract class CommonLevel extends PlayLevel {
                 }
             }
         }
+
+        for (MovingObject movingObject : movingObjectList) {
+            if ((fixtureA.getBody().isHero() || fixtureB.getBody().isHero()) &&
+                    movingObject.getSwitcher() == fixtureA.getBody() || movingObject.getSwitcher() == fixtureB.getBody()) {
+                movingObject.setActive(true);
+            }
+        }
         if (fixtureA.m_body == hero_bullet) {
             bodyToDestroy = fixtureB.m_body;
         } else if (fixtureB.m_body == hero_bullet) {
@@ -406,6 +413,13 @@ public abstract class CommonLevel extends PlayLevel {
 
         if (fixtureB.getBody().isHero() && (leftBlockedFixtures.contains(fixtureA) || rightBlockedFixtures.contains(fixtureA))) {
             canPush = false;
+        }
+
+        for (MovingObject movingObject : movingObjectList) {
+            if ((fixtureA.getBody().isHero() || fixtureB.getBody().isHero()) &&
+                    movingObject.getSwitcher() == fixtureA.getBody() || movingObject.getSwitcher() == fixtureB.getBody()) {
+                movingObject.setActive(false);
+            }
         }
 
     }

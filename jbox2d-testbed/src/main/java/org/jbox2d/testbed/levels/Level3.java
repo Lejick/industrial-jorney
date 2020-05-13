@@ -117,7 +117,6 @@ import java.util.List;
 public class Level3 extends CommonLevel {
     private static float width = 80;
     private static float height = 60;
-    Body platform1;
 
     public Level3(AbstractTestbedController controller, Scene scene) {
         super(controller, scene);
@@ -134,7 +133,7 @@ public class Level3 extends CommonLevel {
     }
 
     protected void createGameObjects() {
-        Body hero = createRectangle(-36, 26, commonPersonEdge, commonPersonEdge, true, BodyType.DYNAMIC);
+        Body hero = createRectangle(-36, 10, commonPersonEdge, commonPersonEdge, true, BodyType.DYNAMIC);
         destroyableList.add(hero);
 
 
@@ -148,7 +147,8 @@ public class Level3 extends CommonLevel {
             }
             deltaY = deltaY + commonPersonEdge + 0.7f;
         }
-        Body platformBox = createRectangle(34.5f, 25, 5f, 0.1f, false, BodyType.DYNAMIC);
+
+        createRectangle(34.5f, 25, 5f, 0.1f, false, BodyType.DYNAMIC);
 
         Body simpleBox = createRectangle(34.5f, 27, commonPersonEdge, commonPersonEdge, false, BodyType.DYNAMIC);
         simpleBox.getFixtureList().m_friction = 5f;
@@ -209,12 +209,16 @@ public class Level3 extends CommonLevel {
     }
 
     private void createMovingPlatforms() {
-        platform1 = createMovingPlatform(5.5f, 5, 5, 0.2f, false, BodyType.KINEMATIC);
+       Body platform1 = createMovingPlatform(5.5f, 5, 5, 0.2f, false, BodyType.KINEMATIC);
+        Body switcher1 = createRectangle(15f, 5.1f, 1, 0.05f, false, BodyType.KINEMATIC);
         List<Vec2> coordinatesList = new ArrayList<>();
         coordinatesList.add(new Vec2(5.5f, 5));
         coordinatesList.add(new Vec2(5.5f, 0));
         MovingObject movingObject = new MovingObject(platform1, coordinatesList);
-        platform1.setLinearVelocity(new Vec2(0,-1));
+        if(movingObject.isActive()) {
+            platform1.setLinearVelocity(new Vec2(0, -1));
+        }
+        movingObject.setSwitcher(switcher1);
         movingObjectList.add(movingObject);
     }
 

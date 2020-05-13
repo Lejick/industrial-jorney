@@ -11,7 +11,7 @@ public class MovingObject {
     private Body switcher;
     private Vec2 nextDestination;
     private Vec2 prevDestination;
-    private boolean isActive = true;
+    private boolean isActive = false;
     private Vec2 scalarVelocity = new Vec2(1, 1);
     private int nextDestinationIndex;
     private int maxDestinationIndex;
@@ -36,12 +36,11 @@ public class MovingObject {
             prevDestination = nextDestination;
             nextDestination = coordinatesList.get(nextDestinationIndex);
             float norm = (float) Math.sqrt
-                    (Math.pow(movingBody.getPosition().x - nextDestination.x, 2) +
-                            Math.pow(movingBody.getPosition().y - nextDestination.y, 2));
+                    (Math.pow(prevDestination.x - nextDestination.x, 2) +
+                            Math.pow(prevDestination.y - nextDestination.y, 2));
             Vec2 normVector = new Vec2((nextDestination.x - prevDestination.x) / norm,
                     (nextDestination.y - prevDestination.y) / norm);
             Vec2 currentVelocity = new Vec2(normVector.x * scalarVelocity.x, normVector.y * scalarVelocity.y);
-            movingBody.setLinearVelocity(currentVelocity);
             movingBody.setLinearVelocity(currentVelocity);
         } else {
             movingBody.setLinearVelocity(new Vec2(0, 0));
@@ -59,5 +58,26 @@ public class MovingObject {
         float dx = Math.abs(movingBody.getPosition().x - nextDestination.x);
         float dy = Math.abs(movingBody.getPosition().y - nextDestination.y);
         return dx < 0.1 && dy < 0.1;
+    }
+
+    public Body getSwitcher() {
+        return switcher;
+    }
+
+    public void setSwitcher(Body switcher) {
+        this.switcher = switcher;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+        if(active==true){
+            calculateVelocity();
+        } else {
+            movingBody.setLinearVelocity(new Vec2(0,0));
+        }
     }
 }
