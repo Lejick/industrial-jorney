@@ -1,4 +1,4 @@
-package org.jbox2d.testbed.framework;
+package org.jbox2d.testbed.framework.game.objects;
 
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
@@ -15,14 +15,17 @@ public class MovingObject {
     private Vec2 scalarVelocity = new Vec2(1, 1);
     private int nextDestinationIndex;
     private int maxDestinationIndex;
-    private List<Vec2> coordinatesList = new ArrayList();
+    private List<Vec2> coordinatesList;
+    SwitchType switchType;
 
     public MovingObject(Body movingBody, List<Vec2> coordinatesList) {
-        nextDestination = coordinatesList.get(1);
-        prevDestination = coordinatesList.get(0);
+        this.coordinatesList = coordinatesList;
+        Vec2 startCoordinate=new Vec2(movingBody.getPosition().x,movingBody.getPosition().y);
+        prevDestination = startCoordinate;
+        nextDestination = coordinatesList.get(0);
+        this.coordinatesList.add(0, startCoordinate);
         maxDestinationIndex = coordinatesList.size() - 1;
         nextDestinationIndex = 1;
-        this.coordinatesList = coordinatesList;
         this.movingBody = movingBody;
     }
 

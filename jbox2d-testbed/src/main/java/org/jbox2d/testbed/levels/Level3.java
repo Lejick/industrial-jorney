@@ -90,6 +90,10 @@
  * Created at 4:56:29 AM Jan 14, 2011
  * <p>
  * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
  */
 /**
  * Created at 4:56:29 AM Jan 14, 2011
@@ -105,8 +109,10 @@ import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.testbed.framework.AbstractTestbedController;
-import org.jbox2d.testbed.framework.Gun;
-import org.jbox2d.testbed.framework.MovingObject;
+import org.jbox2d.testbed.framework.game.objects.GameObjectFactory;
+import org.jbox2d.testbed.framework.game.objects.GeometryBodyFactory;
+import org.jbox2d.testbed.framework.game.objects.Gun;
+import org.jbox2d.testbed.framework.game.objects.MovingObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -127,33 +133,42 @@ public class Level3 extends CommonLevel {
         super.initTest(false);
         createGameObjects();
         createGuns();
-        createMovingPlatforms();
-        exit = createRectangle(getWidth() / 2 - 1, -getHeight() / 2 + 4 * commonPersonEdge, 1, 4, false, BodyType.STATIC);
-        exit.shapeColor = Color3f.GREEN;
+        exit = GeometryBodyFactory.createRectangle(getWidth() / 2 - 1,
+                -getHeight() / 2 + 4 * commonPersonEdge, 1, 4, BodyType.STATIC, getWorld(), Color3f.GREEN);
+
     }
 
     protected void createGameObjects() {
-        Body hero = createRectangle(-36, 10, commonPersonEdge, commonPersonEdge, true, BodyType.DYNAMIC);
+        Body hero = GeometryBodyFactory.createRectangle(-36, 10, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.BLUE);
+        hero.setHero(true);
+        hero_body = hero;
         destroyableList.add(hero);
-
 
         float deltaY = 0;
         for (int j = 0; j < 3; j++) {
             float deltaX = 0;
             for (int i = 0; i < 2; i++) {
-                Body simpleBox = createRectangle(31 + deltaX, 21 + deltaY, commonPersonEdge, commonPersonEdge / 1.5f, false, BodyType.DYNAMIC);
+                Body simpleBox = GeometryBodyFactory.createRectangle(31 + deltaX, 21 + deltaY, commonPersonEdge, commonPersonEdge / 1.5f, BodyType.DYNAMIC, getWorld());
                 movingObject.add(simpleBox);
                 deltaX = deltaX + commonPersonEdge + 6f;
             }
             deltaY = deltaY + commonPersonEdge + 0.7f;
         }
 
-        createRectangle(34.5f, 25, 5f, 0.1f, false, BodyType.DYNAMIC);
+        GeometryBodyFactory.createRectangle(34.5f, 25, 5f, 0.1f, BodyType.DYNAMIC, getWorld());
 
-        Body simpleBox = createRectangle(34.5f, 27, commonPersonEdge, commonPersonEdge, false, BodyType.DYNAMIC);
+        Body simpleBox = GeometryBodyFactory.createRectangle(34.5f, 27, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld());
         simpleBox.getFixtureList().m_friction = 5f;
         simpleBox.getFixtureList().m_density = 1f;
         movingObject.add(simpleBox);
+        Body platform = GeometryBodyFactory.createRectangle(5.5f, 5, 5, 0.2f, BodyType.KINEMATIC, getWorld());
+        Body switcher = GeometryBodyFactory.createRectangle(15f, 5.1f, 1, 0.05f, BodyType.KINEMATIC, getWorld());
+        objectForJump.add(switcher.getFixtureList());
+        objectForJump.add(platform.getFixtureList());
+        List<Vec2> coordinatesList = new ArrayList<>();
+        coordinatesList.add(new Vec2(5.5f, 0));
+        MovingObject mo = GameObjectFactory.createMovingObject(platform, switcher, coordinatesList, false);
+        movingObjectList.add(mo);
     }
 
     protected void createPlatforms() {
@@ -171,26 +186,26 @@ public class Level3 extends CommonLevel {
         f = ground.createFixture(shape, 0.0f);
         objectForJump.add(f);
         shape.set(new Vec2(30, 19.9f), new Vec2(40, 19.9f));
-        f = ground.createFixture(shape, 0.0f);
+        ground.createFixture(shape, 0.0f);
 
         shape.set(new Vec2(-30, 13), new Vec2(40, 13));
         f = ground.createFixture(shape, 0.0f);
         objectForJump.add(f);
         shape.set(new Vec2(-30, 12.9f), new Vec2(40, 12.9f));
-        f = ground.createFixture(shape, 0.0f);
+        ground.createFixture(shape, 0.0f);
 
         shape.set(new Vec2(-40, 5), new Vec2(0, 5));
         f = ground.createFixture(shape, 0.0f);
         objectForJump.add(f);
         shape.set(new Vec2(-40, 4.9f), new Vec2(0, 4.9f));
-        f = ground.createFixture(shape, 0.0f);
+        ground.createFixture(shape, 0.0f);
 
 
         shape.set(new Vec2(11, 5), new Vec2(40, 5));
         f = ground.createFixture(shape, 0.0f);
         objectForJump.add(f);
         shape.set(new Vec2(11, 4.9f), new Vec2(40, 4.9f));
-        f = ground.createFixture(shape, 0.0f);
+        ground.createFixture(shape, 0.0f);
 
     }
 
@@ -208,19 +223,6 @@ public class Level3 extends CommonLevel {
         gunList.add(gun2);
     }
 
-    private void createMovingPlatforms() {
-       Body platform1 = createMovingPlatform(5.5f, 5, 5, 0.2f, false, BodyType.KINEMATIC);
-        Body switcher1 = createRectangle(15f, 5.1f, 1, 0.05f, false, BodyType.KINEMATIC);
-        List<Vec2> coordinatesList = new ArrayList<>();
-        coordinatesList.add(new Vec2(5.5f, 5));
-        coordinatesList.add(new Vec2(5.5f, 0));
-        MovingObject movingObject = new MovingObject(platform1, coordinatesList);
-        if(movingObject.isActive()) {
-            platform1.setLinearVelocity(new Vec2(0, -1));
-        }
-        movingObject.setSwitcher(switcher1);
-        movingObjectList.add(movingObject);
-    }
 
     @Override
     protected int getLevelIndex() {
@@ -233,7 +235,7 @@ public class Level3 extends CommonLevel {
     }
 
     @Override
-    public String getTestName() {
+    public String getLevelName() {
         return "Level 3";
     }
 

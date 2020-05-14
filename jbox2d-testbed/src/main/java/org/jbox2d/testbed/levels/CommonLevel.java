@@ -12,6 +12,8 @@ import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.jbox2d.testbed.framework.*;
+import org.jbox2d.testbed.framework.game.objects.Gun;
+import org.jbox2d.testbed.framework.game.objects.MovingObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -126,54 +128,6 @@ public abstract class CommonLevel extends PlayLevel {
         f = ground.createFixture(shape, 0.0f);
         leftBlockedFixtures.add(f);
         f.m_friction = 0;
-    }
-
-    protected Body createRectangle(float x, float y, float hx, float hy, boolean isHero, BodyType bodyType) {
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(hx, hy);
-        FixtureDef fd = new FixtureDef();
-        fd.shape = shape;
-        fd.density = 1.0f;
-        fd.friction = 0.3f;
-        BodyDef bd = new BodyDef();
-        if (isHero) {
-            bd.shapeColor = Color3f.BLUE;
-        }
-        bd.type = bodyType;
-        bd.position.set(x, y);
-
-        Body body = getWorld().createBody(bd);
-        Fixture f = body.createFixture(fd);
-        objectForJump.add(f);
-        body.setHero(isHero);
-        if (isHero) {
-            hero_body = body;
-        }
-        return body;
-    }
-
-    protected Body createMovingPlatform(float x, float y, float hx, float hy, boolean isHero, BodyType bodyType) {
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(hx, hy);
-        FixtureDef fd = new FixtureDef();
-        fd.shape = shape;
-        fd.density = 1.0f;
-        fd.friction = 0.3f;
-        BodyDef bd = new BodyDef();
-        if (isHero) {
-            bd.shapeColor = Color3f.BLUE;
-        }
-        bd.type = bodyType;
-        bd.position.set(x, y);
-
-        Body body = getWorld().createBody(bd);
-        Fixture f = body.createFixture(fd);
-        objectForJump.add(f);
-        body.setHero(isHero);
-        if (isHero) {
-            hero_body = body;
-        }
-        return body;
     }
 
     public void keyPressed() {

@@ -18,6 +18,6 @@ public class ListItem {
 
     @Override
     public String toString() {
-        return isCategory() ? category : test.getTestName();
+        return isCategory() ? category : test.getLevelName();
     }
 }

@@ -82,6 +82,8 @@
  * Created at 4:56:29 AM Jan 14, 2011
  * <p>
  * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
  */
 /**
  * Created at 4:56:29 AM Jan 14, 2011
@@ -94,7 +96,8 @@ import org.jbox2d.common.Color3f;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
 import org.jbox2d.testbed.framework.AbstractTestbedController;
-import org.jbox2d.testbed.framework.Gun;
+import org.jbox2d.testbed.framework.game.objects.GeometryBodyFactory;
+import org.jbox2d.testbed.framework.game.objects.Gun;
 
 /**
  * @author Daniel Murphy
@@ -113,20 +116,17 @@ public class Level2 extends CommonLevel {
         super.initTest(false);
         createGameObjects();
         createGuns();
-        exit = createRectangle(getWidth() / 2 - 1, getHeight() / 2 - commonPersonEdge * 8, 1, 4, false, BodyType.STATIC);
+        exit = GeometryBodyFactory.createRectangle(getWidth() / 2 - 1, getHeight() / 2 - commonPersonEdge * 8, 1, 4, BodyType.STATIC, getWorld());
         exit.shapeColor = Color3f.GREEN;
     }
 
     protected void createGameObjects() {
-        Body hero = createRectangle(-getWidth() / 2 + 2, getHeight() / 2 - 2 * commonPersonEdge, commonPersonEdge, commonPersonEdge, true, BodyType.DYNAMIC);
+        Body hero = GeometryBodyFactory.createRectangle(-getWidth() / 2 + 2, getHeight() / 2 - 2 * commonPersonEdge, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.BLUE);
+        hero.setHero(true);
         destroyableList.add(hero);
-        Body jumplatform = createRectangle(0, commonPersonEdge, commonPersonEdge * 12, commonPersonEdge / 1.5f, false, BodyType.DYNAMIC);
+        Body jumplatform = GeometryBodyFactory.createRectangle(0, commonPersonEdge, commonPersonEdge * 12, commonPersonEdge / 1.5f, BodyType.DYNAMIC, getWorld());
         movingObject.add(jumplatform);
-
-        //  Body simpleBox2 = createRectangle(0, getHeight() / 2 - commonPersonEdge * 29, commonPersonEdge, commonPersonEdge, false, BodyType.DYNAMIC);
-        // movingObject.add(simpleBox2);
-        // destroyableList.add(simpleBox2);
-
+        hero_body = hero;
     }
 
     protected void createPlatforms() {
@@ -161,12 +161,12 @@ public class Level2 extends CommonLevel {
         objectForJump.add(gun1.getGunBodyFixture());
         gunList.add(gun1);
 
-        Gun gun2 = new Gun(m_world, 9*commonPersonEdge, -getHeight() / 2 + commonPersonEdge, 500, 400, 0.5f);
+        Gun gun2 = new Gun(m_world, 9 * commonPersonEdge, -getHeight() / 2 + commonPersonEdge, 500, 400, 0.5f);
         gun2.setOrientation(new Vec2(0, 1));
         objectForJump.add(gun2.getGunBodyFixture());
         gunList.add(gun2);
 
-        Gun gun3 = new Gun(m_world, 14*commonPersonEdge, -getHeight() / 2 + commonPersonEdge, 500, 300, 0.5f);
+        Gun gun3 = new Gun(m_world, 14 * commonPersonEdge, -getHeight() / 2 + commonPersonEdge, 500, 300, 0.5f);
         gun3.setOrientation(new Vec2(0, 1));
         objectForJump.add(gun3.getGunBodyFixture());
         gunList.add(gun3);
@@ -183,7 +183,7 @@ public class Level2 extends CommonLevel {
     }
 
     @Override
-    public String getTestName() {
+    public String getLevelName() {
         return "Level 2";
     }
 

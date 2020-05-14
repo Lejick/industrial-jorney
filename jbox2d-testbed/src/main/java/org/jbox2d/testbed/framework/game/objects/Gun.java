@@ -1,4 +1,4 @@
-package org.jbox2d.testbed.framework;
+package org.jbox2d.testbed.framework.game.objects;
 
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.PolygonShape;

@@ -111,7 +111,7 @@ public class PlaySidePanel extends BorderPane {
       @Override public void updateItem(ListItem item, boolean empty) {
         super.updateItem(item, empty);
         if (item != null) {
-            setText(item.isCategory() ? item.category : item.test.getTestName());
+            setText(item.isCategory() ? item.category : item.test.getLevelName());
             setDisable(item.isCategory());
         }
       }

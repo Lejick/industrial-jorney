@@ -78,6 +78,8 @@
  * Created at 4:56:29 AM Jan 14, 2011
  * <p>
  * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
  */
 /**
  * Created at 4:56:29 AM Jan 14, 2011
@@ -90,7 +92,8 @@ import org.jbox2d.common.Color3f;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
 import org.jbox2d.testbed.framework.AbstractTestbedController;
-import org.jbox2d.testbed.framework.Gun;
+import org.jbox2d.testbed.framework.game.objects.GeometryBodyFactory;
+import org.jbox2d.testbed.framework.game.objects.Gun;
 
 /**
  * @author Daniel Murphy
@@ -116,17 +119,18 @@ public class Level1 extends CommonLevel {
     @Override
     public void initTest(boolean deserialized) {
         super.initTest(false);
-        Body hero = createRectangle(-25, 15, commonPersonEdge, commonPersonEdge, true, BodyType.DYNAMIC);
-        Body simpleBox = createRectangle(20, 3, commonPersonEdge, commonPersonEdge, false, BodyType.DYNAMIC);
-        Body simpleBox2 = createRectangle(0, getHeight() / 2 - commonPersonEdge * 29, commonPersonEdge, commonPersonEdge, false, BodyType.DYNAMIC);
+        Body hero = GeometryBodyFactory.createRectangle(-25, 15, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.BLUE);
+        hero.setHero(true);
+        hero_body = hero;
+        Body simpleBox = GeometryBodyFactory.createRectangle(20, 3, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld());
+        Body simpleBox2 = GeometryBodyFactory.createRectangle(0, getHeight() / 2 - commonPersonEdge * 29, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld());
         movingObject.add(simpleBox);
         movingObject.add(simpleBox2);
         destroyableList.add(simpleBox);
         destroyableList.add(simpleBox2);
         destroyableList.add(hero);
         createGuns();
-        exit = createRectangle(getWidth() / 2 - 1, -getHeight() / 2 + 4 * commonPersonEdge, 1, 4, false, BodyType.STATIC);
-        exit.shapeColor = Color3f.GREEN;
+        exit = GeometryBodyFactory.createRectangle(getWidth() / 2 - 1, -getHeight() / 2 + 4 * commonPersonEdge, 1, 4, BodyType.STATIC, getWorld(), Color3f.GREEN);
     }
 
 
@@ -200,7 +204,7 @@ public class Level1 extends CommonLevel {
     }
 
     @Override
-    public String getTestName() {
+    public String getLevelName() {
         return "Level 1";
     }
 
