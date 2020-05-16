@@ -30,6 +30,8 @@ public interface GamingModelIF {
 
     int getCurrTestIndex();
 
+    void resetKeys();
+
     int getTestsSize();
 
     boolean isTestAt(int index);

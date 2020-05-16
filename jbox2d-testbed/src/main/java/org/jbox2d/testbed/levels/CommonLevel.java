@@ -174,6 +174,7 @@ public abstract class CommonLevel extends PlayLevel {
 
     protected void endLevel() {
         getModel().getSettings().setPause(true);
+        getModel().resetKeys();
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(null);
         alert.setHeaderText(null);
