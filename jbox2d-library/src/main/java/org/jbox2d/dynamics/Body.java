@@ -1205,14 +1205,6 @@ public class Body {
         m_xf.p.mulLocal(-1).addLocal(m_sweep.c);
     }
 
-    public boolean isHero() {
-        return isHero;
-    }
-
-    public void setHero(boolean isHero) {
-        this.isHero = isHero;
-    }
-
     public boolean isDestroy() {
         return isDestroy;
     }

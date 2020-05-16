@@ -119,16 +119,16 @@ public class Level1 extends CommonLevel {
     @Override
     public void initTest(boolean deserialized) {
         super.initTest(false);
-        Body hero = GeometryBodyFactory.createRectangle(-25, 15, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.BLUE);
-        hero.setHero(true);
-        hero_body = hero;
+        hero_body = GeometryBodyFactory.createRectangle(-25, 15, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.BLUE);
+        destroyableList.add(hero_body);
+
         Body simpleBox = GeometryBodyFactory.createRectangle(20, 3, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld());
         Body simpleBox2 = GeometryBodyFactory.createRectangle(0, getHeight() / 2 - commonPersonEdge * 29, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld());
         movingObject.add(simpleBox);
         movingObject.add(simpleBox2);
         destroyableList.add(simpleBox);
         destroyableList.add(simpleBox2);
-        destroyableList.add(hero);
+
         createGuns();
         exit = GeometryBodyFactory.createRectangle(getWidth() / 2 - 1, -getHeight() / 2 + 4 * commonPersonEdge, 1, 4, BodyType.STATIC, getWorld(), Color3f.GREEN);
     }

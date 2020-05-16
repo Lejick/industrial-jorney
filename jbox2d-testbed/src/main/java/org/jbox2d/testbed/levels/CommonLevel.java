@@ -233,49 +233,49 @@ public abstract class CommonLevel extends PlayLevel {
         Body bodyToDestroy = null;
         Fixture fixtureA = contact.getFixtureA();
         Fixture fixtureB = contact.getFixtureB();
-        if (fixtureA.getBody().isHero() && fixtureB.getBody() == exit ||
-                fixtureB.getBody().isHero() && fixtureA.getBody() == exit) {
+        if (isHero(fixtureA.getBody()) && fixtureB.getBody() == exit ||
+                isHero(fixtureB.getBody()) && fixtureA.getBody() == exit) {
             endLevel();
         }
 
-        if (fixtureA.getBody().isHero()) {
+        if (isHero(fixtureA.getBody())) {
             if (objectForJump.contains(fixtureB)) {
                 contactObjForJump.add(fixtureB);
             }
         }
-        if (fixtureB.getBody().isHero()) {
+        if (isHero(fixtureB.getBody())) {
             if (objectForJump.contains(fixtureA)) {
                 contactObjForJump.add(fixtureA);
             }
         }
 
-        if (fixtureA.getBody().isHero()) {
+        if (isHero(fixtureA.getBody())) {
             if (movingObject.contains(fixtureB.getBody())) {
                 objectToPush = fixtureB.getBody();
             }
         }
-        if (fixtureB.getBody().isHero()) {
+        if (isHero(fixtureB.getBody())) {
             if (movingObject.contains(fixtureA.getBody())) {
                 objectToPush = fixtureA.getBody();
             }
         }
 
-        if (fixtureA.getBody().isHero()) {
+        if (isHero(fixtureA.getBody())) {
             if (leftBlockedFixtures.contains(fixtureB)) {
                 blockedFromLeft = true;
             }
         }
-        if (fixtureB.getBody().isHero()) {
+        if (isHero(fixtureB.getBody())) {
             if (leftBlockedFixtures.contains(fixtureA)) {
                 blockedFromLeft = true;
             }
         }
 
-        if (fixtureA.getBody().isHero() && (leftBlockedFixtures.contains(fixtureB) || rightBlockedFixtures.contains(fixtureB))) {
+        if (isHero(fixtureA.getBody()) && (leftBlockedFixtures.contains(fixtureB) || rightBlockedFixtures.contains(fixtureB))) {
             canPush = true;
         }
 
-        if (fixtureB.getBody().isHero() && (leftBlockedFixtures.contains(fixtureA) || rightBlockedFixtures.contains(fixtureA))) {
+        if (isHero(fixtureB.getBody()) && (leftBlockedFixtures.contains(fixtureA) || rightBlockedFixtures.contains(fixtureA))) {
             canPush = true;
         }
 
@@ -302,7 +302,7 @@ public abstract class CommonLevel extends PlayLevel {
         }
 
         for (MovingObject movingObject : movingObjectList) {
-            if ((fixtureA.getBody().isHero() || fixtureB.getBody().isHero()) &&
+            if ((isHero(fixtureA.getBody()) || isHero(fixtureB.getBody())) &&
                     movingObject.getSwitcher() == fixtureA.getBody() || movingObject.getSwitcher() == fixtureB.getBody()) {
                 movingObject.setActive(true);
             }
@@ -331,46 +331,46 @@ public abstract class CommonLevel extends PlayLevel {
     public void endContact(Contact contact) {
         Fixture fixtureA = contact.getFixtureA();
         Fixture fixtureB = contact.getFixtureB();
-        if (fixtureA.getBody().isHero()) {
+        if (isHero(fixtureA.getBody())) {
             if (objectForJump.contains(fixtureB)) {
                 contactObjForJump.remove(fixtureB);
             }
         }
-        if (fixtureB.getBody().isHero()) {
+        if (isHero(fixtureB.getBody())) {
             if (objectForJump.contains(fixtureA)) {
                 contactObjForJump.remove(fixtureA);
             }
         }
 
-        if (fixtureA.getBody().isHero()) {
+        if (isHero(fixtureA.getBody())) {
             if (leftBlockedFixtures.contains(fixtureB)) {
                 blockedFromLeft = false;
             }
         }
-        if (fixtureB.getBody().isHero()) {
+        if (isHero(fixtureB.getBody())) {
             if (leftBlockedFixtures.contains(fixtureA)) {
                 blockedFromLeft = false;
             }
         }
 
-        if (fixtureA.getBody().isHero() && objectToPush == fixtureB.getBody()) {
+        if (isHero(fixtureA.getBody()) && objectToPush == fixtureB.getBody()) {
             objectToPush = null;
         }
 
-        if (fixtureB.getBody().isHero() && objectToPush == fixtureA.getBody()) {
+        if (isHero(fixtureB.getBody()) && objectToPush == fixtureA.getBody()) {
             objectToPush = null;
         }
 
-        if (fixtureA.getBody().isHero() && (leftBlockedFixtures.contains(fixtureB) || rightBlockedFixtures.contains(fixtureB))) {
+        if (isHero(fixtureA.getBody()) && (leftBlockedFixtures.contains(fixtureB) || rightBlockedFixtures.contains(fixtureB))) {
             canPush = false;
         }
 
-        if (fixtureB.getBody().isHero() && (leftBlockedFixtures.contains(fixtureA) || rightBlockedFixtures.contains(fixtureA))) {
+        if (isHero(fixtureB.getBody()) && (leftBlockedFixtures.contains(fixtureA) || rightBlockedFixtures.contains(fixtureA))) {
             canPush = false;
         }
 
         for (MovingObject movingObject : movingObjectList) {
-            if ((fixtureA.getBody().isHero() || fixtureB.getBody().isHero()) &&
+            if ((isHero(fixtureA.getBody()) || isHero(fixtureB.getBody())) &&
                     movingObject.getSwitcher() == fixtureA.getBody() || movingObject.getSwitcher() == fixtureB.getBody()) {
                 movingObject.setActive(false);
             }
@@ -430,9 +430,7 @@ public abstract class CommonLevel extends PlayLevel {
                 fd.density = 1.0f;
                 fd.friction = 0.3f;
                 BodyDef bd = new BodyDef();
-                if (body.isHero()) {
-                    bd.shapeColor = Color3f.BLUE;
-                }
+                bd.shapeColor =body.shapeColor;
                 bd.type = BodyType.DYNAMIC;
                 bd.position.set(oldPosition.x, oldPosition.y);
                 Body newBody = getWorld().createBody(bd);
@@ -444,6 +442,10 @@ public abstract class CommonLevel extends PlayLevel {
             lastDestroy_step = last_step;
         }
         objectToExplode.clear();
+    }
+
+    protected boolean isHero(Body body) {
+        return body == hero_body;
     }
 
     protected abstract float getWidth();

@@ -59,7 +59,8 @@ public class Color3f {
 	public static final Color3f BLUE = new Color3f(0, 0, 1);
 	public static final Color3f GREEN = new Color3f(0, 1, 0);
 	public static final Color3f RED = new Color3f(1, 0, 0);
-	
+	public static final Color3f ORANGE = new Color3f(1, 0.50f, 0);
+
 	public float x;
 	public float y;
 	public float z;

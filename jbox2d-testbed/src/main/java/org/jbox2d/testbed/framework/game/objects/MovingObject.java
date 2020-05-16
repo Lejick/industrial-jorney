@@ -1,5 +1,6 @@
 package org.jbox2d.testbed.framework.game.objects;
 
+import org.jbox2d.common.Color3f;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
 
@@ -79,7 +80,9 @@ public class MovingObject {
         isActive = active;
         if(active==true){
             calculateVelocity();
+            switcher.shapeColor= Color3f.GREEN;
         } else {
+            switcher.shapeColor= Color3f.ORANGE;
             movingBody.setLinearVelocity(new Vec2(0,0));
         }
     }

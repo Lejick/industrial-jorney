@@ -139,11 +139,8 @@ public class Level3 extends CommonLevel {
     }
 
     protected void createGameObjects() {
-        Body hero = GeometryBodyFactory.createRectangle(-36, 10, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.BLUE);
-        hero.setHero(true);
-        hero_body = hero;
-        destroyableList.add(hero);
-
+        hero_body = GeometryBodyFactory.createRectangle(-36, 10, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.BLUE);
+        destroyableList.add(hero_body);
         float deltaY = 0;
         for (int j = 0; j < 3; j++) {
             float deltaX = 0;
