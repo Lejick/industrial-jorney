@@ -7,11 +7,11 @@ import java.util.List;
 
 public class GameObjectFactory {
 
-    public static MovingObject createMovingObject(Body movingBody, Body switcher, List<Vec2> coordinatesList, boolean alreadyActive) {
+    public static MovingObject createMovingObject(Body movingBody, Body switcher, List<Vec2> coordinatesList, boolean alreadyActive, Vec2 initialVelocity) {
         MovingObject movingObject = new MovingObject(movingBody, coordinatesList);
         switcher.shapeColor = Color3f.ORANGE;
         if (alreadyActive) {
-            movingBody.setLinearVelocity(new Vec2(0, -1));
+            movingBody.setLinearVelocity(initialVelocity);
             switcher.shapeColor = Color3f.GREEN;
         }
         movingObject.setSwitcher(switcher);

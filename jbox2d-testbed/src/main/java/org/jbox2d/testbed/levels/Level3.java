@@ -94,6 +94,8 @@
  * Created at 4:56:29 AM Jan 14, 2011
  * <p>
  * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
  */
 /**
  * Created at 4:56:29 AM Jan 14, 2011
@@ -139,7 +141,7 @@ public class Level3 extends CommonLevel {
     }
 
     protected void createGameObjects() {
-        hero_body = GeometryBodyFactory.createRectangle(-36, 10, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.BLUE);
+        hero_body = GeometryBodyFactory.createRectangle(-35, 22, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.BLUE);
         destroyableList.add(hero_body);
         float deltaY = 0;
         for (int j = 0; j < 3; j++) {
@@ -159,13 +161,22 @@ public class Level3 extends CommonLevel {
         simpleBox.getFixtureList().m_density = 1f;
         movingObject.add(simpleBox);
         Body platform = GeometryBodyFactory.createRectangle(5.5f, 5, 5, 0.2f, BodyType.KINEMATIC, getWorld());
-        Body switcher = GeometryBodyFactory.createRectangle(15f, 5.1f, 1, 0.05f, BodyType.KINEMATIC, getWorld());
+        Body switcher = GeometryBodyFactory.createRectangle(15f, 5.1f, 1, 0.05f, BodyType.STATIC, getWorld());
         objectForJump.add(switcher.getFixtureList());
         objectForJump.add(platform.getFixtureList());
         List<Vec2> coordinatesList = new ArrayList<>();
         coordinatesList.add(new Vec2(5.5f, 0));
-        MovingObject mo = GameObjectFactory.createMovingObject(platform, switcher, coordinatesList, false);
-        movingObjectList.add(mo);
+        MovingObject mo = GameObjectFactory.createMovingObject(platform, switcher, coordinatesList, false, new Vec2(0, -1));
+           movingObjectList.add(mo);
+
+        Body platform2 = GeometryBodyFactory.createRectangle(35, -25, 0.2f, 5f, BodyType.KINEMATIC, getWorld());
+        platform2.getFixtureList().m_friction = 0;
+        rightBlockedFixtures.add(platform2.getFixtureList());
+        Body switcher2 = GeometryBodyFactory.createRectangle(39.9f, -10, 0.1f, 1f, BodyType.STATIC, getWorld());
+        coordinatesList = new ArrayList<>();
+        coordinatesList.add(new Vec2(35f, -10));
+        MovingObject mo2 = GameObjectFactory.createMovingObject(platform2, switcher2, coordinatesList, false, new Vec2(0, 1));
+        movingObjectList.add(mo2);
     }
 
     protected void createPlatforms() {
@@ -197,10 +208,14 @@ public class Level3 extends CommonLevel {
         shape.set(new Vec2(-40, 4.9f), new Vec2(0, 4.9f));
         ground.createFixture(shape, 0.0f);
 
-
         shape.set(new Vec2(11, 5), new Vec2(40, 5));
         f = ground.createFixture(shape, 0.0f);
         objectForJump.add(f);
+
+        shape.set(new Vec2(35, -20), new Vec2(40, -20));
+        f = ground.createFixture(shape, 0.0f);
+        objectForJump.add(f);
+
         shape.set(new Vec2(11, 4.9f), new Vec2(40, 4.9f));
         ground.createFixture(shape, 0.0f);
 

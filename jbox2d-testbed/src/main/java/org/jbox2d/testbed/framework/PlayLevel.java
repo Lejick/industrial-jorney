@@ -311,7 +311,7 @@ public abstract class PlayLevel implements ContactListener, ObjectListener, Obje
      * Override for a different default camera position
      */
     public Vec2 getDefaultCameraPos() {
-        return new Vec2(0, 20);
+        return new Vec2(0, 0);
     }
 
     /**

@@ -14,6 +14,7 @@ import org.jbox2d.dynamics.contacts.Contact;
 import org.jbox2d.testbed.framework.*;
 import org.jbox2d.testbed.framework.game.objects.Gun;
 import org.jbox2d.testbed.framework.game.objects.MovingObject;
+import org.jbox2d.testbed.framework.game.objects.SwitchType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -302,8 +303,7 @@ public abstract class CommonLevel extends PlayLevel {
         }
 
         for (MovingObject movingObject : movingObjectList) {
-            if ((isHero(fixtureA.getBody()) || isHero(fixtureB.getBody())) &&
-                    movingObject.getSwitcher() == fixtureA.getBody() || movingObject.getSwitcher() == fixtureB.getBody()) {
+            if (movingObject.getSwitcher() == fixtureA.getBody() || movingObject.getSwitcher() == fixtureB.getBody()) {
                 movingObject.setActive(true);
             }
         }
@@ -372,7 +372,9 @@ public abstract class CommonLevel extends PlayLevel {
         for (MovingObject movingObject : movingObjectList) {
             if ((isHero(fixtureA.getBody()) || isHero(fixtureB.getBody())) &&
                     movingObject.getSwitcher() == fixtureA.getBody() || movingObject.getSwitcher() == fixtureB.getBody()) {
-                movingObject.setActive(false);
+                if (movingObject.getSwitchType() == SwitchType.HOLDING) {
+                    movingObject.setActive(false);
+                }
             }
         }
 
@@ -430,7 +432,7 @@ public abstract class CommonLevel extends PlayLevel {
                 fd.density = 1.0f;
                 fd.friction = 0.3f;
                 BodyDef bd = new BodyDef();
-                bd.shapeColor =body.shapeColor;
+                bd.shapeColor = body.shapeColor;
                 bd.type = BodyType.DYNAMIC;
                 bd.position.set(oldPosition.x, oldPosition.y);
                 Body newBody = getWorld().createBody(bd);

@@ -21,7 +21,7 @@ public class MovingObject {
 
     public MovingObject(Body movingBody, List<Vec2> coordinatesList) {
         this.coordinatesList = coordinatesList;
-        Vec2 startCoordinate=new Vec2(movingBody.getPosition().x,movingBody.getPosition().y);
+        Vec2 startCoordinate = new Vec2(movingBody.getPosition().x, movingBody.getPosition().y);
         prevDestination = startCoordinate;
         nextDestination = coordinatesList.get(0);
         this.coordinatesList.add(0, startCoordinate);
@@ -44,7 +44,7 @@ public class MovingObject {
                             Math.pow(prevDestination.y - nextDestination.y, 2));
             Vec2 normVector = new Vec2((nextDestination.x - prevDestination.x) / norm,
                     (nextDestination.y - prevDestination.y) / norm);
-            Vec2 currentVelocity = new Vec2(normVector.x * scalarVelocity.x, normVector.y * scalarVelocity.y);
+            Vec2 currentVelocity = new Vec2(normVector.x, normVector.y);
             movingBody.setLinearVelocity(currentVelocity);
         } else {
             movingBody.setLinearVelocity(new Vec2(0, 0));
@@ -78,12 +78,20 @@ public class MovingObject {
 
     public void setActive(boolean active) {
         isActive = active;
-        if(active==true){
+        if (active == true) {
             calculateVelocity();
-            switcher.shapeColor= Color3f.GREEN;
+            switcher.shapeColor = Color3f.GREEN;
         } else {
-            switcher.shapeColor= Color3f.ORANGE;
-            movingBody.setLinearVelocity(new Vec2(0,0));
+            switcher.shapeColor = Color3f.ORANGE;
+            movingBody.setLinearVelocity(new Vec2(0, 0));
         }
+    }
+
+    public SwitchType getSwitchType() {
+        return switchType;
+    }
+
+    public void setSwitchType(SwitchType switchType) {
+        this.switchType = switchType;
     }
 }
