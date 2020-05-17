@@ -115,6 +115,7 @@ import org.jbox2d.testbed.framework.game.objects.GameObjectFactory;
 import org.jbox2d.testbed.framework.game.objects.GeometryBodyFactory;
 import org.jbox2d.testbed.framework.game.objects.Gun;
 import org.jbox2d.testbed.framework.game.objects.MovingObject;
+import org.jbox2d.testbed.framework.utils.Line;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -145,8 +146,9 @@ public class Level4 extends CommonLevel {
            }
 
     protected void createPlatforms() {
-        BodyDef bd = new BodyDef();
         Body p1 = GeometryBodyFactory.createRectangle(0, 0, 10f, 1f, BodyType.STATIC, getWorld());
+        List<Line> lines=GeometryBodyFactory.splitRectangle(0, 0, 10f, 1f);
+        linesList.addAll(lines);
         p1.getFixtureList().m_friction=3;
         objectForJump.add(p1.getFixtureList());
     }

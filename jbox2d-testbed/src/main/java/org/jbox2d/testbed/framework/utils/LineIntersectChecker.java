@@ -21,7 +21,7 @@ public class LineIntersectChecker {
         return (val > 0) ? 1 : 2; // clock or counterclock wise
     }
 
-    static boolean doIntersect(Line l1, Line l2) {
+  public  static boolean doIntersect(Line l1, Line l2) {
         Vec2 p1 = l1.a;
         Vec2 q1 = l1.b;
         Vec2 p2 = l2.a;
@@ -51,4 +51,49 @@ public class LineIntersectChecker {
 
         return false; // Doesn't fall in any of the above cases
     }
+
+    public static float pDistance(Vec2 point, Line line) {
+
+        float A = point.x - line.a.x; // position of point rel one end of line
+        float B = point.y - line.a.y;
+        float C = line.b.x - line.a.x; // vector along line
+        float D = line.b.y - line.a.y;
+        float E = -D; // orthogonal vector
+        float F = C;
+
+        float dot = A * E + B * F;
+        float len_sq = E * E + F * F;
+        float result = (float) (Math.abs(dot) / Math.sqrt(len_sq));
+        return result;
+    }
+
+   public static Vec2 lineLineIntersection(Vec2 A, Vec2 B, Vec2 C, Vec2 D)
+    {
+        // Line AB represented as a1x + b1y = c1
+        float a1 = B.y - A.y;
+        float b1 = A.x - B.x;
+        float c1 = a1*(A.x) + b1*(A.y);
+
+        // Line CD represented as a2x + b2y = c2
+        float a2 = D.y - C.y;
+        float b2 = C.x - D.x;
+        float c2 = a2*(C.x)+ b2*(C.y);
+
+        float determinant = a1*b2 - a2*b1;
+
+        if (determinant == 0)
+        {
+            // The lines are parallel. This is simplified
+            // by returning a pair of FLT_MAX
+            return new Vec2(Float.MAX_VALUE, Float.MAX_VALUE);
+        }
+        else
+        {
+            float x = (b2*c1 - b1*c2)/determinant;
+            float y = (a1*c2 - a2*c1)/determinant;
+            return new Vec2(x, y);
+        }
+    }
+
+
 }

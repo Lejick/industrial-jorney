@@ -8,6 +8,7 @@ import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Color3f;
+import org.jbox2d.common.MathUtils;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
 import org.jbox2d.dynamics.contacts.Contact;
@@ -16,6 +17,7 @@ import org.jbox2d.testbed.framework.game.objects.Gun;
 import org.jbox2d.testbed.framework.game.objects.MovingObject;
 import org.jbox2d.testbed.framework.game.objects.SwitchType;
 import org.jbox2d.testbed.framework.utils.Line;
+import org.jbox2d.testbed.framework.utils.LineIntersectChecker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +34,7 @@ public abstract class CommonLevel extends PlayLevel {
     protected final static float minSpeedX = -6f;
     protected final static float maxSpeedXAir = 3f;
     protected final static float minSpeedXAir = -3f;
-    protected List <Line> linesList=new ArrayList<>();
+    protected List<Line> linesList = new ArrayList<>();
     private int maxLevelIndex = 3;
     protected final static float maxSpeedY = 3f;
     protected static final float commonPersonEdge = 1f;
@@ -201,9 +203,10 @@ public abstract class CommonLevel extends PlayLevel {
     }
 
     protected void leftMouseAction() {
-        if (hasGun() && cursorInPlayArea() && !hero_body.isDestroy()) {
+        if (hasGun() && cursorInFireArea() && !hero_body.isDestroy()) {
             Vec2 orientation = new Vec2(getWorldMouse().x - hero_body.getPosition().x,
                     getWorldMouse().y - hero_body.getPosition().y);
+
             float norm = Math.abs(getWorldMouse().x - hero_body.getPosition().x);
             orientation.x = orientation.x / norm;
             orientation.y = orientation.y / norm;
@@ -224,7 +227,7 @@ public abstract class CommonLevel extends PlayLevel {
                 Body bullet = getWorld().createBody(bd);
                 Fixture f = bullet.createFixture(fd);
                 bullet.shapeColor = Color3f.RED;
-                bullet.setLinearVelocity(new Vec2(orientation.x * 500, orientation.y * 500));
+                bullet.setLinearVelocity(new Vec2(orientation.x * 300, orientation.y * 300));
                 hero_bullet = bullet;
             }
 
@@ -385,7 +388,13 @@ public abstract class CommonLevel extends PlayLevel {
 
     protected abstract boolean hasGun();
 
-    protected boolean cursorInPlayArea() {
+    protected boolean cursorInFireArea() {
+        Line fireLine = new Line(hero_body.getPosition(), getWorldMouse());
+        for (Line line : linesList) {
+            if (LineIntersectChecker.doIntersect(fireLine, line)) {
+                return false;
+            }
+        }
         return getWorldMouse().x < getWidth() / 2
                 && getWorldMouse().x > -getWidth() / 2
                 && getWorldMouse().y > -getHeight() / 2
@@ -394,7 +403,7 @@ public abstract class CommonLevel extends PlayLevel {
 
     @Override
     public void step(SettingsIF settings) {
-        if (hasGun() && cursorInPlayArea()) {
+        if (hasGun() && cursorInFireArea()) {
             scene.setCursor(Cursor.CROSSHAIR);
         } else {
             scene.setCursor(Cursor.DEFAULT);
