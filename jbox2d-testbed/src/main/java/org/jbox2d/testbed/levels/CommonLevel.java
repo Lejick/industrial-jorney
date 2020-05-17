@@ -15,6 +15,7 @@ import org.jbox2d.testbed.framework.*;
 import org.jbox2d.testbed.framework.game.objects.Gun;
 import org.jbox2d.testbed.framework.game.objects.MovingObject;
 import org.jbox2d.testbed.framework.game.objects.SwitchType;
+import org.jbox2d.testbed.framework.utils.Line;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,6 +32,7 @@ public abstract class CommonLevel extends PlayLevel {
     protected final static float minSpeedX = -6f;
     protected final static float maxSpeedXAir = 3f;
     protected final static float minSpeedXAir = -3f;
+    protected List <Line> linesList=new ArrayList<>();
     private int maxLevelIndex = 3;
     protected final static float maxSpeedY = 3f;
     protected static final float commonPersonEdge = 1f;

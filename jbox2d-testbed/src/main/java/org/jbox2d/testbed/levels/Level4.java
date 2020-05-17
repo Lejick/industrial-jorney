@@ -146,9 +146,6 @@ public class Level4 extends CommonLevel {
 
     protected void createPlatforms() {
         BodyDef bd = new BodyDef();
-        Body ground = getWorld().createBody(bd);
-        EdgeShape shape = new EdgeShape();
-
         Body p1 = GeometryBodyFactory.createRectangle(0, 0, 10f, 1f, BodyType.STATIC, getWorld());
         p1.getFixtureList().m_friction=3;
         objectForJump.add(p1.getFixtureList());
