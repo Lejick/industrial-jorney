@@ -31,7 +31,7 @@ public abstract class CommonLevel extends PlayLevel {
     protected final static float minSpeedX = -6f;
     protected final static float maxSpeedXAir = 3f;
     protected final static float minSpeedXAir = -3f;
-    private int maxLevelIndex = 2;
+    private int maxLevelIndex = 3;
     protected final static float maxSpeedY = 3f;
     protected static final float commonPersonEdge = 1f;
     long lastDestroy_step = 0;

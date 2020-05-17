@@ -61,7 +61,7 @@ public class PlayableMain extends Application {
         primaryStage.show();
 
         Platform.runLater(() -> {
-            controller.playTest(2);
+            controller.playTest(3);
             controller.start();
         });
     }
