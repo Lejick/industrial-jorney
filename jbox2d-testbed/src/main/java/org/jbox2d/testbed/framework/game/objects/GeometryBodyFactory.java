@@ -33,15 +33,14 @@ public class GeometryBodyFactory {
 
     public static List<Line> splitRectangle(float x, float y, float hx, float hy) {
         List<Line> lines = new ArrayList<>();
-        Vec2 lt = new Vec2(x - hx / 2, y + hy / 2);
-        Vec2 lb = new Vec2(x - hx / 2, y - hy / 2);
-        Vec2 rt = new Vec2(x + hx / 2, y + hy / 2);
-        Vec2 rb = new Vec2(x + hx / 2, y - hy / 2);
+        Vec2 lt = new Vec2(x - hx , y + hy );
+        Vec2 lb = new Vec2(x - hx , y - hy );
+        Vec2 rt = new Vec2(x + hx , y + hy );
+        Vec2 rb = new Vec2(x + hx , y - hy );
         lines.add(new Line(lt, rt));
         lines.add(new Line(rt, rb));
         lines.add(new Line(rb, lb));
         lines.add(new Line(lb, lt));
-
         return lines;
     }
 

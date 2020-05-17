@@ -96,6 +96,10 @@
  * Created at 4:56:29 AM Jan 14, 2011
  * <p>
  * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
  */
 /**
  * Created at 4:56:29 AM Jan 14, 2011
@@ -126,6 +130,7 @@ import java.util.List;
 public class Level4 extends CommonLevel {
     private static float width = 80;
     private static float height = 60;
+    private Body enemyBody;
 
     public Level4(AbstractTestbedController controller, Scene scene) {
         super(controller, scene);
@@ -143,14 +148,26 @@ public class Level4 extends CommonLevel {
     protected void createGameObjects() {
         hero_body = GeometryBodyFactory.createRectangle(0, 2, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.BLUE);
         destroyableList.add(hero_body);
-           }
+    }
 
     protected void createPlatforms() {
         Body p1 = GeometryBodyFactory.createRectangle(0, 0, 10f, 1f, BodyType.STATIC, getWorld());
-        List<Line> lines=GeometryBodyFactory.splitRectangle(0, 0, 10f, 1f);
+        List<Line> lines = GeometryBodyFactory.splitRectangle(0, 0, 10f, 1f);
         linesList.addAll(lines);
-        p1.getFixtureList().m_friction=3;
+        p1.getFixtureList().m_friction = 3;
         objectForJump.add(p1.getFixtureList());
+
+        Body p2 = GeometryBodyFactory.createRectangle(-28, 0, 10f, 1f, BodyType.STATIC, getWorld());
+        lines = GeometryBodyFactory.splitRectangle(-30, 0, 10f, 1f);
+        linesList.addAll(lines);
+        p2.getFixtureList().m_friction = 3;
+        objectForJump.add(p2.getFixtureList());
+
+        Body p3 = GeometryBodyFactory.createRectangle(28, 0, 10f, 1f, BodyType.STATIC, getWorld());
+        lines = GeometryBodyFactory.splitRectangle(28, 0, 10f, 1f);
+        linesList.addAll(lines);
+        p2.getFixtureList().m_friction = 3;
+        objectForJump.add(p3.getFixtureList());
     }
 
     @Override
@@ -161,6 +178,10 @@ public class Level4 extends CommonLevel {
     @Override
     protected boolean hasGun() {
         return true;
+    }
+
+    @Override
+    protected void checkEnemyAction() {
     }
 
     @Override

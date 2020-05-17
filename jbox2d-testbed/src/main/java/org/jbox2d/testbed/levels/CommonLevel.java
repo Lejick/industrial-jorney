@@ -388,6 +388,8 @@ public abstract class CommonLevel extends PlayLevel {
 
     protected abstract boolean hasGun();
 
+    protected abstract void checkEnemyAction();
+
     protected boolean cursorInFireArea() {
         Line fireLine = new Line(hero_body.getPosition(), getWorldMouse());
         for (Line line : linesList) {

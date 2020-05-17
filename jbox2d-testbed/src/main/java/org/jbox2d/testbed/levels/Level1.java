@@ -204,6 +204,10 @@ public class Level1 extends CommonLevel {
     }
 
     @Override
+    protected void checkEnemyAction() {
+    }
+
+    @Override
     public String getLevelName() {
         return "Level 1";
     }

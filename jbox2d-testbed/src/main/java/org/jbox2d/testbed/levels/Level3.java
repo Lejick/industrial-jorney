@@ -96,6 +96,8 @@
  * Created at 4:56:29 AM Jan 14, 2011
  * <p>
  * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
  */
 /**
  * Created at 4:56:29 AM Jan 14, 2011
@@ -167,7 +169,7 @@ public class Level3 extends CommonLevel {
         List<Vec2> coordinatesList = new ArrayList<>();
         coordinatesList.add(new Vec2(5.5f, 0));
         MovingObject mo = GameObjectFactory.createMovingObject(platform, switcher, coordinatesList, false, new Vec2(0, -1));
-           movingObjectList.add(mo);
+        movingObjectList.add(mo);
 
         Body platform2 = GeometryBodyFactory.createRectangle(35, -25, 0.2f, 5f, BodyType.KINEMATIC, getWorld());
         platform2.getFixtureList().m_friction = 0;
@@ -244,6 +246,10 @@ public class Level3 extends CommonLevel {
     @Override
     protected boolean hasGun() {
         return true;
+    }
+
+    @Override
+    protected void checkEnemyAction() {
     }
 
     @Override
