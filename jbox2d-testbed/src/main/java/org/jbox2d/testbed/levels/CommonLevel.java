@@ -15,6 +15,7 @@ import org.jbox2d.testbed.framework.*;
 import org.jbox2d.testbed.framework.game.objects.Gun;
 import org.jbox2d.testbed.framework.game.objects.MovingObject;
 import org.jbox2d.testbed.framework.game.objects.SwitchType;
+import org.jbox2d.testbed.framework.utils.GarbageObjectCollector;
 import org.jbox2d.testbed.framework.utils.Line;
 import org.jbox2d.testbed.framework.utils.LineIntersectChecker;
 import org.slf4j.Logger;
@@ -54,14 +55,13 @@ public abstract class CommonLevel extends PlayLevel {
     protected List<Gun> gunList = new ArrayList<>();
     protected List<Body> destroyableList = Collections.synchronizedList(new ArrayList<>());
     protected List<Body> objectToExplode = Collections.synchronizedList(new ArrayList<>());
-    protected List<Body> currentToErase = Collections.synchronizedList(new ArrayList<>());
-    protected List<Body> nextToErase = Collections.synchronizedList(new ArrayList<>());
     protected Scene scene;
     protected List<Fixture> leftBlockedFixtures = new ArrayList<>();
     protected List<Fixture> rightBlockedFixtures = new ArrayList<>();
     protected List<MovingObject> movingObjectList = new ArrayList<>();
     protected Body enemyBody;
     protected float constantEnemyVelocity = 6;
+    GarbageObjectCollector garbageObjectCollector = new GarbageObjectCollector();
 
     protected boolean blockedFromLeft;
     protected boolean blockedFromRight;
@@ -285,6 +285,7 @@ public abstract class CommonLevel extends PlayLevel {
                 bullet.shapeColor = Color3f.RED;
                 bullet.setLinearVelocity(new Vec2(orientation.x * 300, orientation.y * 300));
                 hero_bullet = bullet;
+                garbageObjectCollector.add(bullet,last_step+400);
             }
         }
     }
@@ -371,7 +372,7 @@ public abstract class CommonLevel extends PlayLevel {
         }
 
         for (MovingObject movingObject : movingObjectList) {
-            if (movingObject.getSwitcher() == fixtureA.getBody() || movingObject.getSwitcher() == fixtureB.getBody() ) {
+            if (movingObject.getSwitcher() == fixtureA.getBody() || movingObject.getSwitcher() == fixtureB.getBody()) {
                 movingObject.setActive(true);
             }
         }
@@ -491,18 +492,8 @@ public abstract class CommonLevel extends PlayLevel {
         for (MovingObject movingObject : movingObjectList) {
             movingObject.calculateStep();
         }
-
+        garbageObjectCollector.clear(last_step, getWorld());
         last_step++;
-    }
-
-    private void checkToErase() {
-        if (last_step - lastDestroy_step > 1000) {
-            for (Body body : currentToErase) {
-                m_world.destroyBody(body);
-                nextToErase.clear();
-            }
-            currentToErase = nextToErase;
-        }
     }
 
     private void explose() {
@@ -525,7 +516,6 @@ public abstract class CommonLevel extends PlayLevel {
                 if (newBody != null) {
                     newBody.createFixture(fd);
                 }
-                nextToErase.add(body);
             }
             lastDestroy_step = last_step;
         }
