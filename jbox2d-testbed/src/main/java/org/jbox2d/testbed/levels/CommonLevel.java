@@ -8,7 +8,6 @@ import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Color3f;
-import org.jbox2d.common.MathUtils;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
 import org.jbox2d.dynamics.contacts.Contact;
@@ -40,10 +39,13 @@ public abstract class CommonLevel extends PlayLevel {
     protected static final float commonPersonEdge = 1f;
     long lastDestroy_step = 0;
     long last_step = 0;
+    long enemyFireCD = 50;
+    long lastEnemyFire = 0;
     protected List<Fixture> objectForJump = new ArrayList<>();
     protected List<Fixture> contactObjForJump = new ArrayList<>();
     protected Body hero_body;
     protected Body hero_bullet;
+    protected Body enemy_bullet;
     protected Body exit;
     protected Body objectToPush;
     protected AbstractTestbedController controller;
@@ -58,6 +60,8 @@ public abstract class CommonLevel extends PlayLevel {
     protected List<Fixture> leftBlockedFixtures = new ArrayList<>();
     protected List<Fixture> rightBlockedFixtures = new ArrayList<>();
     protected List<MovingObject> movingObjectList = new ArrayList<>();
+    protected Body enemyBody;
+    protected float constantEnemyVelocity = 6;
 
     protected boolean blockedFromLeft;
     protected boolean blockedFromRight;
@@ -81,6 +85,7 @@ public abstract class CommonLevel extends PlayLevel {
     public void initTest(boolean deserialized) {
         contactObjForJump.clear();
         last_step = 0;
+        lastEnemyFire = 0;
         lastDestroy_step = 0;
         objectToPush = null;
         blockedFromRight = false;
@@ -202,6 +207,57 @@ public abstract class CommonLevel extends PlayLevel {
         return log;
     }
 
+    protected void enemyAction() {
+        if (enemyBody != null) {
+            Vec2 currentVel = enemyBody.getLinearVelocity();
+            currentVel.x = constantEnemyVelocity;
+            enemyBody.setLinearVelocity(currentVel);
+        }
+    }
+
+    protected void enemyFireAction() {
+        if (enemyBody != null && hero_body != null) {
+            Line fireLine = new Line(hero_body.getPosition(), enemyBody.getPosition());
+            boolean isVisible = true;
+            for (Line line : linesList) {
+                if (LineIntersectChecker.doIntersect(fireLine, line)) {
+                    isVisible = false;
+                    break;
+                }
+            }
+
+            if (!enemyBody.isDestroy() && !hero_body.isDestroy() && isVisible && lastEnemyFire < last_step - enemyFireCD) {
+                Vec2 orientation = new Vec2(hero_body.getPosition().x - enemyBody.getPosition().x,
+                        hero_body.getPosition().y - enemyBody.getPosition().y);
+
+                float norm = Math.abs(enemyBody.getPosition().x - hero_body.getPosition().x);
+                orientation.x = orientation.x / norm;
+                orientation.y = orientation.y / norm;
+                {
+                    CircleShape shape = new CircleShape();
+                    shape.m_radius = 0.25f;
+
+                    FixtureDef fd = new FixtureDef();
+                    fd.shape = shape;
+                    fd.density = 20.0f;
+                    fd.restitution = 0.05f;
+
+                    BodyDef bd = new BodyDef();
+                    bd.type = BodyType.DYNAMIC;
+                    bd.bullet = true;
+                    bd.position.set(enemyBody.getPosition().x + 1 * orientation.x, enemyBody.getPosition().y + 1 * orientation.y);
+
+                    Body bullet = getWorld().createBody(bd);
+                    Fixture f = bullet.createFixture(fd);
+                    bullet.shapeColor = Color3f.RED;
+                    bullet.setLinearVelocity(new Vec2(orientation.x * 300, orientation.y * 300));
+                    enemy_bullet = bullet;
+                    lastEnemyFire = last_step;
+                }
+            }
+        }
+    }
+
     protected void leftMouseAction() {
         if (hasGun() && cursorInFireArea() && !hero_body.isDestroy()) {
             Vec2 orientation = new Vec2(getWorldMouse().x - hero_body.getPosition().x,
@@ -230,7 +286,6 @@ public abstract class CommonLevel extends PlayLevel {
                 bullet.setLinearVelocity(new Vec2(orientation.x * 300, orientation.y * 300));
                 hero_bullet = bullet;
             }
-
         }
     }
 
@@ -277,7 +332,14 @@ public abstract class CommonLevel extends PlayLevel {
                 blockedFromLeft = true;
             }
         }
+        if (fixtureA.getBody() == enemyBody && leftBlockedFixtures.contains(fixtureB) ||
+                fixtureA.getBody() == enemyBody && rightBlockedFixtures.contains(fixtureB) ||
+                fixtureB.getBody() == enemyBody && leftBlockedFixtures.contains(fixtureA) ||
+                fixtureB.getBody() == enemyBody && rightBlockedFixtures.contains(fixtureA)
 
+        ) {
+            constantEnemyVelocity = -constantEnemyVelocity;
+        }
         if (isHero(fixtureA.getBody()) && (leftBlockedFixtures.contains(fixtureB) || rightBlockedFixtures.contains(fixtureB))) {
             canPush = true;
         }
@@ -297,7 +359,7 @@ public abstract class CommonLevel extends PlayLevel {
 
 
                 float bulletImpulse = gun.getBullet().m_mass * gun.getBullet().getLinearVelocity().length();
-                if (bulletImpulse > 200) {
+                if (bulletImpulse > 100) {
                     objectToExplode.add(bodyToDestroy);
 
                     Vec2 bulletVel = gun.getBullet().getLinearVelocity();
@@ -309,10 +371,18 @@ public abstract class CommonLevel extends PlayLevel {
         }
 
         for (MovingObject movingObject : movingObjectList) {
-            if (movingObject.getSwitcher() == fixtureA.getBody() || movingObject.getSwitcher() == fixtureB.getBody()) {
+            if (movingObject.getSwitcher() == fixtureA.getBody() || movingObject.getSwitcher() == fixtureB.getBody() ) {
                 movingObject.setActive(true);
             }
         }
+        if (fixtureA.getBody() == hero_body && fixtureB.getBody() == enemy_bullet ||
+                fixtureB.getBody() == hero_body && fixtureA.getBody() == enemy_bullet) {
+            float bulletImpulse = enemy_bullet.m_mass * enemy_bullet.getLinearVelocity().length();
+            if (bulletImpulse > 50) {
+                objectToExplode.add(hero_body);
+            }
+        }
+
         if (fixtureA.m_body == hero_bullet) {
             bodyToDestroy = fixtureB.m_body;
         } else if (fixtureB.m_body == hero_bullet) {
@@ -323,7 +393,7 @@ public abstract class CommonLevel extends PlayLevel {
         }
         if (bodyToDestroy != null && hero_bullet != null && destroyableList.contains(bodyToDestroy)) {
             float bulletImpulse = hero_bullet.m_mass * hero_bullet.getLinearVelocity().length();
-            if (bulletImpulse > 200) {
+            if (bulletImpulse > 50) {
                 objectToExplode.add(bodyToDestroy);
                 Vec2 bulletVel = hero_bullet.getLinearVelocity();
                 bulletVel.x = bulletVel.x - 30;
@@ -413,6 +483,8 @@ public abstract class CommonLevel extends PlayLevel {
         super.step(settings);
         keyPressed();
         explose();
+        enemyAction();
+        enemyFireAction();
         for (Gun gun : gunList) {
             gun.checkFire(last_step);
         }

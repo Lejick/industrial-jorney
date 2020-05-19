@@ -130,7 +130,7 @@ import java.util.List;
 public class Level4 extends CommonLevel {
     private static float width = 80;
     private static float height = 60;
-    private Body enemyBody;
+
 
     public Level4(AbstractTestbedController controller, Scene scene) {
         super(controller, scene);
@@ -142,13 +142,20 @@ public class Level4 extends CommonLevel {
         createGameObjects();
         exit = GeometryBodyFactory.createRectangle(getWidth() / 2 - 1,
                 -getHeight() / 2 + 4 * commonPersonEdge, 1, 4, BodyType.STATIC, getWorld(), Color3f.GREEN);
+        rightBlockedFixtures.add(exit.getFixtureList());
 
     }
 
     protected void createGameObjects() {
         hero_body = GeometryBodyFactory.createRectangle(0, 2, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.BLUE);
         destroyableList.add(hero_body);
+
+        enemyBody = GeometryBodyFactory.createRectangle(-35, -28, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.RED);
+        destroyableList.add(enemyBody);
+        enemyBody.setLinearVelocity(new Vec2(1, 0));
     }
+
+
 
     protected void createPlatforms() {
         Body p1 = GeometryBodyFactory.createRectangle(0, 0, 10f, 1f, BodyType.STATIC, getWorld());
