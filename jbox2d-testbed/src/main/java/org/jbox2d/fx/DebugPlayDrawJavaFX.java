@@ -167,7 +167,6 @@ public class DebugPlayDrawJavaFX extends DebugDraw {
     g.strokeOval(circle.getMinX(), circle.getMinX(), circle.getWidth(), circle.getHeight());
     if (axis != null) {
       g.rotate(MathUtils.atan2(axis.y, axis.x));
-      g.strokeLine(0, 0, 1, 0);
     }
     restoreState(g);
   }

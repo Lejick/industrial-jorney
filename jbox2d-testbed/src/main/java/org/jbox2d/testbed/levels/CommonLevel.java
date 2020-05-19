@@ -246,12 +246,9 @@ public abstract class CommonLevel extends PlayLevel {
                     bd.type = BodyType.DYNAMIC;
                     bd.bullet = true;
                     bd.position.set(enemyBody.getPosition().x + 1 * orientation.x, enemyBody.getPosition().y + 1 * orientation.y);
-
-                    Body bullet = getWorld().createBody(bd);
-                    Fixture f = bullet.createFixture(fd);
-                    bullet.shapeColor = Color3f.RED;
-                    bullet.setLinearVelocity(new Vec2(orientation.x * 300, orientation.y * 300));
-                    enemy_bullet = bullet;
+                    enemy_bullet  = getWorld().createBody(bd);
+                    enemy_bullet.createFixture(fd);
+                    enemy_bullet.setLinearVelocity(new Vec2(orientation.x * 300, orientation.y * 300));
                     lastEnemyFire = last_step;
                 }
             }
@@ -280,12 +277,10 @@ public abstract class CommonLevel extends PlayLevel {
                 bd.bullet = true;
                 bd.position.set(hero_body.getPosition().x + 1 * orientation.x, hero_body.getPosition().y + 1 * orientation.y);
 
-                Body bullet = getWorld().createBody(bd);
-                Fixture f = bullet.createFixture(fd);
-                bullet.shapeColor = Color3f.RED;
-                bullet.setLinearVelocity(new Vec2(orientation.x * 300, orientation.y * 300));
-                hero_bullet = bullet;
-                garbageObjectCollector.add(bullet,last_step+400);
+                hero_bullet = getWorld().createBody(bd);
+                Fixture f = hero_bullet.createFixture(fd);
+                hero_bullet.setLinearVelocity(new Vec2(orientation.x * 300, orientation.y * 300));
+                garbageObjectCollector.add(hero_bullet, last_step + 400);
             }
         }
     }
@@ -492,7 +487,9 @@ public abstract class CommonLevel extends PlayLevel {
         for (MovingObject movingObject : movingObjectList) {
             movingObject.calculateStep();
         }
-        garbageObjectCollector.clear(last_step, getWorld());
+        if (last_step % 20 == 0) {
+            garbageObjectCollector.clear(last_step, getWorld());
+        }
         last_step++;
     }
 
