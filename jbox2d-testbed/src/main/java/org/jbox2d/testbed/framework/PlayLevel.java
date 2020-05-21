@@ -533,7 +533,6 @@ public abstract class PlayLevel implements ContactListener, ObjectListener, Obje
         if (button == BOMB_SPAWN_BUTTON) {
             beginBombSpawn(p);
         }
-
         if (button == MOUSE_JOINT_BUTTON) {
             leftMouseAction();
         }

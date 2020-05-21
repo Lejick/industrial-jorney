@@ -696,7 +696,7 @@ public class World {
                     if (b.shapeColor != null) {
                         color.set(b.shapeColor);
                     } else {
-                        color.set(0.9f, 0.7f, 0.7f);
+                        color.set(0.65f, 0.65f, 0.65f);
                     }
                     drawShape(f, xf, color, wireframe);
                 }

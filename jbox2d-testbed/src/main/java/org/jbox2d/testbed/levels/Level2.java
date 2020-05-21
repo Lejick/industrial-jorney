@@ -124,7 +124,7 @@ public class Level2 extends CommonLevel {
     protected void createGameObjects() {
         Body heroBody = GeometryBodyFactory.createRectangle(-getWidth() / 2 + 2, getHeight() / 2 - 2 * commonPersonEdge, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.BLUE);
         destroyableList.add(heroBody);
-        hero=new Hero(heroBody);
+        hero=new Hero(heroBody,getWorld());
         Body jumplatform = GeometryBodyFactory.createRectangle(0, commonPersonEdge, commonPersonEdge * 12, commonPersonEdge / 1.5f, BodyType.DYNAMIC, getWorld());
         movingObject.add(jumplatform);
     }

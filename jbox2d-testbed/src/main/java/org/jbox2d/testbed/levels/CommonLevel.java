@@ -183,8 +183,8 @@ public abstract class CommonLevel extends PlayLevel {
             if (hero.getBody().getLinearVelocity().y < maxSpeedY && contactObjForJump.size() > 0) {
                 Vec2 newVel = new Vec2(hero.getBody().getLinearVelocity().x, hero.getBody().getLinearVelocity().y + 7);
                 hero.getBody().setLinearVelocity(newVel);
-            } else if(!hasContact && hero.stepInAir<5){
-                Vec2 newVel = new Vec2(hero.getBody().getLinearVelocity().x, hero.getBody().getLinearVelocity().y + 1.2f);
+            } else if(!hasContact && hero.stepInAir<8 && hero.stepInAir>3){
+                Vec2 newVel = new Vec2(hero.getBody().getLinearVelocity().x, hero.getBody().getLinearVelocity().y +1.2f);
                 hero.getBody().setLinearVelocity(newVel);
             }
         }

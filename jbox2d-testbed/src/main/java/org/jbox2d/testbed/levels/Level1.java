@@ -124,7 +124,7 @@ public class Level1 extends CommonLevel {
         super.initTest(false);
         Body heroBody = GeometryBodyFactory.createRectangle(-25, 15, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.BLUE);
         destroyableList.add(heroBody);
-        hero=new Hero(heroBody);
+        hero=new Hero(heroBody,getWorld());
         Body simpleBox = GeometryBodyFactory.createRectangle(20, 3, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld());
         Body simpleBox2 = GeometryBodyFactory.createRectangle(0, getHeight() / 2 - commonPersonEdge * 29, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld());
         movingObject.add(simpleBox);

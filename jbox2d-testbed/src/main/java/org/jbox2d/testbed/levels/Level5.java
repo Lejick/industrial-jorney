@@ -107,33 +107,26 @@
 package org.jbox2d.testbed.levels;
 
 import javafx.scene.Scene;
-import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.common.Color3f;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
-import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
-import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.testbed.Hero;
 import org.jbox2d.testbed.framework.AbstractTestbedController;
-import org.jbox2d.testbed.framework.game.objects.GameObjectFactory;
 import org.jbox2d.testbed.framework.game.objects.GeometryBodyFactory;
-import org.jbox2d.testbed.framework.game.objects.Gun;
-import org.jbox2d.testbed.framework.game.objects.MovingObject;
 import org.jbox2d.testbed.framework.utils.Line;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author Daniel Murphy
  */
-public class Level4 extends CommonLevel {
+public class Level5 extends CommonLevel {
     private static float width = 80;
     private static float height = 60;
 
 
-    public Level4(AbstractTestbedController controller, Scene scene) {
+    public Level5(AbstractTestbedController controller, Scene scene) {
         super(controller, scene);
     }
 
@@ -180,7 +173,7 @@ public class Level4 extends CommonLevel {
 
     @Override
     protected int getLevelIndex() {
-        return 3;
+        return 4;
     }
 
     @Override
@@ -194,7 +187,7 @@ public class Level4 extends CommonLevel {
 
     @Override
     public String getLevelName() {
-        return "Level 4";
+        return "Level 5";
     }
 
     @Override

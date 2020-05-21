@@ -24,10 +24,7 @@
 package org.jbox2d.testbed.framework;
 
 import javafx.scene.Scene;
-import org.jbox2d.testbed.levels.Level1;
-import org.jbox2d.testbed.levels.Level2;
-import org.jbox2d.testbed.levels.Level3;
-import org.jbox2d.testbed.levels.Level4;
+import org.jbox2d.testbed.levels.*;
 
 /**
  * @author Daniel Murphy
@@ -39,5 +36,6 @@ public class LevelsList {
     model.addTest(new Level2(controller,scene));
     model.addTest(new Level3(controller,scene));
     model.addTest(new Level4(controller,scene));
+    model.addTest(new Level5(controller,scene));
   }
 }
