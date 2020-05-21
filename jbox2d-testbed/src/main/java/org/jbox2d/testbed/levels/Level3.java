@@ -112,6 +112,7 @@ import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.Fixture;
+import org.jbox2d.testbed.Hero;
 import org.jbox2d.testbed.framework.AbstractTestbedController;
 import org.jbox2d.testbed.framework.game.objects.GameObjectFactory;
 import org.jbox2d.testbed.framework.game.objects.GeometryBodyFactory;
@@ -143,8 +144,9 @@ public class Level3 extends CommonLevel {
     }
 
     protected void createGameObjects() {
-        hero_body = GeometryBodyFactory.createRectangle(-35, 22, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.BLUE);
-        destroyableList.add(hero_body);
+       Body heroBody = GeometryBodyFactory.createRectangle(-35, 22, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.BLUE);
+        destroyableList.add(heroBody);
+        hero=new Hero(heroBody);
         float deltaY = 0;
         for (int j = 0; j < 3; j++) {
             float deltaX = 0;

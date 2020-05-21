@@ -49,7 +49,6 @@ public class Body {
 
     public Color3f shapeColor;
 
-    private boolean isHero;
     private boolean isDestroy;
 
     public int m_flags;

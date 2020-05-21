@@ -114,6 +114,7 @@ import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.Fixture;
+import org.jbox2d.testbed.Hero;
 import org.jbox2d.testbed.framework.AbstractTestbedController;
 import org.jbox2d.testbed.framework.game.objects.GameObjectFactory;
 import org.jbox2d.testbed.framework.game.objects.GeometryBodyFactory;
@@ -147,9 +148,9 @@ public class Level4 extends CommonLevel {
     }
 
     protected void createGameObjects() {
-        hero_body = GeometryBodyFactory.createRectangle(0, 2, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.BLUE);
-        destroyableList.add(hero_body);
-
+        Body heroBody = GeometryBodyFactory.createRectangle(0, 2, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.BLUE);
+        destroyableList.add(heroBody);
+        hero=new Hero(heroBody);
         enemyBody = GeometryBodyFactory.createRectangle(-35, -28, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.RED);
         destroyableList.add(enemyBody);
         enemyBody.setLinearVelocity(new Vec2(1, 0));
@@ -158,19 +159,19 @@ public class Level4 extends CommonLevel {
 
 
     protected void createPlatforms() {
-        Body p1 = GeometryBodyFactory.createRectangle(0, 0, 10f, 1f, BodyType.STATIC, getWorld());
+        Body p1 = GeometryBodyFactory.createRectangle(0, 0, 10f, 0.5f, BodyType.STATIC, getWorld());
         List<Line> lines = GeometryBodyFactory.splitRectangle(0, 0, 10f, 1f);
         linesList.addAll(lines);
         p1.getFixtureList().m_friction = 3;
         objectForJump.add(p1.getFixtureList());
 
-        Body p2 = GeometryBodyFactory.createRectangle(-28, 0, 10f, 1f, BodyType.STATIC, getWorld());
+        Body p2 = GeometryBodyFactory.createRectangle(-28, 0, 10f, 0.5f, BodyType.STATIC, getWorld());
         lines = GeometryBodyFactory.splitRectangle(-30, 0, 10f, 1f);
         linesList.addAll(lines);
         p2.getFixtureList().m_friction = 3;
         objectForJump.add(p2.getFixtureList());
 
-        Body p3 = GeometryBodyFactory.createRectangle(28, 0, 10f, 1f, BodyType.STATIC, getWorld());
+        Body p3 = GeometryBodyFactory.createRectangle(28, 0, 10f, 0.5f, BodyType.STATIC, getWorld());
         lines = GeometryBodyFactory.splitRectangle(28, 0, 10f, 1f);
         linesList.addAll(lines);
         p2.getFixtureList().m_friction = 3;

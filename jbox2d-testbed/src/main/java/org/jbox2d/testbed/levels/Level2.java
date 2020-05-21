@@ -95,6 +95,7 @@ import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.common.Color3f;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
+import org.jbox2d.testbed.Hero;
 import org.jbox2d.testbed.framework.AbstractTestbedController;
 import org.jbox2d.testbed.framework.game.objects.GeometryBodyFactory;
 import org.jbox2d.testbed.framework.game.objects.Gun;
@@ -121,8 +122,9 @@ public class Level2 extends CommonLevel {
     }
 
     protected void createGameObjects() {
-        hero_body = GeometryBodyFactory.createRectangle(-getWidth() / 2 + 2, getHeight() / 2 - 2 * commonPersonEdge, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.BLUE);
-        destroyableList.add(hero_body);
+        Body heroBody = GeometryBodyFactory.createRectangle(-getWidth() / 2 + 2, getHeight() / 2 - 2 * commonPersonEdge, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.BLUE);
+        destroyableList.add(heroBody);
+        hero=new Hero(heroBody);
         Body jumplatform = GeometryBodyFactory.createRectangle(0, commonPersonEdge, commonPersonEdge * 12, commonPersonEdge / 1.5f, BodyType.DYNAMIC, getWorld());
         movingObject.add(jumplatform);
     }

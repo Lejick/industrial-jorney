@@ -80,6 +80,8 @@
  * Created at 4:56:29 AM Jan 14, 2011
  * <p>
  * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
  */
 /**
  * Created at 4:56:29 AM Jan 14, 2011
@@ -91,6 +93,7 @@ import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.common.Color3f;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
+import org.jbox2d.testbed.Hero;
 import org.jbox2d.testbed.framework.AbstractTestbedController;
 import org.jbox2d.testbed.framework.game.objects.GeometryBodyFactory;
 import org.jbox2d.testbed.framework.game.objects.Gun;
@@ -119,9 +122,9 @@ public class Level1 extends CommonLevel {
     @Override
     public void initTest(boolean deserialized) {
         super.initTest(false);
-        hero_body = GeometryBodyFactory.createRectangle(-25, 15, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.BLUE);
-        destroyableList.add(hero_body);
-
+        Body heroBody = GeometryBodyFactory.createRectangle(-25, 15, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.BLUE);
+        destroyableList.add(heroBody);
+        hero=new Hero(heroBody);
         Body simpleBox = GeometryBodyFactory.createRectangle(20, 3, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld());
         Body simpleBox2 = GeometryBodyFactory.createRectangle(0, getHeight() / 2 - commonPersonEdge * 29, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld());
         movingObject.add(simpleBox);
