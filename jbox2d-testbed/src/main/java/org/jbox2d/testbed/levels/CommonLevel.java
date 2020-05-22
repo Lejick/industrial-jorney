@@ -40,8 +40,7 @@ public abstract class CommonLevel extends PlayLevel {
     protected static final float commonPersonEdge = 1f;
     long lastDestroy_step = 0;
     long last_step = 0;
-    long enemyFireCD = 50;
-    long lastEnemyFire = 0;
+
     protected List<Fixture> objectForJump = new ArrayList<>();
     protected List<Fixture> contactObjForJump = new ArrayList<>();
     protected Hero hero;
@@ -85,7 +84,9 @@ public abstract class CommonLevel extends PlayLevel {
         contactObjForJump.clear();
         garbageObjectCollector = new GarbageObjectCollector();
         last_step = 0;
-        lastEnemyFire = 0;
+        if(enemy!=null) {
+            enemy.lastFireWeapon1 = 0;
+        }
         lastDestroy_step = 0;
         objectToPush = null;
         blockedFromRight = false;
@@ -225,7 +226,7 @@ public abstract class CommonLevel extends PlayLevel {
 
     protected void enemyFireAction() {
         if (enemy != null && hero.getBody() != null &&
-                !enemy.getBody().isDestroy() && !hero.getBody().isDestroy() && lastEnemyFire < last_step - enemyFireCD) {
+                !enemy.getBody().isDestroy() && !hero.getBody().isDestroy() && enemy.lastFireWeapon1 < last_step - enemy.weapon1CoolDown) {
             Line fireLine = new Line(hero.getBody().getPosition(), enemy.getBody().getPosition());
             boolean isVisible = true;
             for (Line line : linesList) {
@@ -236,13 +237,13 @@ public abstract class CommonLevel extends PlayLevel {
             }
 
             if (isVisible) {
-         Body enemy_bullet=enemy.fireWeapon1(hero.getBody().getPosition());
-                    bulletList.add(enemy_bullet);
-                    garbageObjectCollector.add(enemy_bullet, 400);
-                    lastEnemyFire = last_step;
-                }
+                Body enemy_bullet = enemy.fireWeapon1(hero.getBody().getPosition());
+                bulletList.add(enemy_bullet);
+                garbageObjectCollector.add(enemy_bullet, 400);
+                enemy.lastFireWeapon1 = last_step;
             }
         }
+    }
 
 
     protected void leftMouseAction() {
@@ -352,7 +353,7 @@ public abstract class CommonLevel extends PlayLevel {
             return;
         }
 
-        if (bullet!=null && (bodyToDestroy == hero.getBody() || bodyToDestroy == enemy.getBody())) {
+        if (bullet != null && (bodyToDestroy == hero.getBody() || bodyToDestroy == enemy.getBody())) {
             float bulletImpulse = bullet.m_mass * bullet.getLinearVelocity().length();
             if (bulletImpulse > 50) {
                 objectToExplode.add(bodyToDestroy);
