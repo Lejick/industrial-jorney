@@ -102,6 +102,8 @@
  * Created at 4:56:29 AM Jan 14, 2011
  * <p>
  * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
  */
 /**
  * Created at 4:56:29 AM Jan 14, 2011
@@ -137,8 +139,8 @@ public class Level5 extends CommonLevel {
     public void initTest(boolean deserialized) {
         super.initTest(false);
         createGameObjects();
-        exit = GeometryBodyFactory.createRectangle(getWidth() / 2 - 1,
-                -getHeight() / 2 + 4 * commonPersonEdge, 1, 4, BodyType.STATIC, getWorld(), Color3f.GREEN);
+        exit = GeometryBodyFactory.createRectangle(getWidth() / 2 - 0.25f,
+                -getHeight() / 2 + 4 * commonPersonEdge, 0.25f, 4, BodyType.STATIC, getWorld(), Color3f.GREEN);
         rightBlockedFixtures.add(exit.getFixtureList());
 
     }
@@ -151,18 +153,21 @@ public class Level5 extends CommonLevel {
         Body enemyBody = GeometryBodyFactory.createRectangle(-35, -28, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.RED);
         enemyBody.setLinearVelocity(new Vec2(1, 0));
         Enemy enemy = new Enemy(enemyBody, getWorld());
+        enemy.delayToFire = 50;
         enemyList.add(enemy);
         destroyableList.add(enemyBody);
 
-         enemyBody = GeometryBodyFactory.createRectangle(30, -28, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.RED);
-         enemyBody.setLinearVelocity(new Vec2(-1, 0));
-         enemy = new Enemy(enemyBody, getWorld());
+        enemyBody = GeometryBodyFactory.createRectangle(30, -28, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.RED);
+        enemyBody.setLinearVelocity(new Vec2(-1, 0));
+        enemy = new Enemy(enemyBody, getWorld());
+        enemy.delayToFire = 50;
         enemyList.add(enemy);
         destroyableList.add(enemyBody);
 
         enemyBody = GeometryBodyFactory.createRectangle(15, -28, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.RED);
         enemyBody.setLinearVelocity(new Vec2(-1, 0));
         enemy = new Enemy(enemyBody, getWorld());
+        enemy.delayToFire =50;
         enemyList.add(enemy);
         destroyableList.add(enemyBody);
 

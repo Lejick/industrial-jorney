@@ -10,38 +10,41 @@ public class Hero {
     public Body activeBullet;
     protected World world;
     public long stepInAir;
+    private int weapon1CD = 0;
 
     public Hero(Body heroBody, World world) {
         this.heroBody = heroBody;
-        this.world=world;
+        this.world = world;
     }
 
-    public Body fireWeapon1(Vec2 targetPosition){
+    public Body fireWeapon1(Vec2 targetPosition) {
         Vec2 orientation = new Vec2(targetPosition.x - heroBody.getPosition().x,
                 targetPosition.y - heroBody.getPosition().y);
 
         float norm = Math.abs(targetPosition.x - heroBody.getPosition().x);
         orientation.x = orientation.x / norm;
         orientation.y = orientation.y / norm;
-            CircleShape shape = new CircleShape();
-            shape.m_radius = 0.15f;
+        CircleShape shape = new CircleShape();
+        shape.m_radius = 0.15f;
 
-            FixtureDef fd = new FixtureDef();
-            fd.shape = shape;
-            fd.density = 20.0f;
-            fd.restitution = 0.05f;
+        FixtureDef fd = new FixtureDef();
+        fd.shape = shape;
+        fd.density = 20.0f;
+        fd.restitution = 0.05f;
 
-            BodyDef bd = new BodyDef();
-            bd.type = BodyType.DYNAMIC;
-            bd.bullet = true;
-            bd.position.set(heroBody.getPosition().x + 1 * orientation.x, heroBody.getPosition().y + 1 * orientation.y);
+        BodyDef bd = new BodyDef();
+        bd.type = BodyType.DYNAMIC;
+        bd.bullet = true;
+        bd.position.set(heroBody.getPosition().x + 1 * orientation.x, heroBody.getPosition().y + 1 * orientation.y);
 
-            Body hero_bullet = world.createBody(bd);
-             hero_bullet.createFixture(fd);
-            hero_bullet.setLinearVelocity(new Vec2(orientation.x * 600, orientation.y * 600));
-            activeBullet=hero_bullet;
-            return hero_bullet;
+        Body hero_bullet = world.createBody(bd);
+        hero_bullet.createFixture(fd);
+        hero_bullet.setLinearVelocity(new Vec2(orientation.x * 600, orientation.y * 600));
+        activeBullet = hero_bullet;
+        weapon1CD = 35;
+        return hero_bullet;
     }
+
     public Body getBody() {
         return heroBody;
     }
@@ -50,5 +53,12 @@ public class Hero {
         this.heroBody = heroBody;
     }
 
+    public int getWeapon1CD() {
+        return weapon1CD;
+    }
 
+    public void decrWeapon1CD() {
+        if(weapon1CD>0)
+        weapon1CD--;
+    }
 }

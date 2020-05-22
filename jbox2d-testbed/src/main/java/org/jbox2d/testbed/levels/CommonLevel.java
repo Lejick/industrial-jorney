@@ -35,17 +35,16 @@ public abstract class CommonLevel extends PlayLevel {
     protected final static float maxSpeedXAir = 3f;
     protected final static float minSpeedXAir = -3f;
     protected List<Line> linesList = new ArrayList<>();
-    private int maxLevelIndex = 4;
+    private int maxLevelIndex = 5;
     protected final static float maxSpeedY = 3f;
     protected static final float commonPersonEdge = 1f;
-    long lastDestroy_step = 0;
     long last_step = 0;
     private static float bulletDeathVelocity = 75;
     protected List<Fixture> objectForJump = new ArrayList<>();
     protected List<Fixture> contactObjForJump = new ArrayList<>();
-    protected Hero hero;
     protected List<Body> bulletList = new ArrayList<>();
     protected Body exit;
+    protected Hero hero;
     protected Body objectToPush;
     protected AbstractTestbedController controller;
     protected List<Body> movingObject = new ArrayList<>();
@@ -84,7 +83,6 @@ public abstract class CommonLevel extends PlayLevel {
         garbageObjectCollector = new GarbageObjectCollector();
         last_step = 0;
         enemyList = new ArrayList<>();
-        lastDestroy_step = 0;
         objectToPush = null;
         blockedFromRight = false;
         blockedFromLeft = false;
@@ -218,9 +216,11 @@ public abstract class CommonLevel extends PlayLevel {
 
                     if (isVisible) {
                         Body enemy_bullet = enemy.fireWeapon1(hero.getBody().getPosition());
-                        bulletList.add(enemy_bullet);
-                        garbageObjectCollector.add(enemy_bullet, last_step + 400);
-                        enemy.lastFireWeapon1 = last_step;
+                        if (enemy_bullet != null) {
+                            bulletList.add(enemy_bullet);
+                            garbageObjectCollector.add(enemy_bullet, last_step + 400);
+                            enemy.lastFireWeapon1 = last_step;
+                        }
                     }
                 }
             }
@@ -229,7 +229,7 @@ public abstract class CommonLevel extends PlayLevel {
 
 
     protected void leftMouseAction() {
-        if (hasGun() && cursorInFireArea() && !hero.getBody().isDestroy()) {
+        if (hasGun() && cursorInFireArea() && !hero.getBody().isDestroy() && hero.getWeapon1CD()==0) {
             Body heroBullet = hero.fireWeapon1(getWorldMouse());
             garbageObjectCollector.add(heroBullet, last_step + 400);
             bulletList.add(heroBullet);
@@ -459,6 +459,7 @@ public abstract class CommonLevel extends PlayLevel {
         if (last_step % 20 == 0) {
             garbageObjectCollector.clear(last_step, getWorld());
         }
+        hero.decrWeapon1CD();
         last_step++;
     }
 
@@ -483,7 +484,6 @@ public abstract class CommonLevel extends PlayLevel {
                     newBody.createFixture(fd);
                 }
             }
-            lastDestroy_step = last_step;
         }
         objectToExplode.clear();
     }

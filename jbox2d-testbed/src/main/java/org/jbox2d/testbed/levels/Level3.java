@@ -138,8 +138,8 @@ public class Level3 extends CommonLevel {
         super.initTest(false);
         createGameObjects();
         createGuns();
-        exit = GeometryBodyFactory.createRectangle(getWidth() / 2 - 1,
-                -getHeight() / 2 + 4 * commonPersonEdge, 1, 4, BodyType.STATIC, getWorld(), Color3f.GREEN);
+        exit = GeometryBodyFactory.createRectangle(getWidth() / 2 - 0.25f,
+                -getHeight() / 2 + 4 * commonPersonEdge, 0.25f, 4, BodyType.STATIC, getWorld(), Color3f.GREEN);
 
     }
 
