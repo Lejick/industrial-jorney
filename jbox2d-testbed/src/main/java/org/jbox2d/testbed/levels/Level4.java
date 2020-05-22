@@ -100,6 +100,8 @@
  * Created at 4:56:29 AM Jan 14, 2011
  * <p>
  * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
  */
 /**
  * Created at 4:56:29 AM Jan 14, 2011
@@ -151,13 +153,13 @@ public class Level4 extends CommonLevel {
     protected void createGameObjects() {
         Body heroBody = GeometryBodyFactory.createRectangle(0, 2, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.BLUE);
         destroyableList.add(heroBody);
-        hero=new Hero(heroBody,getWorld());
-       Body enemyBody = GeometryBodyFactory.createRectangle(-35, -28, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.RED);
+        hero = new Hero(heroBody, getWorld());
+        Body enemyBody = GeometryBodyFactory.createRectangle(-35, -28, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.RED);
         destroyableList.add(enemyBody);
         enemyBody.setLinearVelocity(new Vec2(1, 0));
-        enemy=new Enemy(enemyBody, getWorld());
+        Enemy enemy = new Enemy(enemyBody, getWorld());
+        enemyList.add(enemy);
     }
-
 
 
     protected void createPlatforms() {

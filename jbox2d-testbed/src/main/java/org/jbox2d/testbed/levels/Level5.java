@@ -150,7 +150,8 @@ public class Level5 extends CommonLevel {
         Body enemyBody = GeometryBodyFactory.createRectangle(-35, -28, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.RED);
         destroyableList.add(enemyBody);
         enemyBody.setLinearVelocity(new Vec2(1, 0));
-        enemy = new Enemy(enemyBody, getWorld());
+        Enemy enemy = new Enemy(enemyBody, getWorld());
+        enemyList.add(enemy);
     }
 
 

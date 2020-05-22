@@ -57,7 +57,7 @@ public abstract class CommonLevel extends PlayLevel {
     protected List<Fixture> leftBlockedFixtures = new ArrayList<>();
     protected List<Fixture> rightBlockedFixtures = new ArrayList<>();
     protected List<MovingObject> movingObjectList = new ArrayList<>();
-    protected Enemy enemy;
+    protected List<Enemy> enemyList;
     protected float constantEnemyVelocity = 6;
     GarbageObjectCollector garbageObjectCollector = new GarbageObjectCollector();
 
@@ -84,9 +84,7 @@ public abstract class CommonLevel extends PlayLevel {
         contactObjForJump.clear();
         garbageObjectCollector = new GarbageObjectCollector();
         last_step = 0;
-        if(enemy!=null) {
-            enemy.lastFireWeapon1 = 0;
-        }
+        enemyList = new ArrayList<>();
         lastDestroy_step = 0;
         objectToPush = null;
         blockedFromRight = false;
@@ -217,30 +215,35 @@ public abstract class CommonLevel extends PlayLevel {
     }
 
     protected void enemyAction() {
-        if (enemy != null) {
-            Vec2 currentVel = enemy.getBody().getLinearVelocity();
-            currentVel.x = constantEnemyVelocity;
-            enemy.getBody().setLinearVelocity(currentVel);
+        if (enemyList.size() > 0) {
+            for (Enemy enemy : enemyList) {
+                Vec2 currentVel = enemy.getBody().getLinearVelocity();
+                currentVel.x = constantEnemyVelocity;
+                enemy.getBody().setLinearVelocity(currentVel);
+            }
         }
     }
 
     protected void enemyFireAction() {
-        if (enemy != null && hero.getBody() != null &&
-                !enemy.getBody().isDestroy() && !hero.getBody().isDestroy() && enemy.lastFireWeapon1 < last_step - enemy.weapon1CoolDown) {
-            Line fireLine = new Line(hero.getBody().getPosition(), enemy.getBody().getPosition());
-            boolean isVisible = true;
-            for (Line line : linesList) {
-                if (LineIntersectChecker.doIntersect(fireLine, line)) {
-                    isVisible = false;
-                    break;
-                }
-            }
+        if (enemyList.size() > 0 && hero != null) {
+            for (Enemy enemy : enemyList) {
+                if (!enemy.getBody().isDestroy() && !hero.getBody().isDestroy() && enemy.lastFireWeapon1 < last_step - enemy.weapon1CoolDown) {
+                    Line fireLine = new Line(hero.getBody().getPosition(), enemy.getBody().getPosition());
+                    boolean isVisible = true;
+                    for (Line line : linesList) {
+                        if (LineIntersectChecker.doIntersect(fireLine, line)) {
+                            isVisible = false;
+                            break;
+                        }
+                    }
 
-            if (isVisible) {
-                Body enemy_bullet = enemy.fireWeapon1(hero.getBody().getPosition());
-                bulletList.add(enemy_bullet);
-                garbageObjectCollector.add(enemy_bullet, 400);
-                enemy.lastFireWeapon1 = last_step;
+                    if (isVisible) {
+                        Body enemy_bullet = enemy.fireWeapon1(hero.getBody().getPosition());
+                        bulletList.add(enemy_bullet);
+                        garbageObjectCollector.add(enemy_bullet, 400);
+                        enemy.lastFireWeapon1 = last_step;
+                    }
+                }
             }
         }
     }
@@ -297,14 +300,17 @@ public abstract class CommonLevel extends PlayLevel {
                 blockedFromLeft = true;
             }
         }
-        if (fixtureA.getBody() == enemy.getBody() && leftBlockedFixtures.contains(fixtureB) ||
-                fixtureA.getBody() == enemy.getBody() && rightBlockedFixtures.contains(fixtureB) ||
-                fixtureB.getBody() == enemy.getBody() && leftBlockedFixtures.contains(fixtureA) ||
-                fixtureB.getBody() == enemy.getBody() && rightBlockedFixtures.contains(fixtureA)
+        for (Enemy enemy : enemyList) {
+            if (fixtureA.getBody() == enemy.getBody() && leftBlockedFixtures.contains(fixtureB) ||
+                    fixtureA.getBody() == enemy.getBody() && rightBlockedFixtures.contains(fixtureB) ||
+                    fixtureB.getBody() == enemy.getBody() && leftBlockedFixtures.contains(fixtureA) ||
+                    fixtureB.getBody() == enemy.getBody() && rightBlockedFixtures.contains(fixtureA)
 
-        ) {
-            constantEnemyVelocity = -constantEnemyVelocity;
+            ) {
+                constantEnemyVelocity = -constantEnemyVelocity;
+            }
         }
+
         if (isHero(fixtureA.getBody()) && (leftBlockedFixtures.contains(fixtureB) || rightBlockedFixtures.contains(fixtureB))) {
             canPush = true;
         }
@@ -348,12 +354,17 @@ public abstract class CommonLevel extends PlayLevel {
             bodyToDestroy = fixtureA.m_body;
             bullet = fixtureB.m_body;
         }
-        if (bodyToDestroy == hero.getBody() && bullet == hero.activeBullet ||
-                bodyToDestroy == enemy.getBody() && bullet == enemy.activeBullet) {
+
+        if (bodyToDestroy == hero.getBody() && bullet == hero.activeBullet) {
             return;
         }
+        for (Enemy enemy : enemyList) {
+            if (bodyToDestroy == enemy.getBody() && bullet == enemy.activeBullet) {
+                return;
+            }
+        }
 
-        if (bullet != null && (bodyToDestroy == hero.getBody() || bodyToDestroy == enemy.getBody())) {
+        if (bullet != null && (bodyToDestroy == hero.getBody() || enemyList.contains(bodyToDestroy))) {
             float bulletImpulse = bullet.m_mass * bullet.getLinearVelocity().length();
             if (bulletImpulse > 50) {
                 objectToExplode.add(bodyToDestroy);
