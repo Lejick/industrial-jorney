@@ -21,6 +21,7 @@ public class Gun {
     private float bulletVel;
     private float y;
     private World world;
+    private float bulletRadius = 0.15f;
     private List<Fixture> objectForJump = new ArrayList<>();
     private boolean isDetection;
     private Float detectX1;
@@ -102,8 +103,7 @@ public class Gun {
         }
         {
             CircleShape shape = new CircleShape();
-            shape.m_radius = 0.25f;
-
+            shape.m_radius = bulletRadius;
             FixtureDef fd = new FixtureDef();
             fd.shape = shape;
             fd.density = 20.0f;
@@ -117,7 +117,6 @@ public class Gun {
             bullet = world.createBody(bd);
             Fixture f = bullet.createFixture(fd);
             objectForJump.add(f);
-            bullet.shapeColor = Color3f.RED;
             bullet.setLinearVelocity(new Vec2(orientation.x * bulletVel, orientation.y * bulletVel));
         }
 
@@ -234,5 +233,9 @@ public class Gun {
 
     public void setObjectForJump(List<Fixture> objectForJump) {
         this.objectForJump = objectForJump;
+    }
+
+    public void setBulletRadius(float bulletRadius) {
+        this.bulletRadius = bulletRadius;
     }
 }

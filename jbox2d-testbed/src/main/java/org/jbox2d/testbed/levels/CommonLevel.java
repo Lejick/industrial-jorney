@@ -40,7 +40,7 @@ public abstract class CommonLevel extends PlayLevel {
     protected static final float commonPersonEdge = 1f;
     long lastDestroy_step = 0;
     long last_step = 0;
-
+    private static float bulletDeathVelocity = 75;
     protected List<Fixture> objectForJump = new ArrayList<>();
     protected List<Fixture> contactObjForJump = new ArrayList<>();
     protected Hero hero;
@@ -95,26 +95,6 @@ public abstract class CommonLevel extends PlayLevel {
 
 
     protected abstract void createPlatforms();
-
-    private void createGuns() {
-        Gun gun1 = new Gun(m_world, -getWidth() / 2, commonPersonEdge * 12 - 2, 200, 100, 0.5f);
-        gun1.setOrientation(new Vec2(1, 0));
-        objectForJump.add(gun1.getGunBodyFixture());
-        gunList.add(gun1);
-
-        Gun gun2 = new Gun(m_world, getWidth() / 2 - 2, commonPersonEdge - 2, 400, 400, 0.5f);
-        gun2.setDetection(true);
-        gun2.setDetectX1(6);
-        gun2.setDetectX2(16);
-        gun2.setDetectY1(-0.6f);
-        gun2.setDetectY2(-0.4f);
-        for (Body body : destroyableList) {
-            gun2.addObjectToAttack(body);
-        }
-        gun2.setOrientation(new Vec2(-1, 0));
-        objectForJump.add(gun2.getGunBodyFixture());
-        gunList.add(gun2);
-    }
 
     protected void createGameBox() {
         BodyDef bd = new BodyDef();
@@ -239,7 +219,7 @@ public abstract class CommonLevel extends PlayLevel {
                     if (isVisible) {
                         Body enemy_bullet = enemy.fireWeapon1(hero.getBody().getPosition());
                         bulletList.add(enemy_bullet);
-                        garbageObjectCollector.add(enemy_bullet, 400);
+                        garbageObjectCollector.add(enemy_bullet, last_step + 400);
                         enemy.lastFireWeapon1 = last_step;
                     }
                 }
@@ -337,11 +317,9 @@ public abstract class CommonLevel extends PlayLevel {
             if (bodyToDestroy != null && gun.getBullet() != null && destroyableList.contains(bodyToDestroy)) {
 
 
-                float bulletImpulse = gun.getBullet().m_mass * gun.getBullet().getLinearVelocity().length();
-                if (bulletImpulse > 100) {
+                Vec2 bulletVel = gun.getBullet().getLinearVelocity();
+                if (bulletVel.length() > bulletDeathVelocity) {
                     objectToExplode.add(bodyToDestroy);
-
-                    Vec2 bulletVel = gun.getBullet().getLinearVelocity();
                     bulletVel.x = bulletVel.x - 30;
                     gun.getBullet().setLinearVelocity(bulletVel);
                     return;
@@ -373,17 +351,16 @@ public abstract class CommonLevel extends PlayLevel {
         }
 
         if (bullet != null && (bodyToDestroy == hero.getBody() || enemyList.contains(bodyToDestroy))) {
-            float bulletImpulse = bullet.m_mass * bullet.getLinearVelocity().length();
-            if (bulletImpulse > 50) {
+            Vec2 bulletVel = bullet.getLinearVelocity();
+            if (bulletVel.length() > bulletDeathVelocity) {
                 objectToExplode.add(bodyToDestroy);
             }
         }
 
         if (bodyToDestroy != null && bullet != null && destroyableList.contains(bodyToDestroy)) {
-            float bulletImpulse = bullet.m_mass * bullet.getLinearVelocity().length();
-            if (bulletImpulse > 50) {
+            Vec2 bulletVel = bullet.getLinearVelocity();
+            if (bulletVel.length() > bulletDeathVelocity) {
                 objectToExplode.add(bodyToDestroy);
-                Vec2 bulletVel = bullet.getLinearVelocity();
                 bulletVel.x = bulletVel.x - 30;
                 bullet.setLinearVelocity(bulletVel);
                 return;

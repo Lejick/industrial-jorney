@@ -436,8 +436,8 @@ public abstract class PlayLevel implements ContactListener, ObjectListener, Obje
 
         pointCount = 0;
 
-        m_world.step(timeStep, 8,
-                3);
+        m_world.step(timeStep, 5,
+                5);
 
         m_world.drawDebugData();
 

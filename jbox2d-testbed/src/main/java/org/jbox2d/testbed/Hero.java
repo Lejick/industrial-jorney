@@ -24,7 +24,7 @@ public class Hero {
         orientation.x = orientation.x / norm;
         orientation.y = orientation.y / norm;
             CircleShape shape = new CircleShape();
-            shape.m_radius = 0.25f;
+            shape.m_radius = 0.15f;
 
             FixtureDef fd = new FixtureDef();
             fd.shape = shape;
@@ -38,7 +38,7 @@ public class Hero {
 
             Body hero_bullet = world.createBody(bd);
              hero_bullet.createFixture(fd);
-            hero_bullet.setLinearVelocity(new Vec2(orientation.x * 300, orientation.y * 300));
+            hero_bullet.setLinearVelocity(new Vec2(orientation.x * 600, orientation.y * 600));
             activeBullet=hero_bullet;
             return hero_bullet;
     }

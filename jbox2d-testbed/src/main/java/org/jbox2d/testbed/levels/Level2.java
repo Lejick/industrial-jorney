@@ -84,6 +84,10 @@
  * Created at 4:56:29 AM Jan 14, 2011
  * <p>
  * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
  */
 /**
  * Created at 4:56:29 AM Jan 14, 2011
@@ -124,7 +128,7 @@ public class Level2 extends CommonLevel {
     protected void createGameObjects() {
         Body heroBody = GeometryBodyFactory.createRectangle(-getWidth() / 2 + 2, getHeight() / 2 - 2 * commonPersonEdge, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.BLUE);
         destroyableList.add(heroBody);
-        hero=new Hero(heroBody,getWorld());
+        hero = new Hero(heroBody, getWorld());
         Body jumplatform = GeometryBodyFactory.createRectangle(0, commonPersonEdge, commonPersonEdge * 12, commonPersonEdge / 1.5f, BodyType.DYNAMIC, getWorld());
         movingObject.add(jumplatform);
     }
@@ -141,16 +145,16 @@ public class Level2 extends CommonLevel {
         objectForJump.add(f);
 
         shape.set(new Vec2(getWidth() / 8, 0), new Vec2(getWidth() / 8, -getHeight() / 2));
-        f = ground.createFixture(shape, 0.0f);
+        ground.createFixture(shape, 0.0f);
 
         shape.set(new Vec2(-getWidth() / 2 + commonPersonEdge * 5, 0), new Vec2(-getWidth() / 2 + commonPersonEdge * 5, -getHeight() / 2));
-        f = ground.createFixture(shape, 0.0f);
+        ground.createFixture(shape, 0.0f);
 
         shape.set(new Vec2(getWidth() / 4 + 3.5f * commonPersonEdge, -1), new Vec2(getWidth() / 4 + 3.5f * commonPersonEdge, -getHeight() / 2));
-        f = ground.createFixture(shape, 0.0f);
+        ground.createFixture(shape, 0.0f);
 
         shape.set(new Vec2(getWidth() / 4 + 3.5f * commonPersonEdge, -1), new Vec2(getWidth() / 2, -1));
-        f = ground.createFixture(shape, 0.0f);
+        ground.createFixture(shape, 0.0f);
         objectForJump.add(f);
 
     }
@@ -163,11 +167,13 @@ public class Level2 extends CommonLevel {
 
         Gun gun2 = new Gun(m_world, 9 * commonPersonEdge, -getHeight() / 2 + commonPersonEdge, 500, 400, 0.5f);
         gun2.setOrientation(new Vec2(0, 1));
+        gun2.setBulletRadius(0.25f);
         objectForJump.add(gun2.getGunBodyFixture());
         gunList.add(gun2);
 
         Gun gun3 = new Gun(m_world, 14 * commonPersonEdge, -getHeight() / 2 + commonPersonEdge, 500, 300, 0.5f);
         gun3.setOrientation(new Vec2(0, 1));
+        gun3.setBulletRadius(0.25f);
         objectForJump.add(gun3.getGunBodyFixture());
         gunList.add(gun3);
     }

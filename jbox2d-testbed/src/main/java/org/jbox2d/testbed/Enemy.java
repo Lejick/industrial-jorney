@@ -28,20 +28,19 @@ public class Enemy {
         orientation.x = orientation.x / norm;
         orientation.y = orientation.y / norm;
         CircleShape shape = new CircleShape();
-        shape.m_radius = 0.25f;
+        shape.m_radius = 0.15f;
 
         FixtureDef fd = new FixtureDef();
         fd.shape = shape;
-        fd.density = 20.0f;
+        fd.density = 1.0f;
         fd.restitution = 0.05f;
-
         BodyDef bd = new BodyDef();
         bd.type = BodyType.DYNAMIC;
         bd.bullet = true;
         bd.position.set(enemyBody.getPosition().x + 1 * orientation.x, enemyBody.getPosition().y + 1 * orientation.y);
         Body enemy_bullet = world.createBody(bd);
         enemy_bullet.createFixture(fd);
-        enemy_bullet.setLinearVelocity(new Vec2(orientation.x * 300, orientation.y * 300));
+        enemy_bullet.setLinearVelocity(new Vec2(orientation.x * 600, orientation.y * 600));
         activeBullet = enemy_bullet;
         return enemy_bullet;
     }
