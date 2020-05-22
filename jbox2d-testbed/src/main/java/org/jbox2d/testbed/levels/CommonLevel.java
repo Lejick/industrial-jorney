@@ -35,7 +35,7 @@ public abstract class CommonLevel extends PlayLevel {
     protected final static float maxSpeedXAir = 3f;
     protected final static float minSpeedXAir = -3f;
     protected List<Line> linesList = new ArrayList<>();
-    private int maxLevelIndex = 3;
+    private int maxLevelIndex = 4;
     protected final static float maxSpeedY = 3f;
     protected static final float commonPersonEdge = 1f;
     long lastDestroy_step = 0;
@@ -58,7 +58,6 @@ public abstract class CommonLevel extends PlayLevel {
     protected List<Fixture> rightBlockedFixtures = new ArrayList<>();
     protected List<MovingObject> movingObjectList = new ArrayList<>();
     protected List<Enemy> enemyList;
-    protected float constantEnemyVelocity = 6;
     GarbageObjectCollector garbageObjectCollector = new GarbageObjectCollector();
 
     protected boolean blockedFromLeft;
@@ -218,7 +217,7 @@ public abstract class CommonLevel extends PlayLevel {
         if (enemyList.size() > 0) {
             for (Enemy enemy : enemyList) {
                 Vec2 currentVel = enemy.getBody().getLinearVelocity();
-                currentVel.x = constantEnemyVelocity;
+                currentVel.x = enemy.constantVelocity.x;
                 enemy.getBody().setLinearVelocity(currentVel);
             }
         }
@@ -300,14 +299,23 @@ public abstract class CommonLevel extends PlayLevel {
                 blockedFromLeft = true;
             }
         }
+        List<Fixture> enemyFixList=new ArrayList<>();
+        for (Enemy enemy:enemyList){
+            enemyFixList.add(enemy.getBody().getFixtureList());
+        }
         for (Enemy enemy : enemyList) {
-            if (fixtureA.getBody() == enemy.getBody() && leftBlockedFixtures.contains(fixtureB) ||
-                    fixtureA.getBody() == enemy.getBody() && rightBlockedFixtures.contains(fixtureB) ||
-                    fixtureB.getBody() == enemy.getBody() && leftBlockedFixtures.contains(fixtureA) ||
-                    fixtureB.getBody() == enemy.getBody() && rightBlockedFixtures.contains(fixtureA)
+            Fixture fixtureToContact = null;
+            if (fixtureA.getBody() == enemy.getBody()) {
+                fixtureToContact = fixtureB;
+            } else if (fixtureB.getBody() == enemy.getBody()) {
+                fixtureToContact = fixtureA;
+            }
 
+            if (fixtureToContact != null && (leftBlockedFixtures.contains(fixtureToContact) ||
+                    rightBlockedFixtures.contains(fixtureToContact) ||
+                    enemyFixList.contains(fixtureToContact))
             ) {
-                constantEnemyVelocity = -constantEnemyVelocity;
+                enemy.constantVelocity.x = -enemy.constantVelocity.x;
             }
         }
 

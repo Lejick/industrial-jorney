@@ -147,11 +147,25 @@ public class Level5 extends CommonLevel {
         Body heroBody = GeometryBodyFactory.createRectangle(0, 2, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.BLUE);
         destroyableList.add(heroBody);
         hero = new Hero(heroBody, getWorld());
+
         Body enemyBody = GeometryBodyFactory.createRectangle(-35, -28, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.RED);
-        destroyableList.add(enemyBody);
         enemyBody.setLinearVelocity(new Vec2(1, 0));
         Enemy enemy = new Enemy(enemyBody, getWorld());
         enemyList.add(enemy);
+        destroyableList.add(enemyBody);
+
+         enemyBody = GeometryBodyFactory.createRectangle(30, -28, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.RED);
+         enemyBody.setLinearVelocity(new Vec2(-1, 0));
+         enemy = new Enemy(enemyBody, getWorld());
+        enemyList.add(enemy);
+        destroyableList.add(enemyBody);
+
+        enemyBody = GeometryBodyFactory.createRectangle(15, -28, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.RED);
+        enemyBody.setLinearVelocity(new Vec2(-1, 0));
+        enemy = new Enemy(enemyBody, getWorld());
+        enemyList.add(enemy);
+        destroyableList.add(enemyBody);
+
     }
 
 
@@ -162,7 +176,7 @@ public class Level5 extends CommonLevel {
         p1.getFixtureList().m_friction = 3;
         objectForJump.add(p1.getFixtureList());
 
-        Body p2 = GeometryBodyFactory.createRectangle(-28, 0, 10f, 0.5f, BodyType.STATIC, getWorld());
+        Body p2 = GeometryBodyFactory.createRectangle(-25, 0, 10f, 0.5f, BodyType.STATIC, getWorld());
         lines = GeometryBodyFactory.splitRectangle(-30, 0, 10f, 1f);
         linesList.addAll(lines);
         p2.getFixtureList().m_friction = 3;

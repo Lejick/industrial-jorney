@@ -10,7 +10,7 @@ public class Enemy {
     protected World world;
     public long weapon1CoolDown = 50;
     public long lastFireWeapon1 = 0;
-
+    public Vec2 constantVelocity = new Vec2(6,0);
     public Enemy(Body enemyBody, World world) {
         this.enemyBody = enemyBody;
         this.world = world;
