@@ -4,12 +4,12 @@ import javafx.application.Platform;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
 import org.jbox2d.dynamics.contacts.Contact;
+import org.jbox2d.testbed.Enemy;
 import org.jbox2d.testbed.Hero;
 import org.jbox2d.testbed.framework.*;
 import org.jbox2d.testbed.framework.game.objects.Gun;
@@ -45,8 +45,7 @@ public abstract class CommonLevel extends PlayLevel {
     protected List<Fixture> objectForJump = new ArrayList<>();
     protected List<Fixture> contactObjForJump = new ArrayList<>();
     protected Hero hero;
-    protected Body hero_bullet;
-    protected Body enemy_bullet;
+    protected List<Body> bulletList = new ArrayList<>();
     protected Body exit;
     protected Body objectToPush;
     protected AbstractTestbedController controller;
@@ -59,7 +58,7 @@ public abstract class CommonLevel extends PlayLevel {
     protected List<Fixture> leftBlockedFixtures = new ArrayList<>();
     protected List<Fixture> rightBlockedFixtures = new ArrayList<>();
     protected List<MovingObject> movingObjectList = new ArrayList<>();
-    protected Body enemyBody;
+    protected Enemy enemy;
     protected float constantEnemyVelocity = 6;
     GarbageObjectCollector garbageObjectCollector = new GarbageObjectCollector();
 
@@ -146,8 +145,8 @@ public abstract class CommonLevel extends PlayLevel {
             return;
         }
         boolean hasContact = hero.getBody().m_contactList != null;
-        if(hasContact){
-            hero.stepInAir=0;
+        if (hasContact) {
+            hero.stepInAir = 0;
         } else {
             hero.stepInAir++;
         }
@@ -183,8 +182,8 @@ public abstract class CommonLevel extends PlayLevel {
             if (hero.getBody().getLinearVelocity().y < maxSpeedY && contactObjForJump.size() > 0) {
                 Vec2 newVel = new Vec2(hero.getBody().getLinearVelocity().x, hero.getBody().getLinearVelocity().y + 7);
                 hero.getBody().setLinearVelocity(newVel);
-            } else if(!hasContact && hero.stepInAir<8 && hero.stepInAir>3){
-                Vec2 newVel = new Vec2(hero.getBody().getLinearVelocity().x, hero.getBody().getLinearVelocity().y +1.2f);
+            } else if (!hasContact && hero.stepInAir < 8 && hero.stepInAir > 3) {
+                Vec2 newVel = new Vec2(hero.getBody().getLinearVelocity().x, hero.getBody().getLinearVelocity().y + 1.2f);
                 hero.getBody().setLinearVelocity(newVel);
             }
         }
@@ -217,16 +216,17 @@ public abstract class CommonLevel extends PlayLevel {
     }
 
     protected void enemyAction() {
-        if (enemyBody != null) {
-            Vec2 currentVel = enemyBody.getLinearVelocity();
+        if (enemy != null) {
+            Vec2 currentVel = enemy.getBody().getLinearVelocity();
             currentVel.x = constantEnemyVelocity;
-            enemyBody.setLinearVelocity(currentVel);
+            enemy.getBody().setLinearVelocity(currentVel);
         }
     }
 
     protected void enemyFireAction() {
-        if (enemyBody != null && hero.getBody() != null) {
-            Line fireLine = new Line(hero.getBody().getPosition(), enemyBody.getPosition());
+        if (enemy != null && hero.getBody() != null &&
+                !enemy.getBody().isDestroy() && !hero.getBody().isDestroy() && lastEnemyFire < last_step - enemyFireCD) {
+            Line fireLine = new Line(hero.getBody().getPosition(), enemy.getBody().getPosition());
             boolean isVisible = true;
             for (Line line : linesList) {
                 if (LineIntersectChecker.doIntersect(fireLine, line)) {
@@ -235,62 +235,21 @@ public abstract class CommonLevel extends PlayLevel {
                 }
             }
 
-            if (!enemyBody.isDestroy() && !hero.getBody().isDestroy() && isVisible && lastEnemyFire < last_step - enemyFireCD) {
-                Vec2 orientation = new Vec2(hero.getBody().getPosition().x - enemyBody.getPosition().x,
-                        hero.getBody().getPosition().y - enemyBody.getPosition().y);
-
-                float norm = Math.abs(enemyBody.getPosition().x - hero.getBody().getPosition().x);
-                orientation.x = orientation.x / norm;
-                orientation.y = orientation.y / norm;
-                {
-                    CircleShape shape = new CircleShape();
-                    shape.m_radius = 0.25f;
-
-                    FixtureDef fd = new FixtureDef();
-                    fd.shape = shape;
-                    fd.density = 20.0f;
-                    fd.restitution = 0.05f;
-
-                    BodyDef bd = new BodyDef();
-                    bd.type = BodyType.DYNAMIC;
-                    bd.bullet = true;
-                    bd.position.set(enemyBody.getPosition().x + 1 * orientation.x, enemyBody.getPosition().y + 1 * orientation.y);
-                    enemy_bullet  = getWorld().createBody(bd);
-                    enemy_bullet.createFixture(fd);
-                    enemy_bullet.setLinearVelocity(new Vec2(orientation.x * 300, orientation.y * 300));
+            if (isVisible) {
+         Body enemy_bullet=enemy.fireWeapon1(hero.getBody().getPosition());
+                    bulletList.add(enemy_bullet);
+                    garbageObjectCollector.add(enemy_bullet, 400);
                     lastEnemyFire = last_step;
                 }
             }
         }
-    }
+
 
     protected void leftMouseAction() {
         if (hasGun() && cursorInFireArea() && !hero.getBody().isDestroy()) {
-            Vec2 orientation = new Vec2(getWorldMouse().x - hero.getBody().getPosition().x,
-                    getWorldMouse().y - hero.getBody().getPosition().y);
-
-            float norm = Math.abs(getWorldMouse().x - hero.getBody().getPosition().x);
-            orientation.x = orientation.x / norm;
-            orientation.y = orientation.y / norm;
-            {
-                CircleShape shape = new CircleShape();
-                shape.m_radius = 0.25f;
-
-                FixtureDef fd = new FixtureDef();
-                fd.shape = shape;
-                fd.density = 20.0f;
-                fd.restitution = 0.05f;
-
-                BodyDef bd = new BodyDef();
-                bd.type = BodyType.DYNAMIC;
-                bd.bullet = true;
-                bd.position.set(hero.getBody().getPosition().x + 1 * orientation.x, hero.getBody().getPosition().y + 1 * orientation.y);
-
-                hero_bullet = getWorld().createBody(bd);
-                Fixture f = hero_bullet.createFixture(fd);
-                hero_bullet.setLinearVelocity(new Vec2(orientation.x * 300, orientation.y * 300));
-                garbageObjectCollector.add(hero_bullet, last_step + 400);
-            }
+            Body heroBullet = hero.fireWeapon1(getWorldMouse());
+            garbageObjectCollector.add(heroBullet, last_step + 400);
+            bulletList.add(heroBullet);
         }
     }
 
@@ -337,10 +296,10 @@ public abstract class CommonLevel extends PlayLevel {
                 blockedFromLeft = true;
             }
         }
-        if (fixtureA.getBody() == enemyBody && leftBlockedFixtures.contains(fixtureB) ||
-                fixtureA.getBody() == enemyBody && rightBlockedFixtures.contains(fixtureB) ||
-                fixtureB.getBody() == enemyBody && leftBlockedFixtures.contains(fixtureA) ||
-                fixtureB.getBody() == enemyBody && rightBlockedFixtures.contains(fixtureA)
+        if (fixtureA.getBody() == enemy.getBody() && leftBlockedFixtures.contains(fixtureB) ||
+                fixtureA.getBody() == enemy.getBody() && rightBlockedFixtures.contains(fixtureB) ||
+                fixtureB.getBody() == enemy.getBody() && leftBlockedFixtures.contains(fixtureA) ||
+                fixtureB.getBody() == enemy.getBody() && rightBlockedFixtures.contains(fixtureA)
 
         ) {
             constantEnemyVelocity = -constantEnemyVelocity;
@@ -380,29 +339,33 @@ public abstract class CommonLevel extends PlayLevel {
                 movingObject.setActive(true);
             }
         }
-        if (fixtureA.getBody() == hero.getBody() && fixtureB.getBody() == enemy_bullet ||
-                fixtureB.getBody() == hero.getBody() && fixtureA.getBody() == enemy_bullet) {
-            float bulletImpulse = enemy_bullet.m_mass * enemy_bullet.getLinearVelocity().length();
+        Body bullet = null;
+        if (bulletList.contains(fixtureA.m_body)) {
+            bodyToDestroy = fixtureB.m_body;
+            bullet = fixtureA.m_body;
+        } else if (bulletList.contains(fixtureB.m_body)) {
+            bodyToDestroy = fixtureA.m_body;
+            bullet = fixtureB.m_body;
+        }
+        if (bodyToDestroy == hero.getBody() && bullet == hero.activeBullet ||
+                bodyToDestroy == enemy.getBody() && bullet == enemy.activeBullet) {
+            return;
+        }
+
+        if (bullet!=null && (bodyToDestroy == hero.getBody() || bodyToDestroy == enemy.getBody())) {
+            float bulletImpulse = bullet.m_mass * bullet.getLinearVelocity().length();
             if (bulletImpulse > 50) {
-                objectToExplode.add(hero.getBody());
+                objectToExplode.add(bodyToDestroy);
             }
         }
 
-        if (fixtureA.m_body == hero_bullet) {
-            bodyToDestroy = fixtureB.m_body;
-        } else if (fixtureB.m_body == hero_bullet) {
-            bodyToDestroy = fixtureA.m_body;
-        }
-        if (bodyToDestroy == hero.getBody()) {
-            return;
-        }
-        if (bodyToDestroy != null && hero_bullet != null && destroyableList.contains(bodyToDestroy)) {
-            float bulletImpulse = hero_bullet.m_mass * hero_bullet.getLinearVelocity().length();
+        if (bodyToDestroy != null && bullet != null && destroyableList.contains(bodyToDestroy)) {
+            float bulletImpulse = bullet.m_mass * bullet.getLinearVelocity().length();
             if (bulletImpulse > 50) {
                 objectToExplode.add(bodyToDestroy);
-                Vec2 bulletVel = hero_bullet.getLinearVelocity();
+                Vec2 bulletVel = bullet.getLinearVelocity();
                 bulletVel.x = bulletVel.x - 30;
-                hero_bullet.setLinearVelocity(bulletVel);
+                bullet.setLinearVelocity(bulletVel);
                 return;
             }
         }
@@ -497,7 +460,7 @@ public abstract class CommonLevel extends PlayLevel {
             movingObject.calculateStep();
         }
         if (last_step % 20 == 0) {
-          garbageObjectCollector.clear(last_step, getWorld());
+            garbageObjectCollector.clear(last_step, getWorld());
         }
         last_step++;
     }

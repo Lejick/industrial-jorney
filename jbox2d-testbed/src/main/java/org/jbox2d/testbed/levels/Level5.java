@@ -100,6 +100,8 @@
  * Created at 4:56:29 AM Jan 14, 2011
  * <p>
  * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
  */
 /**
  * Created at 4:56:29 AM Jan 14, 2011
@@ -111,6 +113,7 @@ import org.jbox2d.common.Color3f;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyType;
+import org.jbox2d.testbed.Enemy;
 import org.jbox2d.testbed.Hero;
 import org.jbox2d.testbed.framework.AbstractTestbedController;
 import org.jbox2d.testbed.framework.game.objects.GeometryBodyFactory;
@@ -143,12 +146,12 @@ public class Level5 extends CommonLevel {
     protected void createGameObjects() {
         Body heroBody = GeometryBodyFactory.createRectangle(0, 2, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.BLUE);
         destroyableList.add(heroBody);
-        hero=new Hero(heroBody,getWorld());
-        enemyBody = GeometryBodyFactory.createRectangle(-35, -28, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.RED);
+        hero = new Hero(heroBody, getWorld());
+        Body enemyBody = GeometryBodyFactory.createRectangle(-35, -28, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.RED);
         destroyableList.add(enemyBody);
         enemyBody.setLinearVelocity(new Vec2(1, 0));
+        enemy = new Enemy(enemyBody, getWorld());
     }
-
 
 
     protected void createPlatforms() {

@@ -114,6 +114,7 @@ import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.Fixture;
+import org.jbox2d.testbed.Enemy;
 import org.jbox2d.testbed.Hero;
 import org.jbox2d.testbed.framework.AbstractTestbedController;
 import org.jbox2d.testbed.framework.game.objects.GameObjectFactory;
@@ -151,9 +152,10 @@ public class Level4 extends CommonLevel {
         Body heroBody = GeometryBodyFactory.createRectangle(0, 2, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.BLUE);
         destroyableList.add(heroBody);
         hero=new Hero(heroBody,getWorld());
-        enemyBody = GeometryBodyFactory.createRectangle(-35, -28, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.RED);
+       Body enemyBody = GeometryBodyFactory.createRectangle(-35, -28, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.RED);
         destroyableList.add(enemyBody);
         enemyBody.setLinearVelocity(new Vec2(1, 0));
+        enemy=new Enemy(enemyBody, getWorld());
     }
 
 
