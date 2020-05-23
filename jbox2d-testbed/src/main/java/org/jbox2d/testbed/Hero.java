@@ -11,6 +11,7 @@ public class Hero {
     protected World world;
     public long stepInAir;
     private int weapon1CD = 0;
+    private int enemyKilled = 0;
 
     public Hero(Body heroBody, World world) {
         this.heroBody = heroBody;
@@ -60,5 +61,13 @@ public class Hero {
     public void decrWeapon1CD() {
         if(weapon1CD>0)
         weapon1CD--;
+    }
+
+    public int getEnemyKilled() {
+        return enemyKilled;
+    }
+
+    public void setEnemyKilled(int enemyKilled) {
+        this.enemyKilled = enemyKilled;
     }
 }

@@ -229,7 +229,7 @@ public abstract class CommonLevel extends PlayLevel {
 
 
     protected void leftMouseAction() {
-        if (hasGun() && cursorInFireArea() && !hero.getBody().isDestroy() && hero.getWeapon1CD()==0) {
+        if (hasGun() && cursorInFireArea() && !hero.getBody().isDestroy() && hero.getWeapon1CD() == 0) {
             Body heroBullet = hero.fireWeapon1(getWorldMouse());
             garbageObjectCollector.add(heroBullet, last_step + 400);
             bulletList.add(heroBullet);
@@ -279,8 +279,8 @@ public abstract class CommonLevel extends PlayLevel {
                 blockedFromLeft = true;
             }
         }
-        List<Fixture> enemyFixList=new ArrayList<>();
-        for (Enemy enemy:enemyList){
+        List<Fixture> enemyFixList = new ArrayList<>();
+        for (Enemy enemy : enemyList) {
             enemyFixList.add(enemy.getBody().getFixtureList());
         }
         for (Enemy enemy : enemyList) {
@@ -465,6 +465,14 @@ public abstract class CommonLevel extends PlayLevel {
 
     private void explose() {
         for (Body body : objectToExplode) {
+            for (Enemy enemy : enemyList) {
+               if(enemy.getBody() == body) {
+                    int frags = hero.getEnemyKilled();
+                    frags++;
+                    hero.setEnemyKilled(frags);
+                }
+            }
+
             Vec2 oldPosition = body.getPosition();
             m_world.destroyBody(body);
             body.setDestroy(true);

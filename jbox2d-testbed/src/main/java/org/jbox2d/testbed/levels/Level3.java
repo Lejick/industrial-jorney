@@ -164,9 +164,10 @@ public class Level3 extends CommonLevel {
         simpleBox.getFixtureList().m_friction = 5f;
         simpleBox.getFixtureList().m_density = 1f;
         movingObject.add(simpleBox);
-        Body platform = GeometryBodyFactory.createRectangle(5.5f, 5, 5, 0.2f, BodyType.KINEMATIC, getWorld());
+
         Body switcher = GeometryBodyFactory.createRectangle(15f, 5.1f, 1, 0.05f, BodyType.STATIC, getWorld());
         objectForJump.add(switcher.getFixtureList());
+        Body platform = GeometryBodyFactory.createRectangle(5.5f, 5, 5, 0.2f, BodyType.KINEMATIC, getWorld());
         objectForJump.add(platform.getFixtureList());
         List<Vec2> coordinatesList = new ArrayList<>();
         coordinatesList.add(new Vec2(5.5f, 0));

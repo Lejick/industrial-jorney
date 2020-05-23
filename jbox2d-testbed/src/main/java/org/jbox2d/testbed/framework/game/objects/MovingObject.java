@@ -13,7 +13,6 @@ public class MovingObject {
     private Vec2 nextDestination;
     private Vec2 prevDestination;
     private boolean isActive = false;
-    private Vec2 scalarVelocity = new Vec2(1, 1);
     private int nextDestinationIndex;
     private int maxDestinationIndex;
     private List<Vec2> coordinatesList;
@@ -78,11 +77,15 @@ public class MovingObject {
 
     public void setActive(boolean active) {
         isActive = active;
-        if (active == true) {
+        if (active == true ) {
             calculateVelocity();
-            switcher.shapeColor = Color3f.GREEN;
+            if(switcher!=null) {
+                switcher.shapeColor = Color3f.GREEN;
+            }
         } else {
-            switcher.shapeColor = Color3f.ORANGE;
+            if(switcher!=null) {
+                switcher.shapeColor = Color3f.ORANGE;
+            }
             movingBody.setLinearVelocity(new Vec2(0, 0));
         }
     }

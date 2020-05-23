@@ -104,6 +104,10 @@
  * Created at 4:56:29 AM Jan 14, 2011
  * <p>
  * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
  */
 /**
  * Created at 4:56:29 AM Jan 14, 2011
@@ -111,16 +115,23 @@
 package org.jbox2d.testbed.levels;
 
 import javafx.scene.Scene;
+import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.common.Color3f;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
+import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.testbed.Enemy;
 import org.jbox2d.testbed.Hero;
 import org.jbox2d.testbed.framework.AbstractTestbedController;
+import org.jbox2d.testbed.framework.SettingsIF;
+import org.jbox2d.testbed.framework.game.objects.GameObjectFactory;
 import org.jbox2d.testbed.framework.game.objects.GeometryBodyFactory;
+import org.jbox2d.testbed.framework.game.objects.MovingObject;
 import org.jbox2d.testbed.framework.utils.Line;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -129,7 +140,6 @@ import java.util.List;
 public class Level6 extends CommonLevel {
     private static float width = 80;
     private static float height = 60;
-
 
     public Level6(AbstractTestbedController controller, Scene scene) {
         super(controller, scene);
@@ -146,7 +156,7 @@ public class Level6 extends CommonLevel {
     }
 
     protected void createGameObjects() {
-        Body heroBody = GeometryBodyFactory.createRectangle(0, 2, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.BLUE);
+        Body heroBody = GeometryBodyFactory.createRectangle(-8, 2, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.BLUE);
         destroyableList.add(heroBody);
         hero = new Hero(heroBody, getWorld());
 
@@ -172,23 +182,55 @@ public class Level6 extends CommonLevel {
 
 
     protected void createPlatforms() {
-        Body p1 = GeometryBodyFactory.createRectangle(0, 0, 7f, 0.5f, BodyType.STATIC, getWorld());
-        List<Line> lines = GeometryBodyFactory.splitRectangle(0, 0, 10f, 1f);
+        Body p1 = GeometryBodyFactory.createRectangle(-29, 0, 6f, 0.5f, BodyType.STATIC, getWorld());
+        List<Line> lines = GeometryBodyFactory.splitRectangle(-29, 0, 6f, 0.5f);
         linesList.addAll(lines);
         p1.getFixtureList().m_friction = 3;
         objectForJump.add(p1.getFixtureList());
 
-        Body p2 = GeometryBodyFactory.createRectangle(-25, 0, 7f, 0.5f, BodyType.STATIC, getWorld());
-        lines = GeometryBodyFactory.splitRectangle(-30, 0, 10f, 1f);
+        Body p2 = GeometryBodyFactory.createRectangle(-10, 0, 6f, 0.5f, BodyType.STATIC, getWorld());
+        lines = GeometryBodyFactory.splitRectangle(-10, 0, 6f, 0.5f);
         linesList.addAll(lines);
         p2.getFixtureList().m_friction = 3;
         objectForJump.add(p2.getFixtureList());
 
-        Body p3 = GeometryBodyFactory.createRectangle(28, 0, 7f, 0.5f, BodyType.STATIC, getWorld());
-        lines = GeometryBodyFactory.splitRectangle(28, 0, 10f, 1f);
+        Body p3 = GeometryBodyFactory.createRectangle(9, 0, 6f, 0.5f, BodyType.STATIC, getWorld());
+        lines = GeometryBodyFactory.splitRectangle(9, 0, 6f, 0.5f);
         linesList.addAll(lines);
-        p2.getFixtureList().m_friction = 3;
+        p3.getFixtureList().m_friction = 3;
         objectForJump.add(p3.getFixtureList());
+
+        Body p4 = GeometryBodyFactory.createRectangle(28, 0, 6f, 0.5f, BodyType.STATIC, getWorld());
+        lines = GeometryBodyFactory.splitRectangle(28, 0, 6f, 0.5f);
+        linesList.addAll(lines);
+        p4.getFixtureList().m_friction = 3;
+        objectForJump.add(p4.getFixtureList());
+
+        Body p5 = GeometryBodyFactory.createRectangle(38.5f, -20, 1.2f, 0.1f, BodyType.STATIC, getWorld());
+        lines = GeometryBodyFactory.splitRectangle(38.5f, -20, 1.2f, 0.1f);
+        linesList.addAll(lines);
+        p5.getFixtureList().m_friction = 3;
+        objectForJump.add(p5.getFixtureList());
+
+        Body platform2 = GeometryBodyFactory.createRectangle(37, -25, 0.2f, 5f, BodyType.KINEMATIC, getWorld());
+        platform2.getFixtureList().m_friction = 0;
+        rightBlockedFixtures.add(platform2.getFixtureList());
+        List<Vec2> coordinatesList = new ArrayList<>();
+        coordinatesList.add(new Vec2(37f, -10));
+        MovingObject mo1 = GameObjectFactory.createMovingObject(platform2, null, coordinatesList, false, new Vec2(0, 1));
+        movingObjectList.add(mo1);
+    }
+
+    @Override
+    public void step(SettingsIF settings) {
+        super.step(settings);
+        if (hero.getEnemyKilled() == 3) {
+            for (MovingObject movingObject : movingObjectList) {
+                if(!movingObject.isActive()) {
+                    movingObject.setActive(true);
+                }
+            }
+        }
     }
 
     @Override
