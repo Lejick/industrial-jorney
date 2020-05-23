@@ -182,31 +182,51 @@ public class Level6 extends CommonLevel {
 
 
     protected void createPlatforms() {
-        Body p1 = GeometryBodyFactory.createRectangle(-29, 0, 6f, 0.5f, BodyType.STATIC, getWorld());
+        Body p1 = GeometryBodyFactory.createGameBrick(-29, 0, 6f, 0.5f, BodyType.STATIC, getWorld());
         List<Line> lines = GeometryBodyFactory.splitRectangle(-29, 0, 6f, 0.5f);
         linesList.addAll(lines);
         p1.getFixtureList().m_friction = 3;
         objectForJump.add(p1.getFixtureList());
 
-        Body p2 = GeometryBodyFactory.createRectangle(-10, 0, 6f, 0.5f, BodyType.STATIC, getWorld());
+        Body p2 = GeometryBodyFactory.createGameBrick(-10, 0, 6f, 0.5f, BodyType.STATIC, getWorld());
         lines = GeometryBodyFactory.splitRectangle(-10, 0, 6f, 0.5f);
         linesList.addAll(lines);
         p2.getFixtureList().m_friction = 3;
         objectForJump.add(p2.getFixtureList());
 
-        Body p3 = GeometryBodyFactory.createRectangle(9, 0, 6f, 0.5f, BodyType.STATIC, getWorld());
+        Body p3 = GeometryBodyFactory.createGameBrick(9, 0, 6f, 0.5f, BodyType.STATIC, getWorld());
         lines = GeometryBodyFactory.splitRectangle(9, 0, 6f, 0.5f);
         linesList.addAll(lines);
         p3.getFixtureList().m_friction = 3;
         objectForJump.add(p3.getFixtureList());
 
-        Body p4 = GeometryBodyFactory.createRectangle(28, 0, 6f, 0.5f, BodyType.STATIC, getWorld());
+        Body p4 = GeometryBodyFactory.createGameBrick(28, 0, 6f, 0.5f, BodyType.STATIC, getWorld());
         lines = GeometryBodyFactory.splitRectangle(28, 0, 6f, 0.5f);
         linesList.addAll(lines);
         p4.getFixtureList().m_friction = 3;
         objectForJump.add(p4.getFixtureList());
 
-        Body p5 = GeometryBodyFactory.createRectangle(38.5f, -20, 1.2f, 0.1f, BodyType.STATIC, getWorld());
+        Body p6 = GeometryBodyFactory.createGameBrick(-20, 5, 6f, 0.5f, BodyType.STATIC, getWorld());
+        lines = GeometryBodyFactory.splitRectangle(-20, 5, 6f, 0.5f);
+        linesList.addAll(lines);
+        p6.getFixtureList().m_friction = 3;
+        objectForJump.add(p6.getFixtureList());
+
+
+        Body p7 = GeometryBodyFactory.createGameBrick(0, 5, 6f, 0.5f, BodyType.STATIC, getWorld());
+        lines = GeometryBodyFactory.splitRectangle(0, 5, 6f, 0.5f);
+        linesList.addAll(lines);
+        p7.getFixtureList().m_friction = 3;
+        objectForJump.add(p7.getFixtureList());
+
+        Body p8 = GeometryBodyFactory.createGameBrick(20, 5, 6f, 0.5f, BodyType.STATIC, getWorld());
+        lines = GeometryBodyFactory.splitRectangle(20, 5, 6f, 0.5f);
+        linesList.addAll(lines);
+        p8.getFixtureList().m_friction = 3;
+        objectForJump.add(p8.getFixtureList());
+
+
+        Body p5 = GeometryBodyFactory.createGameBrick(38.5f, -20, 1.2f, 0.1f, BodyType.STATIC, getWorld());
         lines = GeometryBodyFactory.splitRectangle(38.5f, -20, 1.2f, 0.1f);
         linesList.addAll(lines);
         p5.getFixtureList().m_friction = 3;
@@ -237,7 +257,6 @@ public class Level6 extends CommonLevel {
     protected int getLevelIndex() {
         return 5;
     }
-
     @Override
     protected boolean hasGun() {
         return true;

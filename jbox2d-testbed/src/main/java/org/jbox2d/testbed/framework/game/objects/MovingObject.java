@@ -77,13 +77,13 @@ public class MovingObject {
 
     public void setActive(boolean active) {
         isActive = active;
-        if (active == true ) {
+        if (active == true) {
             calculateVelocity();
-            if(switcher!=null) {
+            if (switcher != null) {
                 switcher.shapeColor = Color3f.GREEN;
             }
         } else {
-            if(switcher!=null) {
+            if (switcher != null) {
                 switcher.shapeColor = Color3f.ORANGE;
             }
             movingBody.setLinearVelocity(new Vec2(0, 0));
