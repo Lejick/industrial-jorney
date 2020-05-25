@@ -221,6 +221,8 @@ public abstract class CommonLevel extends PlayLevel {
                             garbageObjectCollector.add(enemy_bullet, last_step + 400);
                             enemy.lastFireWeapon1 = last_step;
                         }
+                    } else {
+                        enemy.stepToWait = 0;
                     }
                 }
             }
@@ -466,7 +468,7 @@ public abstract class CommonLevel extends PlayLevel {
     private void explose() {
         for (Body body : objectToExplode) {
             for (Enemy enemy : enemyList) {
-               if(enemy.getBody() == body) {
+                if (enemy.getBody() == body) {
                     int frags = hero.getEnemyKilled();
                     frags++;
                     hero.setEnemyKilled(frags);

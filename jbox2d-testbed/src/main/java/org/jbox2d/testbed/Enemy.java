@@ -12,9 +12,10 @@ public class Enemy {
     public long lastFireWeapon1 = 0;
     public long delayToFire = 0;
     public long stepToWait = 0;
-    public Vec2 constantVelocity = new Vec2(6, 0);
+    public Vec2 constantVelocity;
 
-    public Enemy(Body enemyBody, World world) {
+    public Enemy(Body enemyBody, World world, Vec2 constantVelocity) {
+        this.constantVelocity=constantVelocity;
         this.enemyBody = enemyBody;
         this.world = world;
     }
@@ -24,7 +25,6 @@ public class Enemy {
     }
 
     public Body fireWeapon1(Vec2 targetPosition) {
-
         if (stepToWait < delayToFire) {
             stepToWait++;
             return null;
@@ -48,6 +48,7 @@ public class Enemy {
         Body enemy_bullet = world.createBody(bd);
         enemy_bullet.createFixture(fd);
         enemy_bullet.setLinearVelocity(new Vec2(orientation.x * 600, orientation.y * 600));
+        enemy_bullet.setBullet(true);
         activeBullet = enemy_bullet;
         stepToWait=0;
         return enemy_bullet;

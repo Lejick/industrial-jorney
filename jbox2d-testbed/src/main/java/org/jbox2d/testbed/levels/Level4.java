@@ -156,8 +156,7 @@ public class Level4 extends CommonLevel {
         hero = new Hero(heroBody, getWorld());
         Body enemyBody = GeometryBodyFactory.createRectangle(-35, -28, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.RED);
         destroyableList.add(enemyBody);
-        enemyBody.setLinearVelocity(new Vec2(1, 0));
-        Enemy enemy = new Enemy(enemyBody, getWorld());
+        Enemy enemy = new Enemy(enemyBody, getWorld(),new Vec2(4, 0));
         enemy.delayToFire = 50;
         enemyList.add(enemy);
     }

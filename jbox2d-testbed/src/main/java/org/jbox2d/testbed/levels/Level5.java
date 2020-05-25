@@ -151,22 +151,19 @@ public class Level5 extends CommonLevel {
         hero = new Hero(heroBody, getWorld());
 
         Body enemyBody = GeometryBodyFactory.createRectangle(-35, -28, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.RED);
-        enemyBody.setLinearVelocity(new Vec2(1, 0));
-        Enemy enemy = new Enemy(enemyBody, getWorld());
+        Enemy enemy = new Enemy(enemyBody, getWorld(),new Vec2(5, 0));
         enemy.delayToFire = 50;
         enemyList.add(enemy);
         destroyableList.add(enemyBody);
 
         enemyBody = GeometryBodyFactory.createRectangle(30, -28, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.RED);
-        enemyBody.setLinearVelocity(new Vec2(-1, 0));
-        enemy = new Enemy(enemyBody, getWorld());
+        enemy = new Enemy(enemyBody, getWorld(),new Vec2(-5, 0));
         enemy.delayToFire = 50;
         enemyList.add(enemy);
         destroyableList.add(enemyBody);
 
         enemyBody = GeometryBodyFactory.createRectangle(15, -28, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.RED);
-        enemyBody.setLinearVelocity(new Vec2(-1, 0));
-        enemy = new Enemy(enemyBody, getWorld());
+        enemy = new Enemy(enemyBody, getWorld(),new Vec2(-5, 0));
         enemy.delayToFire =50;
         enemyList.add(enemy);
         destroyableList.add(enemyBody);
