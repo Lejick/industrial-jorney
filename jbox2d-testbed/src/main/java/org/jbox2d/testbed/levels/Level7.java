@@ -102,6 +102,18 @@
  * Created at 4:56:29 AM Jan 14, 2011
  * <p>
  * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
+ * <p>
+ * Created at 4:56:29 AM Jan 14, 2011
  */
 /**
  * Created at 4:56:29 AM Jan 14, 2011
@@ -109,34 +121,31 @@
 package org.jbox2d.testbed.levels;
 
 import javafx.scene.Scene;
-import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.common.Color3f;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
-import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
-import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.testbed.Enemy;
 import org.jbox2d.testbed.Hero;
 import org.jbox2d.testbed.framework.AbstractTestbedController;
+import org.jbox2d.testbed.framework.SettingsIF;
 import org.jbox2d.testbed.framework.game.objects.GameObjectFactory;
 import org.jbox2d.testbed.framework.game.objects.GeometryBodyFactory;
-import org.jbox2d.testbed.framework.game.objects.Gun;
 import org.jbox2d.testbed.framework.game.objects.MovingObject;
 import org.jbox2d.testbed.framework.utils.Line;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * @author Daniel Murphy
  */
-public class Level4 extends CommonLevel {
+public class Level7 extends CommonLevel {
     private static float width = 80;
     private static float height = 60;
 
-
-    public Level4(AbstractTestbedController controller, Scene scene) {
+    public Level7(AbstractTestbedController controller, Scene scene) {
         super(controller, scene);
     }
 
@@ -144,47 +153,109 @@ public class Level4 extends CommonLevel {
     public void initTest(boolean deserialized) {
         super.initTest(false);
         createGameObjects();
-        exit = GeometryBodyFactory.createRectangle(getWidth() / 2 -0.25f,
+        exit = GeometryBodyFactory.createRectangle(getWidth() / 2 - 0.25f,
                 -getHeight() / 2 + 4 * commonPersonEdge, 0.25f, 4, BodyType.STATIC, getWorld(), Color3f.GREEN);
         rightBlockedFixtures.add(exit.getFixtureList());
 
     }
 
     protected void createGameObjects() {
-        Body heroBody = GeometryBodyFactory.createRectangle(0, 2, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.BLUE);
+        Body heroBody = GeometryBodyFactory.createRectangle(-30, -23, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.BLUE);
         destroyableList.add(heroBody);
         hero = new Hero(heroBody, getWorld());
-        Body enemyBody = GeometryBodyFactory.createRectangle(-35, -28, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.RED);
-        destroyableList.add(enemyBody);
-        Enemy enemy = new Enemy(enemyBody, getWorld(),new Vec2(4, 0));
-        enemy.delayToFire = 50;
-        enemyList.add(enemy);
+
     }
 
 
     protected void createPlatforms() {
-        Body p1 = GeometryBodyFactory.createRectangle(0, 0, 10f, 0.5f, BodyType.STATIC, getWorld());
-        List<Line> lines = GeometryBodyFactory.splitRectangle(0, 0, 10f, 1f);
-        linesList.addAll(lines);
-        p1.getFixtureList().m_friction = 3;
-        objectForJump.add(p1.getFixtureList());
+        Random rand = new Random();
+        float startPointY = -25;
+        float deltaX = 20;
+        float deltaY = 12;
+        for (int j = 0; j < 5; j++) {
+            float startPointX = -30;
+            for (int i = 0; i <= 3; i++) {
+                Body b = GeometryBodyFactory.createGameBrick(startPointX, startPointY, 4f, 0.5f, BodyType.STATIC, getWorld());
+                List<Line> lines = GeometryBodyFactory.splitRectangle(startPointX, startPointY, 6f, 0.5f);
+                linesList.addAll(lines);
+                b.getFixtureList().m_friction = 2;
+                objectForJump.add(b.getFixtureList());
 
-        Body p2 = GeometryBodyFactory.createRectangle(-28, 0, 10f, 0.5f, BodyType.STATIC, getWorld());
-        lines = GeometryBodyFactory.splitRectangle(-30, 0, 10f, 1f);
-        linesList.addAll(lines);
-        p2.getFixtureList().m_friction = 3;
-        objectForJump.add(p2.getFixtureList());
+                if (j > 3) {
+                    Body enemyBody = GeometryBodyFactory.createRectangle(startPointX, startPointY + 1f, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.RED);
+                    Integer direction =0;
+                    while (direction==0) {
+                        direction = rand.nextInt(3) - 1;
+                    }
+                    Enemy enemy = new Enemy(enemyBody, getWorld(),new Vec2(direction*6, 0));
+                    enemy.delayToFire=40;
+                    enemyList.add(enemy);
+                    destroyableList.add(enemyBody);
+                }
+                startPointX = startPointX + deltaX;
+            }
+            startPointY = startPointY + deltaY;
+        }
 
-        Body p3 = GeometryBodyFactory.createRectangle(28, 0, 10f, 0.5f, BodyType.STATIC, getWorld());
-        lines = GeometryBodyFactory.splitRectangle(28, 0, 10f, 1f);
+        startPointY = -19;
+        deltaX = 20;
+        deltaY = 12;
+        for (int j = 0; j < 4; j++) {
+            float startPointX = -20;
+            for (int i = 0; i <= 2; i++) {
+                Body b = GeometryBodyFactory.createGameBrick(startPointX, startPointY, 4f, 0.5f, BodyType.STATIC, getWorld());
+                List<Line> lines = GeometryBodyFactory.splitRectangle(startPointX, startPointY, 6f, 0.5f);
+                linesList.addAll(lines);
+                b.getFixtureList().m_friction = 2;
+                objectForJump.add(b.getFixtureList());
+                startPointX = startPointX + deltaX;
+                if (j > 2) {
+                    Body enemyBody = GeometryBodyFactory.createRectangle(startPointX, startPointY + 1f, commonPersonEdge, commonPersonEdge, BodyType.DYNAMIC, getWorld(), Color3f.RED);
+                    Integer direction =0;
+                    while (direction==0) {
+                        direction = rand.nextInt(3) - 1;
+                    }
+                    Enemy enemy = new Enemy(enemyBody, getWorld(),new Vec2(direction*6, 0));
+                    enemy.delayToFire=40;
+                    enemyList.add(enemy);
+                    destroyableList.add(enemyBody);
+                }
+
+            }
+            startPointY = startPointY + deltaY;
+        }
+
+        Body block = GeometryBodyFactory.createGameBrick(38.5f, -20, 1.2f, 0.1f, BodyType.STATIC, getWorld());
+        List<Line> lines = GeometryBodyFactory.splitRectangle(38.5f, -20, 1.2f, 0.1f);
         linesList.addAll(lines);
-        p2.getFixtureList().m_friction = 3;
-        objectForJump.add(p3.getFixtureList());
+        block.getFixtureList().m_friction = 3;
+        objectForJump.add(block.getFixtureList());
+
+
+        Body platform2 = GeometryBodyFactory.createRectangle(37, -25, 0.2f, 5f, BodyType.KINEMATIC, getWorld());
+        platform2.getFixtureList().m_friction = 0;
+        rightBlockedFixtures.add(platform2.getFixtureList());
+        List<Vec2> coordinatesList = new ArrayList<>();
+        coordinatesList.add(new Vec2(37f, -10));
+        MovingObject mo1 = GameObjectFactory.createMovingObject(platform2, null, coordinatesList, false, new Vec2(0, 1));
+        movingObjectList.add(mo1);
+    }
+
+    @Override
+    public void step(SettingsIF settings) {
+        super.step(settings);
+        if (hero.getEnemyKilled() == 7) {
+            for (MovingObject movingObject : movingObjectList) {
+                if (!movingObject.isActive()) {
+                    movingObject.setActive(true);
+                }
+            }
+        }
     }
 
     @Override
     protected int getLevelIndex() {
-        return 3;
+        return 6;
     }
 
     @Override
@@ -198,13 +269,14 @@ public class Level4 extends CommonLevel {
 
     @Override
     public String getLevelName() {
-        return "Level 4";
+        return "Level 7";
     }
 
     @Override
     public String getLevelDescription() {
-        return "You have a gun";
+        return "Kill All Enemies\nYou have a gun";
     }
+
     @Override
     protected float getWidth() {
         return width;

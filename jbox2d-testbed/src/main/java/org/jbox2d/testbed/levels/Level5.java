@@ -211,6 +211,11 @@ public class Level5 extends CommonLevel {
     }
 
     @Override
+    public String getLevelDescription() {
+        return "You have a gun";
+    }
+
+    @Override
     protected float getWidth() {
         return width;
     }

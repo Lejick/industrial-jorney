@@ -38,5 +38,6 @@ public class LevelsList {
     model.addTest(new Level4(controller,scene));
     model.addTest(new Level5(controller,scene));
     model.addTest(new Level6(controller,scene));
+    model.addTest(new Level7(controller,scene));
   }
 }

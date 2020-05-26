@@ -35,7 +35,7 @@ public abstract class CommonLevel extends PlayLevel {
     protected final static float maxSpeedXAir = 3f;
     protected final static float minSpeedXAir = -3f;
     protected List<Line> linesList = new ArrayList<>();
-    private int maxLevelIndex = 5;
+    private int maxLevelIndex = 6;
     protected final static float maxSpeedY = 3f;
     protected static final float commonPersonEdge = 1f;
     long last_step = 0;
@@ -505,4 +505,9 @@ public abstract class CommonLevel extends PlayLevel {
     protected abstract float getWidth();
 
     protected abstract float getHeight();
+
+    @Override
+    public String getLevelDescription() {
+        return "";
+    }
 }

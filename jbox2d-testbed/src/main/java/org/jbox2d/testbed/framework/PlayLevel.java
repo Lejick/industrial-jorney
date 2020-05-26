@@ -231,7 +231,7 @@ public abstract class PlayLevel implements ContactListener, ObjectListener, Obje
         world.setParticleDestructionListener(particleDestructionListener);
         world.setContactListener(this);
         world.setDebugDraw(model.getDebugDraw());
-        title = getLevelName();
+        title = getLevelName() + "\n" + getLevelDescription();
         initTest(deserialized);
     }
 
@@ -367,6 +367,8 @@ public abstract class PlayLevel implements ContactListener, ObjectListener, Obje
      * The name of the test
      */
     public abstract String getLevelName();
+
+    public abstract String getLevelDescription();
 
     /**
      * Adds a text line to the reporting area

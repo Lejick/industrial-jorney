@@ -157,7 +157,7 @@ public class Level6 extends CommonLevel {
         super.initTest(false);
         createGameObjects();
         exit = GeometryBodyFactory.createRectangle(getWidth() / 2 - 0.25f,
-                -getHeight() / 2 + 4 * commonPersonEdge, 0.25f, 4, BodyType.STATIC, getWorld(), Color3f.GREEN);
+                getHeight() / 2 - 4 * commonPersonEdge, 0.25f, 4, BodyType.STATIC, getWorld(), Color3f.GREEN);
         rightBlockedFixtures.add(exit.getFixtureList());
 
     }
@@ -215,33 +215,6 @@ public class Level6 extends CommonLevel {
             }
             startPointY = startPointY + deltaY;
         }
-
-        Body block = GeometryBodyFactory.createGameBrick(38.5f, -20, 1.2f, 0.1f, BodyType.STATIC, getWorld());
-        List<Line> lines = GeometryBodyFactory.splitRectangle(38.5f, -20, 1.2f, 0.1f);
-        linesList.addAll(lines);
-        block.getFixtureList().m_friction = 3;
-        objectForJump.add(block.getFixtureList());
-
-
-        Body platform2 = GeometryBodyFactory.createRectangle(37, -25, 0.2f, 5f, BodyType.KINEMATIC, getWorld());
-        platform2.getFixtureList().m_friction = 0;
-        rightBlockedFixtures.add(platform2.getFixtureList());
-        List<Vec2> coordinatesList = new ArrayList<>();
-        coordinatesList.add(new Vec2(37f, -10));
-        MovingObject mo1 = GameObjectFactory.createMovingObject(platform2, null, coordinatesList, false, new Vec2(0, 1));
-        movingObjectList.add(mo1);
-    }
-
-    @Override
-    public void step(SettingsIF settings) {
-        super.step(settings);
-        if (hero.getEnemyKilled() == 3) {
-            for (MovingObject movingObject : movingObjectList) {
-                if (!movingObject.isActive()) {
-                    movingObject.setActive(true);
-                }
-            }
-        }
     }
 
     @Override
@@ -251,7 +224,7 @@ public class Level6 extends CommonLevel {
 
     @Override
     protected boolean hasGun() {
-        return true;
+        return false;
     }
 
     @Override
@@ -263,6 +236,10 @@ public class Level6 extends CommonLevel {
         return "Level 6";
     }
 
+    @Override
+    public String getLevelDescription() {
+        return "Avoid Enemies\nYou have NOT a gun";
+    }
     @Override
     protected float getWidth() {
         return width;
