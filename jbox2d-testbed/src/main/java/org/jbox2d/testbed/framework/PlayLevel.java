@@ -448,7 +448,7 @@ public abstract class PlayLevel implements ContactListener, ObjectListener, Obje
         }
 
 
-        if (settings.getSetting(PlayedSettings.DrawStats).enabled) {
+       /* if (settings.getSetting(PlayedSettings.DrawStats).enabled) {
             debugDraw.drawString(5, m_textLine, "World mouse position: " + mouseWorld.toString(),
                     Color3f.WHITE);
             m_textLine += TEXT_LINE_SPACE;
@@ -459,9 +459,9 @@ public abstract class PlayLevel implements ContactListener, ObjectListener, Obje
                 m_textLine += TEXT_LINE_SPACE;
             }
             m_textLine += TEXT_SECTION_SPACE;
-        }
+        }*/
 
-        if (settings.getSetting(PlayedSettings.DrawHelp).enabled) {
+     /*   if (settings.getSetting(PlayedSettings.DrawHelp).enabled) {
             debugDraw.drawString(5, m_textLine, "Help", color4);
             m_textLine += TEXT_LINE_SPACE;
             List<String> help = model.getImplSpecificHelp();
@@ -470,7 +470,7 @@ public abstract class PlayLevel implements ContactListener, ObjectListener, Obje
                 m_textLine += TEXT_LINE_SPACE;
             }
             m_textLine += TEXT_SECTION_SPACE;
-        }
+        }*/
 
         if (!textList.isEmpty()) {
             debugDraw.drawString(5, m_textLine, "Test Info", color4);

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.jorney</groupId>
+	<groupId>org.square</groupId>
 	<artifactId>jorney</artifactId>
 	<version>2.3.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>industrial-jorney</name>
-	<description>JBox2D is a 2d Java physics engine</description>
+	<name>square-demo</name>
+	<description>JBox2D physics engine</description>
 	<modules>
 		<module>jbox2d-library</module>
 		<module>jbox2d-serialization</module>

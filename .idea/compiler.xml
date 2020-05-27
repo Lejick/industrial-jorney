@@ -17,20 +17,20 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="jbox2d-library" />
-        <module name="jbox2d-jni-broadphase" />
         <module name="jbox2d-serialization" />
-        <module name="jbox2d-testbed" />
         <module name="jbox2d-testbed-jogl" />
+        <module name="jbox2d-jni-broadphase" />
+        <module name="jbox2d-testbed" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="industrial-jorney" target="1.5" />
       <module name="jbox2d-jni-broadphase" target="1.5" />
       <module name="jbox2d-library" target="11" />
       <module name="jbox2d-serialization" target="11" />
       <module name="jbox2d-testbed" target="11" />
       <module name="jbox2d-testbed-javafx" target="11" />
       <module name="jbox2d-testbed-jogl" target="11" />
+      <module name="square-demo" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>
