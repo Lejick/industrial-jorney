@@ -4,8 +4,10 @@ import javafx.application.Platform;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import org.jbox2d.callbacks.RayCastCallback;
 import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.collision.shapes.PolygonShape;
+import org.jbox2d.common.Color3f;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
 import org.jbox2d.dynamics.contacts.Contact;
@@ -57,6 +59,7 @@ public abstract class CommonLevel extends PlayLevel {
     protected List<Fixture> rightBlockedFixtures = new ArrayList<>();
     protected List<MovingObject> movingObjectList = new ArrayList<>();
     protected List<Enemy> enemyList;
+    RayCastClosestCallback ccallback;
     GarbageObjectCollector garbageObjectCollector = new GarbageObjectCollector();
 
     protected boolean blockedFromLeft;
@@ -79,6 +82,7 @@ public abstract class CommonLevel extends PlayLevel {
 
     @Override
     public void initTest(boolean deserialized) {
+        ccallback = new RayCastClosestCallback();
         contactObjForJump.clear();
         garbageObjectCollector = new GarbageObjectCollector();
         last_step = 0;
@@ -233,6 +237,7 @@ public abstract class CommonLevel extends PlayLevel {
     protected void leftMouseAction() {
         if (hasGun() && cursorInFireArea() && !hero.getBody().isDestroy() && hero.getWeapon1CD() == 0) {
             Body heroBullet = hero.fireWeapon1(getWorldMouse());
+            log.info(heroBullet.getPosition().toString());
             garbageObjectCollector.add(heroBullet, last_step + 400);
             bulletList.add(heroBullet);
         }
@@ -428,12 +433,12 @@ public abstract class CommonLevel extends PlayLevel {
     protected abstract void checkEnemyAction();
 
     protected boolean cursorInFireArea() {
-        Line fireLine = new Line(hero.getBody().getPosition(), getWorldMouse());
+      /*  Line fireLine = new Line(hero.getBody().getPosition(), getWorldMouse());
         for (Line line : linesList) {
             if (LineIntersectChecker.doIntersect(fireLine, line)) {
                 return false;
             }
-        }
+        }*/
         return getWorldMouse().x < getWidth() / 2
                 && getWorldMouse().x > -getWidth() / 2
                 && getWorldMouse().y > -getHeight() / 2
@@ -442,10 +447,23 @@ public abstract class CommonLevel extends PlayLevel {
 
     @Override
     public void step(SettingsIF settings) {
+
         if (hasGun() && cursorInFireArea()) {
             scene.setCursor(Cursor.CROSSHAIR);
         } else {
             scene.setCursor(Cursor.DEFAULT);
+        }
+        if (hasGun() && !hero.getBody().isDestroy() && hero.getWeapon1CD() == 0) {
+            ccallback.init();
+            Vec2 point1 = hero.getBody().getPosition();
+            Vec2 point2 = getWorldMouse();
+            getWorld().raycast(ccallback, point1, point2);
+            if (ccallback.m_hit) {
+                getDebugDraw().drawPoint(ccallback.m_point, 5.0f, new Color3f(0.4f, 0.9f, 0.4f));
+                getDebugDraw().drawSegment(point1, ccallback.m_point, new Color3f(1, 0f, 0));
+            } else {
+                getDebugDraw().drawSegment(point1, point2, new Color3f(1, 0, 0));
+            }
         }
         super.step(settings);
         keyPressed();
@@ -510,4 +528,33 @@ public abstract class CommonLevel extends PlayLevel {
     public String getLevelDescription() {
         return "";
     }
+
+    class RayCastClosestCallback implements RayCastCallback {
+
+        boolean m_hit;
+        Vec2 m_point;
+        Vec2 m_normal;
+
+        public void init() {
+            m_hit = false;
+        }
+
+        public float reportFixture(Fixture fixture, Vec2 point, Vec2 normal, float fraction) {
+            Body body = fixture.getBody();
+            Object userData = body.getUserData();
+            if (userData != null) {
+                int index = (Integer) userData;
+                if (index == 0) {
+                    // filter
+                    return -1f;
+                }
+            }
+
+            m_hit = true;
+            m_point = point;
+            m_normal = normal;
+            return fraction;
+        }
+
+    };
 }

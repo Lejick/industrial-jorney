@@ -36,7 +36,6 @@ public class Hero {
         BodyDef bd = new BodyDef();
         bd.type = BodyType.DYNAMIC;
         bd.setBullet(true);
-        bd.bullet = true;
         bd.position.set(heroBody.getPosition().x + 1 * orientation.x, heroBody.getPosition().y + 1 * orientation.y);
 
         Body hero_bullet = world.createBody(bd);
