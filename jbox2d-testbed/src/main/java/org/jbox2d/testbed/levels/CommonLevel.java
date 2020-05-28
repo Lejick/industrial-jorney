@@ -237,7 +237,6 @@ public abstract class CommonLevel extends PlayLevel {
     protected void leftMouseAction() {
         if (hasGun() && cursorInFireArea() && !hero.getBody().isDestroy() && hero.getWeapon1CD() == 0) {
             Body heroBullet = hero.fireWeapon1(getWorldMouse());
-            log.info(heroBullet.getPosition().toString());
             garbageObjectCollector.add(heroBullet, last_step + 400);
             bulletList.add(heroBullet);
         }
