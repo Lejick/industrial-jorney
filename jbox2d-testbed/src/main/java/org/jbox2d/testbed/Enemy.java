@@ -31,9 +31,8 @@ public class Enemy {
         }
         Vec2 orientation = new Vec2(targetPosition.x - enemyBody.getPosition().x,
                 targetPosition.y - enemyBody.getPosition().y);
-        float norm = Math.abs(enemyBody.getPosition().x - targetPosition.x);
-        orientation.x = orientation.x / norm;
-        orientation.y = orientation.y / norm;
+        orientation = orientation.mul(1 / orientation.length());
+
         CircleShape shape = new CircleShape();
         shape.m_radius = 0.15f;
 
