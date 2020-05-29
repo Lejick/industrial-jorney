@@ -4,15 +4,9 @@
 	<groupId>org.square</groupId>
 	<artifactId>jorney</artifactId>
 	<version>2.3.1-SNAPSHOT</version>
-	<packaging>pom</packaging>
+	<packaging>jar</packaging>
 	<name>square-demo</name>
 	<description>JBox2D physics engine</description>
-	<modules>
-		<module>jbox2d-library</module>
-		<module>jbox2d-serialization</module>
-		<module>jbox2d-testbed</module>
-	</modules>
-
 	<build>
 		<pluginManagement>
 			<plugins>

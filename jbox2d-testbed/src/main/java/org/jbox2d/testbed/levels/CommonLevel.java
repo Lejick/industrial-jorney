@@ -7,10 +7,12 @@ import javafx.scene.control.Alert;
 import org.jbox2d.callbacks.RayCastCallback;
 import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.collision.shapes.PolygonShape;
+import org.jbox2d.collision.shapes.Shape;
 import org.jbox2d.common.Color3f;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
 import org.jbox2d.dynamics.contacts.Contact;
+import org.jbox2d.dynamics.joints.Joint;
 import org.jbox2d.testbed.Enemy;
 import org.jbox2d.testbed.Hero;
 import org.jbox2d.testbed.framework.*;
@@ -65,10 +67,6 @@ public abstract class CommonLevel extends PlayLevel {
     protected boolean blockedFromLeft;
     protected boolean blockedFromRight;
 
-    @Override
-    public void processBody(Body argBody, Long argTag) {
-        super.processBody(argBody, argTag);
-    }
 
     @Override
     public boolean isSaveLoadEnabled() {
@@ -556,4 +554,55 @@ public abstract class CommonLevel extends PlayLevel {
         }
 
     };
+
+
+    @Override
+    public Long getTag(World world) {
+        return null;
+    }
+
+    @Override
+    public Long getTag(Body body) {
+        return null;
+    }
+
+    @Override
+    public Long getTag(Shape shape) {
+        return null;
+    }
+
+    @Override
+    public Long getTag(Joint joint) {
+        return null;
+    }
+
+    @Override
+    public Long getTag(Fixture fixture) {
+        return null;
+    }
+
+    @Override
+    public void processWorld(World world, Long tag) {
+
+    }
+
+    @Override
+    public void processBody(Body body, Long tag) {
+
+    }
+
+    @Override
+    public void processFixture(Fixture fixture, Long tag) {
+
+    }
+
+    @Override
+    public void processShape(Shape shape, Long tag) {
+
+    }
+
+    @Override
+    public void processJoint(Joint joint, Long tag) {
+
+    }
 }

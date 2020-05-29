@@ -675,51 +675,6 @@ public abstract class PlayLevel implements ContactListener, ObjectListener, Obje
     }
 
     @Override
-    public Long getTag(Body body) {
-        return null;
-    }
-
-    @Override
-    public Long getTag(Fixture fixture) {
-        return null;
-    }
-
-    @Override
-    public Long getTag(Joint joint) {
-        return null;
-    }
-
-    @Override
-    public Long getTag(Shape shape) {
-        return null;
-    }
-
-    @Override
-    public Long getTag(World world) {
-        return null;
-    }
-
-    @Override
-    public void processBody(Body body, Long tag) {
-    }
-
-    @Override
-    public void processFixture(Fixture fixture, Long tag) {
-    }
-
-    @Override
-    public void processJoint(Joint joint, Long tag) {
-    }
-
-    @Override
-    public void processShape(Shape shape, Long tag) {
-    }
-
-    @Override
-    public void processWorld(World world, Long tag) {
-    }
-
-    @Override
     public boolean isUnsupported(UnsupportedObjectException exception) {
         return true;
     }

@@ -109,10 +109,6 @@ public class Level1 extends CommonLevel {
         super(controller, scene);
     }
 
-    @Override
-    public void processBody(Body argBody, Long argTag) {
-        super.processBody(argBody, argTag);
-    }
 
     @Override
     public boolean isSaveLoadEnabled() {
