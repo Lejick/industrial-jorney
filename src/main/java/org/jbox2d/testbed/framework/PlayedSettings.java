@@ -28,13 +28,7 @@
  */
 package org.jbox2d.testbed.framework;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import org.jbox2d.testbed.framework.TestbedSetting.SettingType;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Stores all the testbed settings.  Automatically populates default settings.
@@ -65,8 +59,8 @@ public class PlayedSettings implements SettingsIF {
     private final Map<String, TestbedSetting> settingsMap;
 
     public PlayedSettings() {
-        settings = Lists.newArrayList();
-        settingsMap = Maps.newHashMap();
+        settings = new ArrayList<>();
+        settingsMap = new HashMap<>();
         populateDefaultSettings();
     }
 

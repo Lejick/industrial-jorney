@@ -33,8 +33,6 @@ import org.jbox2d.serialization.UnsupportedObjectException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.Lists;
-
 /**
  * This class contains most control logic for the testbed and the update loop. It also watches the
  * model to switch tests and populates the model with some loop statistics.
@@ -78,7 +76,7 @@ public abstract class AbstractTestbedController {
   public AbstractTestbedController(GamingModelIF argModel, UpdateBehavior behavior,
       MouseBehavior mouseBehavior, TestbedErrorHandler errorHandler) {
     model = argModel;
-    inputQueue = Lists.newLinkedList();
+    inputQueue = new LinkedList<>();
     setFrameRate(DEFAULT_FPS);
     updateBehavior = behavior;
     this.errorHandler = errorHandler;

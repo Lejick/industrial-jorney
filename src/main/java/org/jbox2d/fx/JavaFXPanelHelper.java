@@ -1,5 +1,6 @@
 package org.jbox2d.fx;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jbox2d.common.Vec2;
@@ -7,8 +8,6 @@ import org.jbox2d.testbed.framework.GamingModelIF;
 import org.jbox2d.testbed.framework.TestbedCamera.ZoomType;
 import org.jbox2d.testbed.framework.AbstractTestbedController;
 import org.jbox2d.testbed.framework.PlayLevel;
-
-import com.google.common.collect.Lists;
 
 import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
@@ -28,7 +27,7 @@ public class JavaFXPanelHelper {
       final AbstractTestbedController controller, final int screenDragButton) {
     final Vec2 oldDragMouse = new Vec2();
     final Vec2 mouse = new Vec2();
-    List<String> help = Lists.newArrayList();
+    List<String> help = new ArrayList<>();
     help.add("Click and drag the left mouse button to move objects.");
     help.add("Click and drag the right mouse button to move the view.");
     help.add("Shift-Click to aim a bullet, or press space.");

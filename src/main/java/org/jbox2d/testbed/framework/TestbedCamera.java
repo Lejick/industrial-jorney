@@ -28,7 +28,6 @@ import org.jbox2d.common.Mat22;
 import org.jbox2d.common.OBBViewportTransform;
 import org.jbox2d.common.Vec2;
 
-import com.google.common.base.Preconditions;
 
 public class TestbedCamera {
 
@@ -45,7 +44,6 @@ public class TestbedCamera {
   private final Mat22 downScale;
 
   public TestbedCamera(Vec2 initPosition, float initScale, float zoomScaleDiff) {
-    Preconditions.checkArgument(zoomScaleDiff > 0, "Zoom scale %d must be > 0", zoomScaleDiff);
     this.transform = new OBBViewportTransform();
     transform.setCamera(initPosition.x, initPosition.y, initScale);
     this.initPosition.set(initPosition);
@@ -91,7 +89,6 @@ public class TestbedCamera {
         zoom = downScale;
         break;
       default:
-        Preconditions.checkArgument(false, "Zoom type invalid");
         return;
     }
 
