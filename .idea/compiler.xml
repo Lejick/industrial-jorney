@@ -16,7 +16,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="square-demo" />
+        <module name="jorney" />
         <module name="jbox2d-testbed-jogl" />
         <module name="jbox2d-jni-broadphase" />
       </profile>
@@ -28,6 +28,7 @@
       <module name="jbox2d-testbed" target="11" />
       <module name="jbox2d-testbed-javafx" target="11" />
       <module name="jbox2d-testbed-jogl" target="11" />
+      <module name="jorney" target="11" />
       <module name="square-demo" target="11" />
     </bytecodeTargetLevel>
   </component>
