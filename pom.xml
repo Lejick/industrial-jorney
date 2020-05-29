@@ -39,6 +39,17 @@
 	<name>square-demo</name>
 	<description>JBox2D physics engine</description>
 	<build>
+		<plugins>
+		<plugin>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-maven-plugin</artifactId>
+			<version>0.0.4</version>
+			<configuration>
+				<mainClass>hellofx/org.openjfx.App</mainClass>
+			</configuration>
+		</plugin>
+		</plugins>
+
 		<pluginManagement>
 			<plugins>
 				<plugin>

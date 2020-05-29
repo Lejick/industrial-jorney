@@ -17,10 +17,8 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="square-demo" />
-        <module name="jbox2d-serialization" />
         <module name="jbox2d-testbed-jogl" />
         <module name="jbox2d-jni-broadphase" />
-        <module name="jbox2d-testbed" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
