@@ -16,7 +16,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="jorney" />
+        <module name="square-demo" />
         <module name="jbox2d-testbed-jogl" />
         <module name="jbox2d-jni-broadphase" />
       </profile>
