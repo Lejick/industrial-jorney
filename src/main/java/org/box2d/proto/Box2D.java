@@ -763,7 +763,7 @@ public final class Box2D {
       public org.box2d.proto.Box2D.PbVec2 build() {
         org.box2d.proto.Box2D.PbVec2 result = buildPartial();
         if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
+          throw Builder.newUninitializedMessageException(result);
         }
         return result;
       }
@@ -1370,7 +1370,7 @@ public final class Box2D {
       public org.box2d.proto.Box2D.PbFilter build() {
         org.box2d.proto.Box2D.PbFilter result = buildPartial();
         if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
+          throw Builder.newUninitializedMessageException(result);
         }
         return result;
       }
@@ -3254,7 +3254,7 @@ public final class Box2D {
       public org.box2d.proto.Box2D.PbShape build() {
         org.box2d.proto.Box2D.PbShape result = buildPartial();
         if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
+          throw Builder.newUninitializedMessageException(result);
         }
         return result;
       }
@@ -6344,7 +6344,7 @@ public final class Box2D {
       public org.box2d.proto.Box2D.PbFixture build() {
         org.box2d.proto.Box2D.PbFixture result = buildPartial();
         if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
+          throw Builder.newUninitializedMessageException(result);
         }
         return result;
       }
@@ -9456,7 +9456,7 @@ public final class Box2D {
       public org.box2d.proto.Box2D.PbJoint build() {
         org.box2d.proto.Box2D.PbJoint result = buildPartial();
         if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
+          throw Builder.newUninitializedMessageException(result);
         }
         return result;
       }
@@ -13145,7 +13145,7 @@ public final class Box2D {
       public org.box2d.proto.Box2D.PbBody build() {
         org.box2d.proto.Box2D.PbBody result = buildPartial();
         if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
+          throw Builder.newUninitializedMessageException(result);
         }
         return result;
       }
@@ -15165,7 +15165,7 @@ public final class Box2D {
       public org.box2d.proto.Box2D.PbWorld build() {
         org.box2d.proto.Box2D.PbWorld result = buildPartial();
         if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
+          throw Builder.newUninitializedMessageException(result);
         }
         return result;
       }
